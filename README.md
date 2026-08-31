@@ -1,5 +1,5 @@
 # 📘 BUKU AJAR & MODUL LENGKAP PENGOLAHAN SINYAL DIGITAL (PSD)
-*Panduan Komprehensif: Dari Konsep Dasar, Sinyal Multi-Dimensi, Multikanal, Sistem, hingga Proses Digitalisasi (ADC)*
+*Panduan Komprehensif: Dari Konsep Dasar, Sinyal Multi-Dimensi, Sinyal Multikanal, Sinyal Waktu Diskrit, Sistem, hingga Proses Digitalisasi (ADC)*
 
 ---
 
@@ -8,15 +8,16 @@
    - [1.1 Apa Sebenarnya Sinyal Itu? (Konsep Awam & Filosofi)](#11-apa-sebenarnya-sinyal-itu-konsep-awam--filosofi)
    - [1.2 Sinyal Multi-Dimensi (M-Dimensi): 1D, 2D, 3D, hingga 4D](#12-sinyal-multi-dimensi-m-dimensi-1d-2d-3d-hingga-4d)
    - [1.3 Sinyal Kanal Tunggal vs Sinyal Multikanal (Multi-Channel Signals)](#13-sinyal-kanal-tunggal-vs-sinyal-multikanal-multi-channel-signals)
-   - [1.4 Tiga Pilar Anatomi Gelombang: Amplitudo, Frekuensi, dan Fase](#14-tiga-pilar-anatomi-gelombang-amplitudo-frekuensi-dan-fase)
-   - [1.5 Anatomi Visual Grafik Sinyal](#15-anatomi-visual-grafik-sinyal)
-   - [1.6 Komparasi Visual Parameter Sinyal](#16-komparasi-visual-parameter-sinyal)
-   - [1.7 Studi Kasus Nyata: Mengapa Suara Manusia Adalah Sinyal?](#17-studi-kasus-nyata-mengapa-suara-manusia-adalah-sinyal)
-   - [1.8 Apa Itu Sistem? (Analogi Mesin Pemroses)](#18-apa-itu-sistem-analogi-mesin-pemroses)
-   - [1.9 Tiga Wujud Realisasi Sistem Pengolah Sinyal](#19-tiga-wujud-realisasi-sistem-pengolah-sinyal)
-   - [1.10 Klasifikasi Sifat & Karakteristik Operasi Sistem](#110-klasifikasi-sifat--karakteristik-operasi-sistem)
-   - [1.11 Dua Paradigma Besar: Pemrosesan Analog (ASP) vs Pemrosesan Digital (DSP)](#111-dua-paradigma-besar-pemrosesan-analog-asp-vs-pemrosesan-digital-dsp)
-   - [1.12 Mengapa Dunia Beralih ke DSP? (Kelebihan & Batasan)](#112-mengapa-dunia-beralih-ke-dsp-kelebihan--batasan)
+   - [1.4 Sinyal Waktu Diskrit (Discrete-Time Signals / DTS)](#14-sinyal-waktu-diskrit-discrete-time-signals--dts)
+   - [1.5 Tiga Pilar Anatomi Gelombang: Amplitudo, Frekuensi, dan Fase](#15-tiga-pilar-anatomi-gelombang-amplitudo-frekuensi-dan-fase)
+   - [1.6 Anatomi Visual Grafik Sinyal](#16-anatomi-visual-grafik-sinyal)
+   - [1.7 Komparasi Visual Parameter Sinyal](#17-komparasi-visual-parameter-sinyal)
+   - [1.8 Studi Kasus Nyata: Mengapa Suara Manusia Adalah Sinyal?](#18-studi-kasus-nyata-mengapa-suara-manusia-adalah-sinyal)
+   - [1.9 Apa Itu Sistem? (Analogi Mesin Pemroses)](#19-apa-itu-sistem-analogi-mesin-pemroses)
+   - [1.10 Tiga Wujud Realisasi Sistem Pengolah Sinyal](#110-tiga-wujud-realisasi-sistem-pengolah-sinyal)
+   - [1.11 Klasifikasi Sifat & Karakteristik Operasi Sistem](#111-klasifikasi-sifat--karakteristik-operasi-sistem)
+   - [1.12 Dua Paradigma Besar: Pemrosesan Analog (ASP) vs Pemrosesan Digital (DSP)](#112-dua-paradigma-besar-pemrosesan-analog-asp-vs-pemrosesan-digital-dsp)
+   - [1.13 Mengapa Dunia Beralih ke DSP? (Kelebihan & Batasan)](#113-mengapa-dunia-beralih-ke-dsp-kelebihan--batasan)
 2. [BAB 2: Proses Digitalisasi Sinyal (Analog-to-Digital Converter / ADC)](#bab-2-proses-digitalisasi-sinyal-analog-to-digital-converter--adc)
    - [2.1 Mengapa Sinyal Analog Harus Diubah ke Digital?](#21-mengapa-sinyal-analog-harus-diubah-ke-digital)
    - [2.2 Rantai 4 Tahap Lengkap Konversi ADC](#22-rantai-4-tahap-lengkap-konversi-adc)
@@ -62,44 +63,11 @@ Berapa banyak variabel yang menentukan nilai suatu sinyal? Inilah konsep dari **
 
 ![Spektrum Sinyal Multi-Dimensi](assets/sinyal_multidimensi.png)
 
----
-
-### A. Hierarki & Klasifikasi Dimensi Sinyal:
-
-#### 1. Sinyal Satu Dimensi (1D) — $s = f(t)$
-* **Variabel Bebas:** $1$ variabel, yaitu **Waktu ($t$)**.
-* **Cara Kerja:** Nilai tegangan listrik atau tekanan udara hanya berubah seiring berjalannya detik waktu.
-* **Contoh Nyata:** Sinyal suara manusia melalui mikrofon mono, rekaman detak jantung ECG, sinyal seismometer pendeteksi gempa bumi, sinyal fluktuasi harga saham harian.
-
-#### 2. Sinyal Dua Dimensi (2D) — Citra Intensitas $I = f(x, y)$
-* **Variabel Bebas:** $2$ variabel, yaitu **Koordinat Spasial Bidang Datar $(x, y)$** (sumbu kolom $x$ dan sumbu baris $y$).
-* **Cara Kerja:** Pada sebuah foto atau citra diam, nilai fungsi $f(x, y)$ merepresentasikan **tingkat intensitas kecerahan (*brightness/luminance*)** atau derajat keabuan (*grayscale*) pada titik piksel koordinat $(x, y)$. Nilainya berkisar dari $0$ (hitam pekat) hingga $255$ (putih terang pada citra 8-bit).
-* **Contoh Nyata:** Foto digital JPEG hitam-putih, citra rontgen medis X-Ray, foto satelit permukaan bumi.
-
-#### 3. Sinyal Tiga Dimensi (3D) — $V = f(x, y, t)$ atau $f(x, y, z)$
-* **Bentuk A (Video / Citra Televisi Hitam-Putih):** $f(x, y, t)$
-  * **Variabel Bebas:** $2$ variabel spasial $(x, y)$ dan $1$ variabel temporal waktu $(t)$.
-  * **Cara Kerja:** Citra televisi hitam-putih adalah rangkaian frame foto 2D $f(x, y)$ yang diputar dan diperbarui terus-menerus setiap detik $t$ (misal 30 atau 60 frame per detik).
-* **Bentuk B (Citra Medis Volume 3D):** $f(x, y, z)$
-  * **Variabel Bebas:** $3$ koordinat ruang tiga dimensi $(x, y, z)$ yaitu panjang, lebar, dan kedalaman.
-  * **Cara Kerja:** Pemindaian organ tubuh menghasilkan kumpulan titik volume bernama ***Voxel* (*Volumetric Pixel*)**.
-  * **Contoh Nyata:** Pemindaian otak 3D menggunakan MRI (*Magnetic Resonance Imaging*) atau CT-Scan.
-
-#### 4. Sinyal Empat Dimensi (4D) & Multi-Spektral — $C = f(x, y, t, \lambda)$
-* **Variabel Bebas:** Ruang $(x, y)$, Waktu $(t)$, dan Panjang Gelombang Spektral / Saluran Warna ($\lambda$ atau kanal $R, G, B$).
-* **Contoh Nyata:** Video digital berwarna (setiap piksel $(x, y)$ pada waktu $t$ memiliki 3 nilai intensitas warna Red, Green, Blue), atau rekaman animasi 3D organ jantung yang sedang berdetak terhadap waktu $f(x, y, z, t)$.
-
----
-
-### B. Perbedaan Kunci: Sinyal Multi-Dimensi vs Sinyal Multi-Kanal
-
-Banyak pemula yang bingung membedakan kedua istilah ini. Mari kita luruskan:
-
-| Parameter Pembeda | Sinyal Multi-Dimensi ($M$-D) | Sinyal Multi-Kanal (*Multi-Channel*) |
-| :--- | :--- | :--- |
-| **Fokus Utama** | **Jumlah Variabel Bebas Masukan ($M$)**. Sinyal dipengaruhi oleh berapa banyak sumbu (waktu, ruang $x, y, z$, dsb.). | **Jumlah Sensor / Jalur Keluaran ($M$)**. Sinyal direkam oleh berapa banyak sensor fisik secara serentak. |
-| **Bentuk Matematis** | Fungsi skalar dari banyak variabel: $s = f(x, y, t)$. | Vektor dari banyak fungsi: $\mathbf{x}(t) = [x_1(t), x_2(t), \dots, x_M(t)]^T$. |
-| **Contoh Kasus** | Foto Citra 2D $f(x, y)$ atau Video 3D $f(x, y, t)$. | Rekaman ECG 12-Lead (12 sensor merekam waktu $t$) atau Audio Surround 7.1. |
+### Klasifikasi Dimensi Sinyal:
+1. **Sinyal 1D — $f(t)$:** 1 variabel waktu $t$ (Suara ucapan mono, sinyal ECG jantung).
+2. **Sinyal 2D — Citra Intensitas $I = f(x, y)$:** 2 koordinat spasial bidang $(x, y)$ (Foto grayscale, X-Ray).
+3. **Sinyal 3D — $V = f(x, y, t)$ atau $f(x, y, z)$:** Rangkaian frame video hitam-putih terhadap waktu $t$, atau citra medis volume 3D (*Voxel*) seperti MRI / CT-Scan.
+4. **Sinyal 4D & Multi-Spektral — $C = f(x, y, t, \lambda)$:** Video berwarna (RGB) atau video 3D jantung berdetak $f(x, y, z, t)$.
 
 ---
 
@@ -121,11 +89,112 @@ Dalam dunia nyata, kita sering kali tidak hanya menggunakan 1 buah sensor, melai
    x_M[0] & x_M[1] & \dots & x_M[N-1] 
    \end{bmatrix}_{M \times N}$$
 
-3. **Keunggulan Analisis:** Membuka pintu penerapan operasi **Aljabar Linier**, seperti *Spatial Filtering & Beamforming* (fokus pendengaran mikrofon), *Independent Component Analysis* (ICA untuk memisahkan suara bertumpuk), dan *Principal Component Analysis* (PCA).
+3. **Keunggulan Analisis:** Membuka operasi **Aljabar Linier** (Beamforming arah dengar mikrofon, ICA *Blind Source Separation*, dan PCA).
 
 ---
 
-## 1.4 Tiga Pilar Anatomi Gelombang: Amplitudo, Frekuensi, dan Fase
+## 1.4 Sinyal Waktu Diskrit (Discrete-Time Signals / DTS)
+
+Berbeda dengan sinyal analog kontinu $x(t)$ yang nilainya selalu mengalir tanpa jeda pada setiap titik waktu riil $t \in \mathbb{R}$, **Sinyal Waktu Diskrit** hanya terdefinisi pada **titik-titik waktu tertentu saja**.
+
+![Fondasi Sinyal Waktu Diskrit](assets/sinyal_waktu_diskrit.png)
+
+### A. Definisi Fundamental Sinyal Waktu Diskrit:
+> **📌 Definisi Sinyal Waktu Diskrit:**  
+> Sinyal Waktu Diskrit didefinisikan **hanya pada indeks waktu diskrit berupa bilangan bulat (*integer*)** $n \in \mathbb{Z} = \{\dots, -3, -2, -1, 0, 1, 2, 3, \dots\}$. Sinyal ini dinyatakan sebagai **deret bilangan (*sequence*)** riil atau kompleks $x[n]$ atau $x(n)$.
+> 
+> *Catatan Kritis:* Pada waktu di antara dua indeks bulat (seperti $n = 1.5$ atau $n = 2.8$), sinyal waktu diskrit **tidak terdefinisi (*undefined*)**, bukan bernilai nol.
+
+---
+
+### B. Dua Asal-Usul Pembentukan Sinyal Waktu Diskrit:
+
+```mermaid
+flowchart TD
+    DTS["Asal Pembentukan Sinyal Waktu Diskrit x[n]"]
+
+    DTS --> S1["1. Hasil Pencuplikan (Sampling) Sinyal Analog Fisik<br>x[n] = x(n·Ts)<br><i>Contoh: Suara mikrofon yang dicuplik chip ADC tiap interval Ts</i>"]
+    DTS --> S2["2. Sinyal Diskrit Alami / Murni (Non-Fisik)<br><i>Contoh: Data statistik harga saham per hari, jumlah pengunjung toko per jam</i>"]
+
+    style DTS fill:#1e1b4b,stroke:#6366f1,stroke-width:2px,color:#fff
+    style S1 fill:#0f172a,stroke:#38bdf8,color:#fff
+    style S2 fill:#78350f,stroke:#f59e0b,color:#fff
+```
+
+1. **Hasil Pencuplikan (*Sampling*) Sinyal Analog:**
+   Sinyal kontinu $x(t)$ dipotret pada selang waktu seragam $T_s = \frac{1}{F_s}$:
+   $$x[n] = x(t)\Big|_{t = n T_s} = x(n \cdot T_s)$$
+2. **Sinyal Diskrit Murni (*Inherently Discrete-Time Signals*):**
+   Sinyal yang secara alamiah memang lahir dalam bentuk deret data terpisah (tidak ada bentuk analognya). Contoh: Data penutupan harga saham per hari ($n = \text{hari}$), jumlah pasien rumah sakit per minggu ($n = \text{minggu}$).
+
+---
+
+### C. Empat Cara Representasi Matematis Sinyal Diskrit:
+
+1. **Notasi Deret Himpunan (*Sequence Set Notation*):**  
+   Menuliskan deretan angka di dalam kurung kurawal. Simbol panah bawah/atas ($\uparrow$) menandakan posisi indeks acuan $n = 0$:
+   $$x[n] = \{ \dots, 0.5, \ \underset{\uparrow}{2.0}, \ 3.5, \ 1.0, \ -1.5, \ \dots \}$$
+   *(Artinya: $x[-1]=0.5$, $x[0]=2.0$, $x[1]=3.5$, $x[2]=1.0$, $x[3]=-1.5$)*.
+
+2. **Rumus Matematis Fungsional Analitik:**  
+   Menyatakan nilai sinyal sebagai formula aljabar:
+   $$x[n] = \begin{cases} (0.8)^n, & n \geq 0 \\ 0, & n < 0 \end{cases}$$
+
+3. **Representasi Tabel Nilai ($n$ vs $x[n]$):**  
+   | $n$ | $\dots$ | $-2$ | $-1$ | $0$ | $1$ | $2$ | $3$ | $\dots$ |
+   | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+   | **$x[n]$** | $\dots$ | $0$ | $0$ | $2.0$ | $1.6$ | $1.28$ | $1.02$ | $\dots$ |
+
+4. **Representasi Grafis (*Stem Plot / Lollipop Plot*):**  
+   Menampilkan sinyal sebagai batang-batang tegak vertikal dengan lingkaran di ujung puncaknya yang menunjuk ke koordinat $(n, x[n])$.
+
+---
+
+### D. Sinyal Diskrit Elementer (Sinyal Dasar Pembangun DSP):
+
+```mermaid
+graph LR
+    Elem["Sinyal Diskrit Dasar (Elementer)"]
+    Elem --> D["1. Unit Impulse delta[n]<br>Bernilai 1 HANYA di n=0, lainnya 0"]
+    Elem --> U["2. Unit Step u[n]<br>Bernilai 1 untuk semua n >= 0, lainnya 0"]
+    Elem --> R["3. Unit Ramp r[n]<br>Bernilai n untuk n >= 0 (Tanjakan Linier)"]
+    Elem --> E["4. Eksponensial a^n<br>Meluruh jika |a| < 1, Meledak jika |a| > 1"]
+
+    style Elem fill:#312e81,stroke:#6366f1,color:#fff
+    style D fill:#831843,stroke:#ec4899,color:#fff
+    style U fill:#064e3b,stroke:#10b981,color:#fff
+    style R fill:#78350f,stroke:#f59e0b,color:#fff
+    style E fill:#0f172a,stroke:#38bdf8,color:#fff
+```
+
+1. **Unit Impulse / Delta Dirac Diskrit ($\delta[n]$):**
+   $$\delta[n] = \begin{cases} 1, & n = 0 \\ 0, & n \neq 0 \end{cases}$$
+   *Peran:* Sinyal paling fundamental dalam DSP! Respon sistem terhadap sinyal ini disebut **Impulse Response $h[n]$**, yang mencerminkan DNA/karakteristik lengkap suatu sistem linier.
+
+2. **Unit Step ($u[n]$):**
+   $$u[n] = \begin{cases} 1, & n \geq 0 \\ 0, & n < 0 \end{cases}$$
+   *Hubungan dengan $\delta[n]$:* $u[n] = \sum_{k=-\infty}^{n} \delta[k]$ atau $\delta[n] = u[n] - u[n-1]$.
+
+3. **Sinyal Eksponensial Diskrit ($x[n] = a^n$):**
+   * Jika $|a| < 1$ (misal $a = 0.7$): Sinyal meluruh turun (*decaying*) menuju nol seiring bertambahnya $n$.
+   * Jika $|a| > 1$ (misal $a = 1.5$): Sinyal meledak membesar (*growing*) menuju tak hingga.
+   * Jika $a < 0$ (misal $a = -0.8$): Sinyal berganti-ganti tanda positif dan negatif (*berosilasi*).
+
+---
+
+### E. Operasi Dasar pada Sinyal Waktu Diskrit:
+
+1. **Pergeseran Waktu (*Time Shifting*):**  
+   * $y[n] = x[n - k]$ : Sinyal **ditunda (*delayed*)** ke kanan sejauh $k$ satuan sampel.
+   * $y[n] = x[n + k]$ : Sinyal **dimajukan (*advanced*)** ke kiri sejauh $k$ satuan sampel.
+2. **Pembalikan Waktu (*Time Reversal / Folding*):**  
+   * $y[n] = x[-n]$ : Membalik urutan sinyal secara horizontal terhadap sumbu $n = 0$.
+3. **Penskalaan Amplitudo (*Amplitude Scaling*):**  
+   * $y[n] = c \cdot x[n]$ : Mengalikan setiap nilai cuplikan dengan faktor penguatan $c$.
+
+---
+
+## 1.5 Tiga Pilar Anatomi Gelombang: Amplitudo, Frekuensi, dan Fase
 
 Persamaan matematis gelombang sinus dinyatakan sebagai:
 
@@ -146,19 +215,19 @@ graph TD
 
 ---
 
-## 1.5 Anatomi Visual Grafik Sinyal
+## 1.6 Anatomi Visual Grafik Sinyal
 
 ![Anatomi Parameter Sinyal](assets/anatomi_sinyal.png)
 
 ---
 
-## 1.6 Komparasi Visual Parameter Sinyal
+## 1.7 Komparasi Visual Parameter Sinyal
 
 ![Komparasi Visual Parameter Sinyal](assets/komparasi_sinyal.png)
 
 ---
 
-## 1.7 Studi Kasus Nyata: Mengapa Suara Manusia Adalah Sinyal?
+## 1.8 Studi Kasus Nyata: Mengapa Suara Manusia Adalah Sinyal?
 
 ```mermaid
 flowchart LR
@@ -176,7 +245,7 @@ flowchart LR
 
 ---
 
-## 1.8 Apa Itu Sistem? (Analogi Mesin Pemroses)
+## 1.9 Apa Itu Sistem? (Analogi Mesin Pemroses)
 
 > **📌 Definisi Sistem:**  
 > **Sistem** adalah perangkat fisik (elektronika) atau algoritma perangkat lunak yang menerima sinyal masukan $x[n]$, melakukan operasi matematis terhadapnya, lalu mengeluarkan sinyal baru $y[n]$ yang telah dimodifikasi:
@@ -184,7 +253,7 @@ flowchart LR
 
 ---
 
-## 1.9 Tiga Wujud Realisasi Sistem Pengolah Sinyal
+## 1.10 Tiga Wujud Realisasi Sistem Pengolah Sinyal
 
 1. **Hardware Murni (Analog):** Rangkaian RLC, Op-Amp, Transistor.
 2. **Software Murni (Digital):** Algoritma Python, C++, MATLAB di PC/Server.
@@ -192,7 +261,7 @@ flowchart LR
 
 ---
 
-## 1.10 Klasifikasi Sifat & Karakteristik Operasi Sistem
+## 1.11 Klasifikasi Sifat & Karakteristik Operasi Sistem
 
 * **Linear:** Mematuhi prinsip superposisi $\mathcal{T}\{a x_1 + b x_2\} = a \mathcal{T}\{x_1\} + b \mathcal{T}\{x_2\}$.
 * **Time-Invariant (TI):** Sifat sistem tidak berubah seiring waktu ($x[n - n_0] \implies y[n - n_0]$).
@@ -201,13 +270,13 @@ flowchart LR
 
 ---
 
-## 1.11 Dua Paradigma Besar: Pemrosesan Analog (ASP) vs Pemrosesan Digital (DSP)
+## 1.12 Dua Paradigma Besar: Pemrosesan Analog (ASP) vs Pemrosesan Digital (DSP)
 
 ![Diagram Paradigma ASP vs DSP](assets/diagram_asp_vs_dsp.png)
 
 ---
 
-## 1.12 Mengapa Dunia Beralih ke DSP? (Kelebihan & Batasan)
+## 1.13 Mengapa Dunia Beralih ke DSP? (Kelebihan & Batasan)
 
 | Aspek | Pemrosesan Analog (ASP) | Pemrosesan Digital (DSP) |
 | :--- | :--- | :--- |
