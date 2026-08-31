@@ -22,7 +22,7 @@
   * [2.3 Tahap 2: Kuantisasi (Quantization) & Perhitungan Step](#23-tahap-2-kuantisasi-quantization--perhitungan-step)
   * [2.4 Tahap 3: Pengkodean (Encoding) ke Kode Biner](#24-tahap-3-pengkodean-encoding-ke-kode-biner)
   * [2.5 Tabel Terpadu Step Kuantisasi vs Kode Encoding Biner 3-Bit (0V - 10V)](#25-tabel-terpadu-step-kuantisasi-vs-kode-encoding-biner-3-bit-0v---10v)
-  * [2.6 Contoh Kasus Nyata Konversi Tegangan Riil](#26-contoh-kasus-nyata-konversi-tegangan-riil)
+  * [2.6 Studi Kasus End-to-End: Konversi Sinyal Utuh ke Aliran Bit Biner](#26-studi-kasus-end-to-end-konversi-sinyal-utuh-ke-aliran-bit-biner)
   * [2.7 Teorema Sampling Nyquist-Shannon & Aliasing](#27-teorema-sampling-nyquist-shannon--aliasing)
 
 ---
@@ -185,15 +185,93 @@ flowchart LR
 
 ---
 
-## 2.6 Contoh Kasus Nyata Konversi Tegangan Riil
+## 2.6 Studi Kasus End-to-End: Konversi Sinyal Utuh ke Aliran Bit Biner
 
-#### 📌 Kasus A (Tegangan Masuk $V_{\text{in}} = 3.20\text{ Volt}$):
-* Nilai $3.20\text{ V}$ masuk ke **Step 3** (rentang $2.50\text{ V} - 3.75\text{ V}$).
-* Hasil Encoding Biner: **`010`**
+Berikut adalah contoh komprehensif konversi sinyal analog riil dari awal gelombang utuh hingga menjadi aliran biner digital:
 
-#### 📌 Kasus B (Tegangan Masuk $V_{\text{in}} = 6.80\text{ Volt}$):
-* Nilai $6.80\text{ V}$ masuk ke **Step 6** (rentang $6.25\text{ V} - 7.50\text{ V}$).
-* Hasil Encoding Biner: **`101`**
+### A. Skenario Sinyal & Spesifikasi ADC:
+1. **Persamaan Gelombang Sinyal Analog Asli:**
+   $$x(t) = 5 + 4 \cdot \sin(2\pi \cdot 1 \cdot t) \quad \text{Volt}$$
+   * Tegangan terendah (Lembah): $V_{\text{min}} = 5 - 4 = 1.00\text{ Volt}$.
+   * Tegangan tertinggi (Puncak): $V_{\text{maks}} = 5 + 4 = 9.00\text{ Volt}$.
+   * Frekuensi sinyal: $f = 1\text{ Hz}$ (Periode $T = 1\text{ detik}$).
+2. **Spesifikasi ADC:**
+   * Resolusi: $B = 3\text{ bit}$ ($L = 8\text{ step}$, Step Size $\Delta = 1.25\text{ V}$).
+   * Frekuensi Sampling Clock: $F_s = 8\text{ Hz}$ $\implies$ Interval Pencuplikan $T_s = \frac{1}{8} = 0.125\text{ detik}$.
+   * Diambil $8$ titik sampel ($n = 0, 1, 2, 3, 4, 5, 6, 7$) selama 1 siklus penuh ($t = 0$ s.d. $1\text{ detik}$).
+
+---
+
+### B. Grafik Visual Pelacakan Sampel Demi Sampel:
+
+![Studi Kasus Konversi Lengkap](assets/studi_kasus_konversi_lengkap.png)
+
+---
+
+### C. Perhitungan Rinci Titik demi Titik (Per Detak Clock $n$):
+
+1. **Sampel $n=0$ ($t = 0.000\text{ s}$):**
+   * $V_{\text{in}} = 5 + 4\sin(0) = \mathbf{5.00\text{ V}}$
+   * Masuk Rentang: Step 5 ($5.00\text{ V} - 6.25\text{ V}$) $\implies$ **Biner: `100`**
+   * Error: $e = |5.00 - 5.625| = 0.625\text{ V}$
+
+2. **Sampel $n=1$ ($t = 0.125\text{ s}$):**
+   * $V_{\text{in}} = 5 + 4\sin(\pi/4) = 5 + 4(0.7071) = \mathbf{7.83\text{ V}}$
+   * Masuk Rentang: Step 7 ($7.50\text{ V} - 8.75\text{ V}$) $\implies$ **Biner: `110`**
+   * Error: $e = |7.83 - 8.125| = 0.295\text{ V}$
+
+3. **Sampel $n=2$ ($t = 0.250\text{ s}$ — Puncak Gelombang):**
+   * $V_{\text{in}} = 5 + 4\sin(\pi/2) = 5 + 4(1) = \mathbf{9.00\text{ V}}$
+   * Masuk Rentang: Step 8 ($8.75\text{ V} - 10.00\text{ V}$) $\implies$ **Biner: `111`**
+   * Error: $e = |9.00 - 9.375| = 0.375\text{ V}$
+
+4. **Sampel $n=3$ ($t = 0.375\text{ s}$):**
+   * $V_{\text{in}} = 5 + 4\sin(3\pi/4) = 5 + 4(0.7071) = \mathbf{7.83\text{ V}}$
+   * Masuk Rentang: Step 7 ($7.50\text{ V} - 8.75\text{ V}$) $\implies$ **Biner: `110`**
+   * Error: $e = |7.83 - 8.125| = 0.295\text{ V}$
+
+5. **Sampel $n=4$ ($t = 0.500\text{ s}$):**
+   * $V_{\text{in}} = 5 + 4\sin(\pi) = \mathbf{5.00\text{ V}}$
+   * Masuk Rentang: Step 5 ($5.00\text{ V} - 6.25\text{ V}$) $\implies$ **Biner: `100`**
+   * Error: $e = |5.00 - 5.625| = 0.625\text{ V}$
+
+6. **Sampel $n=5$ ($t = 0.625\text{ s}$):**
+   * $V_{\text{in}} = 5 + 4\sin(5\pi/4) = 5 - 4(0.7071) = \mathbf{2.17\text{ V}}$
+   * Masuk Rentang: Step 2 ($1.25\text{ V} - 2.50\text{ V}$) $\implies$ **Biner: `001`**
+   * Error: $e = |2.17 - 1.875| = 0.295\text{ V}$
+
+7. **Sampel $n=6$ ($t = 0.750\text{ s}$ — Lembah Gelombang):**
+   * $V_{\text{in}} = 5 + 4\sin(3\pi/2) = 5 - 4(1) = \mathbf{1.00\text{ V}}$
+   * Masuk Rentang: Step 1 ($0.00\text{ V} - 1.25\text{ V}$) $\implies$ **Biner: `000`**
+   * Error: $e = |1.00 - 0.625| = 0.375\text{ V}$
+
+8. **Sampel $n=7$ ($t = 0.875\text{ s}$):**
+   * $V_{\text{in}} = 5 + 4\sin(7\pi/4) = 5 - 4(0.7071) = \mathbf{2.17\text{ V}}$
+   * Masuk Rentang: Step 2 ($1.25\text{ V} - 2.50\text{ V}$) $\implies$ **Biner: `001`**
+   * Error: $e = |2.17 - 1.875| = 0.295\text{ V}$
+
+---
+
+### D. Tabel Rekapitulasi Konversi 8 Titik Sampel:
+
+| Sampel ($n$) | Waktu ($t$) | Tegangan Analog $V_{\text{in}}$ | Step Kuantisasi | Nilai Level $V_q$ | Output Biner | Quantization Error ($e$) |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **$n = 0$** | $0.000\text{ s}$ | $5.00\text{ V}$ | **Step 5** | $5.625\text{ V}$ | **`100`** | $+0.625\text{ V}$ |
+| **$n = 1$** | $0.125\text{ s}$ | $7.83\text{ V}$ | **Step 7** | $8.125\text{ V}$ | **`110`** | $+0.295\text{ V}$ |
+| **$n = 2$** | $0.250\text{ s}$ | $9.00\text{ V}$ (Peak) | **Step 8** | $9.375\text{ V}$ | **`111`** | $+0.375\text{ V}$ |
+| **$n = 3$** | $0.375\text{ s}$ | $7.83\text{ V}$ | **Step 7** | $8.125\text{ V}$ | **`110`** | $+0.295\text{ V}$ |
+| **$n = 4$** | $0.500\text{ s}$ | $5.00\text{ V}$ | **Step 5** | $5.625\text{ V}$ | **`100`** | $+0.625\text{ V}$ |
+| **$n = 5$** | $0.625\text{ s}$ | $2.17\text{ V}$ | **Step 2** | $1.875\text{ V}$ | **`001`** | $-0.295\text{ V}$ |
+| **$n = 6$** | $0.750\text{ s}$ | $1.00\text{ V}$ (Trough) | **Step 1** | $0.625\text{ V}$ | **`000`** | $-0.375\text{ V}$ |
+| **$n = 7$** | $0.875\text{ s}$ | $2.17\text{ V}$ | **Step 2** | $1.875\text{ V}$ | **`001`** | $-0.295\text{ V}$ |
+
+---
+
+### E. Aliran Bit Digital Akhir (*Digital Bitstream Output*):
+
+Seluruh deretan biner dikirimkan secara sekuensial ke prosesor DSP:
+
+$$\mathbf{\text{Bitstream}} = \underbrace{\mathbf{100}}_{n=0} \ \underbrace{\mathbf{110}}_{n=1} \ \underbrace{\mathbf{111}}_{n=2} \ \underbrace{\mathbf{110}}_{n=3} \ \underbrace{\mathbf{100}}_{n=4} \ \underbrace{\mathbf{001}}_{n=5} \ \underbrace{\mathbf{000}}_{n=6} \ \underbrace{\mathbf{001}}_{n=7}$$
 
 ---
 
