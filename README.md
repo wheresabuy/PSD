@@ -19,10 +19,11 @@
 * [BAB 2: Digitalisasi Sinyal (ADC & Proses Sampling)](#bab-2-digitalisasi-sinyal-adc--proses-sampling)
   * [2.1 Rantai Lengkap Konversi Analog ke Digital (ADC)](#21-rantai-lengkap-konversi-analog-ke-digital-adc)
   * [2.2 Tahap 1: Pencuplikan (Sampling) & Pulsa Clock](#22-tahap-1-pencuplikan-sampling--pulsa-clock)
-  * [2.3 Tahap 2: Kuantisasi (Quantization) & Level Pembulatan](#23-tahap-2-kuantisasi-quantization--level-pembulatan)
-  * [2.4 Studi Kasus & Contoh Perhitungan ADC 3-Bit (Tegangan 0V - 10V)](#24-studi-kasus--contoh-perhitungan-adc-3-bit-tegangan-0v---10v)
-  * [2.5 Tahap 3: Pengkodean (Encoding) ke Bit Biner](#25-tahap-3-pengkodean-encoding-ke-bit-biner)
-  * [2.6 Teorema Sampling Nyquist-Shannon & Aliasing](#26-teorema-sampling-nyquist-shannon--aliasing)
+  * [2.3 Tahap 2: Kuantisasi (Quantization) & Perhitungan Step](#23-tahap-2-kuantisasi-quantization--perhitungan-step)
+  * [2.4 Tahap 3: Pengkodean (Encoding) ke Kode Biner](#24-tahap-3-pengkodean-encoding-ke-kode-biner)
+  * [2.5 Tabel Terpadu Step Kuantisasi vs Kode Encoding Biner 3-Bit (0V - 10V)](#25-tabel-terpadu-step-kuantisasi-vs-kode-encoding-biner-3-bit-0v---10v)
+  * [2.6 Contoh Kasus Nyata Konversi Tegangan Riil](#26-contoh-kasus-nyata-konversi-tegangan-riil)
+  * [2.7 Teorema Sampling Nyquist-Shannon & Aliasing](#27-teorema-sampling-nyquist-shannon--aliasing)
 
 ---
 
@@ -97,7 +98,7 @@ $$x(t) = A \cdot \sin(2\pi f t + \phi) = A \cdot \sin(\omega t + \phi)$$
 * **Linear vs Non-Linear:** Memenuhi prinsip superposisi $\mathcal{T}\{a x_1 + b x_2\} = a \mathcal{T}\{x_1\} + b \mathcal{T}\{x_2\}$.
 * **Time-Invariant (TI) vs Time-Variant:** $x[n - n_0] \implies y[n - n_0]$.
 * **Kausal vs Non-Kausal:** Output saat ini hanya bergantung pada input saat ini dan masa lalu.
-* **Stabilitas BIBO:** Input terbatas menjamin output selalu terbatas.
+* **Stabilitas BIBO:** Input terbatas selalu menghasilkan output terbatas.
 
 ---
 
@@ -149,73 +150,54 @@ flowchart LR
 
 ---
 
-## 2.3 Tahap 2: Kuantisasi (Quantization) & Level Pembulatan
-* **Proses:** Memetakan dan membulatkan amplitudo kontinu ke level diskrit terdekat $x_q[n]$.
-* **Jumlah Level ($L = 2^B$):** Untuk ADC beresolusi $B$-bit, terdapat $2^B$ level diskrit.
-* **Lebar Langkah (*Step Size* $\Delta$):**
+## 2.3 Tahap 2: Kuantisasi (Quantization) & Perhitungan Step
+
+* **Proses:** Memetakan dan membulatkan rentang amplitudo kontinu ke dalam sejumlah step diskrit $x_q[n]$.
+* **Jumlah Step Level ($L = 2^B$):** Untuk ADC beresolusi $B$-bit, terdapat $2^B$ buah step level diskrit.
+* **Lebar Rentang Per Step (*Step Size* $\Delta$):**
   $$\Delta = \frac{V_{\text{maks}} - V_{\text{min}}}{2^B}$$
+  Untuk ADC 3-bit dengan rentang tegangan $0\text{ V} - 10\text{ V}$:
+  $$\Delta = \frac{10\text{ V} - 0\text{ V}}{8} = 1.25\text{ Volt / step}$$
 
 ---
 
-## 2.4 Studi Kasus & Contoh Perhitungan ADC 3-Bit (Tegangan 0V - 10V)
+## 2.4 Tahap 3: Pengkodean (Encoding) ke Kode Biner
 
-Misalkan sebuah sensor menghasilkan **tegangan input analog $V_{\text{in}}$ dengan rentang $0\text{ V}$ sampai $10\text{ V}$**, dan dikonversi oleh **ADC 3-Bit ($B = 3$)**:
-
-### 1. Perhitungan Parameter ADC:
-* **Jumlah Level Diskrit ($L$):**
-  $$L = 2^B = 2^3 = 8\text{ buah level}$$
-* **Rentang Resolusi Per Step ($\Delta$):**
-  $$\Delta = \frac{V_{\text{maks}} - V_{\text{min}}}{8} = \frac{10\text{ V} - 0\text{ V}}{8} = 1.25\text{ Volt / step}$$
+* **Proses:** Menetapkan deretan angka biner $B$-bit unik untuk setiap rentang step kuantisasi.
+* **Format Biner 3-Bit:** Menghasilkan 8 kombinasi biner mulai dari `000` hingga `111`.
 
 ---
 
-### 2. Tabel Pemetaan 8 Level Kuantisasi & Kode Biner 3-Bit:
-
-| Level | Kode Biner ($3$-bit) | Rentang Tegangan Analog Input ($V_{\text{in}}$) | Nilai Representasi Ideal ($V_q$) |
-| :---: | :---: | :---: | :---: |
-| **Level 0** | `000` | $0.00\text{ V} \leq V_{\text{in}} < 1.25\text{ V}$ | $0.00\text{ V}$ (atau tengah $0.625\text{ V}$) |
-| **Level 1** | `001` | $1.25\text{ V} \leq V_{\text{in}} < 2.50\text{ V}$ | $1.25\text{ V}$ (atau tengah $1.875\text{ V}$) |
-| **Level 2** | `010` | $2.50\text{ V} \leq V_{\text{in}} < 3.75\text{ V}$ | $2.50\text{ V}$ (atau tengah $3.125\text{ V}$) |
-| **Level 3** | `011` | $3.75\text{ V} \leq V_{\text{in}} < 5.00\text{ V}$ | $3.75\text{ V}$ (atau tengah $4.375\text{ V}$) |
-| **Level 4** | `100` | $5.00\text{ V} \leq V_{\text{in}} < 6.25\text{ V}$ | $5.00\text{ V}$ (atau tengah $5.625\text{ V}$) |
-| **Level 5** | `101` | $6.25\text{ V} \leq V_{\text{in}} < 7.50\text{ V}$ | $6.25\text{ V}$ (atau tengah $6.875\text{ V}$) |
-| **Level 6** | `110` | $7.50\text{ V} \leq V_{\text{in}} < 8.75\text{ V}$ | $7.50\text{ V}$ (atau tengah $8.125\text{ V}$) |
-| **Level 7** | `111` | $8.75\text{ V} \leq V_{\text{in}} \leq 10.00\text{ V}$| $8.75\text{ V}$ (atau tengah $9.375\text{ V}$) |
-
----
-
-### 3. Grafik Visual Karakteristik Tangga Kuantisasi:
+## 2.5 Tabel Terpadu Step Kuantisasi vs Kode Encoding Biner 3-Bit (0V - 10V)
 
 ![Karakteristik Kuantisasi 3-Bit 0-10V](assets/kuantisasi_3bit_0_10v.png)
 
----
-
-### 4. Contoh Kasus Nyata Konversi Tegangan:
-
-#### 📌 Contoh Kasus 1:
-* **Tegangan Masuk:** Sensor membaca $V_{\text{in}} = 3.20\text{ Volt}$.
-* **Pencarian Level:**
-  $$\text{Indeks Level} = \left\lfloor \frac{3.20 - 0}{1.25} \right\rfloor = \lfloor 2.56 \rfloor = 2$$
-* Karena $3.20\text{ V}$ berada dalam rentang $2.50\text{ V} \leq V_{\text{in}} < 3.75\text{ V}$, maka ia dipetakan ke **Level 2**.
-* **Output Biner Digital:** **`010`**
-* **Derau Kuantisasi (*Quantization Error*):**
-  $$e = |3.20\text{ V} - 3.125\text{ V}| = 0.075\text{ Volt}$$
-
-#### 📌 Contoh Kasus 2:
-* **Tegangan Masuk:** Sensor membaca $V_{\text{in}} = 6.80\text{ Volt}$.
-* **Pencarian Level:**
-  $$\text{Indeks Level} = \left\lfloor \frac{6.80 - 0}{1.25} \right\rfloor = \lfloor 5.44 \rfloor = 5$$
-* Karena $6.80\text{ V}$ berada dalam rentang $6.25\text{ V} \leq V_{\text{in}} < 7.50\text{ V}$, maka ia dipetakan ke **Level 5**.
-* **Output Biner Digital:** **`101`**
+| Step Kuantisasi | Rentang Tegangan Analog Input ($V_{\text{in}}$) | Kode Biner Encoding ($3$-bit) | Nilai Representasi Ideal ($V_q$) |
+| :---: | :---: | :---: | :---: |
+| **Step 1** | $0.00\text{ V} \leq V_{\text{in}} < 1.25\text{ V}$ | **`000`** | $0.625\text{ V}$ |
+| **Step 2** | $1.25\text{ V} \leq V_{\text{in}} < 2.50\text{ V}$ | **`001`** | $1.875\text{ V}$ |
+| **Step 3** | $2.50\text{ V} \leq V_{\text{in}} < 3.75\text{ V}$ | **`010`** | $3.125\text{ V}$ |
+| **Step 4** | $3.75\text{ V} \leq V_{\text{in}} < 5.00\text{ V}$ | **`011`** | $4.375\text{ V}$ |
+| **Step 5** | $5.00\text{ V} \leq V_{\text{in}} < 6.25\text{ V}$ | **`100`** | $5.625\text{ V}$ |
+| **Step 6** | $6.25\text{ V} \leq V_{\text{in}} < 7.50\text{ V}$ | **`101`** | $6.875\text{ V}$ |
+| **Step 7** | $7.50\text{ V} \leq V_{\text{in}} < 8.75\text{ V}$ | **`110`** | $8.125\text{ V}$ |
+| **Step 8** | $8.75\text{ V} \leq V_{\text{in}} \leq 10.00\text{ V}$| **`111`** | $9.375\text{ V}$ |
 
 ---
 
-## 2.5 Tahap 3: Pengkodean (Encoding) ke Bit Biner
-Setiap level diskrit dikonversi menjadi kombinasi bit digital ($B$-bit). Aliran bit (*bitstream*) yang dihasilkan ditransmisikan ke bus data prosesor untuk pemrosesan lebih lanjut.
+## 2.6 Contoh Kasus Nyata Konversi Tegangan Riil
+
+#### 📌 Kasus A (Tegangan Masuk $V_{\text{in}} = 3.20\text{ Volt}$):
+* Nilai $3.20\text{ V}$ masuk ke **Step 3** (rentang $2.50\text{ V} - 3.75\text{ V}$).
+* Hasil Encoding Biner: **`010`**
+
+#### 📌 Kasus B (Tegangan Masuk $V_{\text{in}} = 6.80\text{ Volt}$):
+* Nilai $6.80\text{ V}$ masuk ke **Step 6** (rentang $6.25\text{ V} - 7.50\text{ V}$).
+* Hasil Encoding Biner: **`101`**
 
 ---
 
-## 2.6 Teorema Sampling Nyquist-Shannon & Aliasing
+## 2.7 Teorema Sampling Nyquist-Shannon & Aliasing
 $$F_s \geq 2 \cdot f_{\text{max}}$$
 * **Frekuensi Nyquist:** $f_N = \frac{F_s}{2}$.
 * Jika $F_s < 2 f_{\text{max}}$, terjadi fenomena **Aliasing** (frekuensi tinggi menyamar menjadi frekuensi rendah palsu).
