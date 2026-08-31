@@ -20,15 +20,15 @@
   * [2.1 Rantai Lengkap Konversi Analog ke Digital (ADC)](#21-rantai-lengkap-konversi-analog-ke-digital-adc)
   * [2.2 Tahap 1: Pencuplikan (Sampling) & Pulsa Clock](#22-tahap-1-pencuplikan-sampling--pulsa-clock)
   * [2.3 Tahap 2: Kuantisasi (Quantization) & Level Pembulatan](#23-tahap-2-kuantisasi-quantization--level-pembulatan)
-  * [2.4 Tahap 3: Pengkodean (Encoding) ke Bit Biner](#24-tahap-3-pengkodean-encoding-ke-bit-biner)
-  * [2.5 Teorema Sampling Nyquist-Shannon & Aliasing](#25-teorema-sampling-nyquist-shannon--aliasing)
+  * [2.4 Studi Kasus & Contoh Perhitungan ADC 3-Bit (Tegangan 0V - 10V)](#24-studi-kasus--contoh-perhitungan-adc-3-bit-tegangan-0v---10v)
+  * [2.5 Tahap 3: Pengkodean (Encoding) ke Bit Biner](#25-tahap-3-pengkodean-encoding-ke-bit-biner)
+  * [2.6 Teorema Sampling Nyquist-Shannon & Aliasing](#26-teorema-sampling-nyquist-shannon--aliasing)
 
 ---
 
 # BAB 1: Pengantar Sinyal, Sistem, dan Paradigma Pemrosesan
 
 ## 1.1 Definisi Fundamental Sinyal
-
 > **📌 Definisi Sinyal:**  
 > **Sinyal** adalah suatu besaran fisik yang nilainya berubah terhadap waktu, ruang, atau satu maupun lebih variabel bebas lainnya. Sinyal berfungsi sebagai media pembawa informasi fisik dari suatu fenomena alam atau sensor ke sistem pengolah data.
 
@@ -45,74 +45,41 @@ graph LR
 ---
 
 ## 1.2 Representasi Matematis Sinyal
-
-Sinyal direpresentasikan secara formal sebagai fungsi dari variabel-variabel bebas:
-
-* **Sinyal 1-Dimensi (1D) — Fungsi Waktu $t$:**
-  $$x = f(t)$$
-  *Contoh:* Sinyal suara ucapan $s(t)$, tegangan listrik sensor $v(t)$, sinyal detak jantung ECG $x(t)$.
-
-* **Sinyal 2-Dimensi (2D) — Fungsi Spasial $(x, y)$:**
-  $$I = f(x, y)$$
-  *Contoh:* Citra digital/foto (intensitas kecerahan pada koordinat baris $x$ dan kolom $y$).
-
-* **Sinyal Multi-Dimensi (3D/4D) — Spatio-Temporal:**
-  $$V = f(x, y, t)$$
-  *Contoh:* Video digital (rangkaian frame citra 2D yang berubah seiring waktu $t$) atau citra medis CT-Scan/MRI 3D.
+* **Sinyal 1-Dimensi (1D) — $x = f(t)$:** Contoh: sinyal suara ucapan $s(t)$, tegangan listrik sensor $v(t)$, sinyal detak jantung ECG $x(t)$.
+* **Sinyal 2-Dimensi (2D) — $I = f(x, y)$:** Contoh: citra digital/foto (intensitas kecerahan pada baris $x$ dan kolom $y$).
+* **Sinyal Multi-Dimensi (3D/4D) — $V = f(x, y, t)$:** Contoh: video digital atau citra medis CT-Scan/MRI 3D.
 
 ---
 
 ## 1.3 Tiga Parameter Utama Sinyal
-
-Sebagian besar sinyal periodik atau harmonik dapat dinyatakan secara eksplisit melalui persamaan gelombang sinusoida:
-
 $$x(t) = A \cdot \sin(2\pi f t + \phi) = A \cdot \sin(\omega t + \phi)$$
 
 | Parameter | Simbol & Satuan | Makna Matematis | Makna Fisik (Contoh Audio) |
 | :--- | :--- | :--- | :--- |
-| **Amplitudo** | $A$ (Volt, Pascal, dsb.) | Simpangan puncak maksimum gelombang dari titik nol. | **Kekuatan / Volume Suara (*Loudness*)**. Gelombang tinggi = suara keras. |
-| **Frekuensi** | $f = \frac{1}{T}$ (Hz) atau $\omega = 2\pi f$ (rad/s) | Jumlah siklus gelombang penuh per 1 detik. | **Tinggi-Rendah Nada (*Pitch*)**. Gelombang rapat = nada tinggi melengking. |
-| **Fase** | $\phi$ (Radian / Derajat) | Posisi awal gelombang pada saat $t = 0$. | **Pergeseran Waktu / Arah Kedatangan Gelombang**. |
+| **Amplitudo** | $A$ (Volt, Pascal, dsb.) | Simpangan puncak maksimum gelombang dari titik nol. | **Kekuatan / Volume Suara (*Loudness*)**. |
+| **Frekuensi** | $f = \frac{1}{T}$ (Hz) atau $\omega = 2\pi f$ (rad/s) | Jumlah siklus gelombang penuh per 1 detik. | **Tinggi-Rendah Nada (*Pitch*)**. |
+| **Fase** | $\phi$ (Radian / Derajat) | Posisi awal gelombang pada saat $t = 0$. | **Pergeseran Waktu / Arah Kedatangan**. |
 
 ---
 
 ## 1.4 Anatomi Visual Grafik Sinyal
-
 ![Anatomi Parameter Sinyal](assets/anatomi_sinyal.png)
 
 ---
 
 ## 1.5 Komparasi Visual Parameter Sinyal
-
 ![Komparasi Visual Frekuensi, Amplitudo, dan Fase](assets/komparasi_sinyal.png)
 
 ---
 
 ## 1.6 Studi Kasus: Sinyal Ucapan (*Speech Signal*)
-
-```mermaid
-flowchart LR
-    PitaSuara["1. Pita Suara & Paru-paru<br><i>Sumber Tekanan Akustik</i>"] --> Udara["2. Gelombang Udara<br><i>Sinyal Kontinu p(t)</i>"]
-    Udara --> Mic["3. Mikrofon<br><i>Transduser Listrik v(t)</i>"]
-    Mic --> DSP["4. Modul DSP<br><i>Ekstraksi Fitur Akustik</i>"]
-    DSP --> Output["5. Aplikasi Cerdas<br>• Voice Recognition<br>• Speech-to-Text (ASR)<br>• Noise Cancellation"]
-
-    style PitaSuara fill:#312e81,stroke:#6366f1,color:#fff
-    style Udara fill:#1e293b,stroke:#f59e0b,color:#fff
-    style Mic fill:#0f172a,stroke:#38bdf8,color:#fff
-    style DSP fill:#581c87,stroke:#a855f7,color:#fff
-    style Output fill:#064e3b,stroke:#10b981,color:#fff
-```
-
-### Informasi dalam Sinyal Ucapan:
-1. **Informasi Fonem/Tekstual:** Resonansi rongga vokal (*Formant* $F_1, F_2, F_3$). Contoh: membedakan vokal "A", "I", "U", "E", "O".
-2. **Informasi Pembicara:** Frekuensi dasar pita suara ($F_0$) dan warna suara unik (*Timbre*).
-3. **Informasi Emosi & Intonasi:** Modulasi amplitudo dan kontur naik-turunnya frekuensi.
+* **Informasi Fonem/Tekstual:** Resonansi rongga vokal (*Formant* $F_1, F_2, F_3$).
+* **Informasi Pembicara:** Frekuensi dasar pita suara ($F_0$) dan timbre suara.
+* **Informasi Emosi & Intonasi:** Modulasi amplitudo dan kontur naik-turunnya frekuensi.
 
 ---
 
 ## 1.7 Konsep Dasar Sistem
-
 > **📌 Definisi Sistem:**  
 > **Sistem** adalah perangkat fisik atau realisasi perangkat lunak yang melakukan suatu operasi matematis atau transformasi pada sinyal masukan $x[n]$ untuk menghasilkan sinyal keluaran $y[n]$ yang diinginkan:
 > $$y[n] = \mathcal{T}\{x[n]\}$$
@@ -120,46 +87,30 @@ flowchart LR
 ---
 
 ## 1.8 Tiga Bentuk Realisasi Sistem
-
-```mermaid
-flowchart TD
-    Sistem["Wujud Realisasi Sistem Pengolahan Sinyal"]
-    
-    Sistem --> HW["1. Perangkat Keras Murni (Hardware / Analog)<br>• Rangkaian RLC, Op-Amp, Transistor<br>• Kecepatan ultra tinggi, tanpa proses sampling<br>• Karakteristik sulit diubah setelah dirakit"]
-    Sistem --> SW["2. Perangkat Lunak Murni (Software / Digital)<br>• Program komputer (Python, C++, MATLAB)<br>• Sangat fleksibel, algoritma mudah diperbarui<br>• Dibatasi kecepatan clock CPU/RAM"]
-    Sistem --> Mix["3. Hybrid / Embedded Firmware (Hardware + Software)<br>• Chip DSP Khusus (misal: Texas Instruments TMS320)<br>• FPGA / ASIC (Xilinx, Altera)<br>• Mikrokontroler (STM32, ESP32, ARM Cortex-M)<br>• Menggabungkan fleksibilitas software & kecepatan akselerasi hardware"]
-
-    style HW fill:#1e293b,stroke:#f59e0b,color:#fff
-    style SW fill:#0f172a,stroke:#38bdf8,color:#fff
-    style Mix fill:#312e81,stroke:#a855f7,stroke-width:2px,color:#fff
-```
+1. **Hardware Murni (Analog):** Rangkaian RLC, Op-Amp, Transistor.
+2. **Software Murni (Digital):** Algoritma Python, C++, MATLAB pada CPU/Server.
+3. **Hybrid / Embedded Firmware:** Chip DSP (TMS320), FPGA, Mikrokontroler (STM32, ESP32).
 
 ---
 
 ## 1.9 Klasifikasi Karakteristik Operasi Sistem
-
-1. **Linear vs Non-Linear:** Memenuhi prinsip superposisi $\mathcal{T}\{a x_1 + b x_2\} = a \mathcal{T}\{x_1\} + b \mathcal{T}\{x_2\}$.
-2. **Time-Invariant (TI) vs Time-Variant:** $x[n - n_0] \implies y[n - n_0]$.
-3. **Kausal (Causal) vs Non-Kausal:** Output saat ini hanya bergantung pada input saat ini dan masa lalu.
-4. **Stabilitas BIBO:** Input terbatas selalu menghasilkan output terbatas.
+* **Linear vs Non-Linear:** Memenuhi prinsip superposisi $\mathcal{T}\{a x_1 + b x_2\} = a \mathcal{T}\{x_1\} + b \mathcal{T}\{x_2\}$.
+* **Time-Invariant (TI) vs Time-Variant:** $x[n - n_0] \implies y[n - n_0]$.
+* **Kausal vs Non-Kausal:** Output saat ini hanya bergantung pada input saat ini dan masa lalu.
+* **Stabilitas BIBO:** Input terbatas menjamin output selalu terbatas.
 
 ---
 
 ## 1.10 Paradigma Pemrosesan Sinyal: ASP vs DSP
-
 ![Diagram Paradigma ASP vs DSP](assets/diagram_asp_vs_dsp.png)
 
 ---
 
 ## 1.11 Keunggulan Paradigma DSP
-
-| Parameter | Sistem Analog (ASP) | Sistem Digital (DSP) |
-| :--- | :--- | :--- |
-| **Fleksibilitas Desain** | ❌ Kaku. Ubah fungsi harus ganti rangkaian fisik/solder baru. | ✅ **Ultra Fleksibel**. Cukup update baris kode program (*software/firmware*). |
-| **Kekebalan Derau (*Noise Immunity*)** | ❌ Sangat rentan terhadap gangguan kabel dan derau lingkungan. | ✅ **Kebal**. Data berupa biner (0 & 1), tidak terpengaruh fluktuasi tegangan kecil. |
-| **Akurasi & Konsistensi** | ❌ Berubah-ubah tergantung suhu dan toleransi komponen. | ✅ **Eksak & 100% Reprodusibel**. Ditentukan oleh presisi bit komputasi (32-bit / 64-bit). |
-| **Penyimpanan (*Storage*)** | ❌ Pita kaset magnetik (kualitas turun setiap diputar). | ✅ **Lossless**. Disimpan di SSD/Flashdisk selamanya tanpa penurunan kualitas. |
-| **Algoritma Canggih** | ❌ Hanya operasi matematika dasar (tambah, diferensial). | ✅ **Bisa Algoritma Sangat Rumit** (Active Noise Cancellation, AI Speech-to-Text). |
+* **Fleksibilitas:** Ubah fungsi sistem cukup via update baris kode software tanpa solder ulang PCB.
+* **Kekebalan Derau:** Representasi biner (0 dan 1) kebal terhadap penurunan tegangan kecil.
+* **Presisi Tinggi:** Reprodusibilitas 100% konsisten (32-bit / 64-bit floating point).
+* **Penyimpanan Lossless:** Disimpan di flashdisk/cloud selamanya tanpa penurunan kualitas.
 
 ---
 
@@ -175,10 +126,10 @@ Untuk dapat diproses oleh komputer digital, sinyal analog dari alam nyata harus 
 
 ```mermaid
 flowchart LR
-    Analog["Sinyal Analog x(t)<br><i>Kontinu Waktu & Nilai</i>"] --> LPF["0. Anti-Aliasing Filter<br>(Low-Pass Analog)"]
-    LPF --> Sampler["1. Sampling (Clock Ts)<br>x[n] = x(nTs)<br><i>Diskrit Waktu</i>"]
-    Sampler --> Quantizer["2. Kuantisasi (2^B Level)<br>xq[n]<br><i>Diskrit Nilai</i>"]
-    Quantizer --> Encoder["3. Encoding (Biner)<br>Stream Bit 0 & 1"]
+    Analog["1. Sinyal Analog x(t)<br><i>Kontinu Waktu & Nilai</i>"] --> LPF["Anti-Aliasing Filter<br>(Low-Pass Analog)"]
+    LPF --> Sampler["2. Sampling (Clock Ts)<br>x[n] = x(nTs)<br><i>Diskrit Waktu</i>"]
+    Sampler --> Quantizer["3. Kuantisasi (2^B Level)<br>xq[n]<br><i>Diskrit Nilai</i>"]
+    Quantizer --> Encoder["4. Encoding (Biner)<br>Stream Bit 0 & 1"]
     Encoder --> DSPCore["Digital Signal Processor<br>(CPU / FPGA / DSP)"]
 
     style Analog fill:#1e293b,stroke:#64748b,color:#fff
@@ -192,72 +143,80 @@ flowchart LR
 ---
 
 ## 2.2 Tahap 1: Pencuplikan (Sampling) & Pulsa Clock
-
-* **Apa itu Sampling?**  
-  Proses mengubah variabel waktu kontinu $t$ menjadi variabel waktu diskrit $n$ dengan mengambil cuplikan nilai sinyal pada interval waktu berkala yang teratur:
-  $$t = n \cdot T_s = \frac{n}{F_s}$$
-  $$x[n] = x(n \cdot T_s)$$
-* **Peran Pulsa Clock Generator:**  
-  Rangkaian osilator clock membangkitkan pulsa trigger secara periodik setiap periode sampling $T_s = \frac{1}{F_s}$. Setiap pulsa clock datang, saklar *Sample-and-Hold (S/H)* akan menangkap dan menahan nilai tegangan analog sesaat.
-* **Status Sinyal:**  
-  Pada tahap ini, sinyal sudah **diskrit dalam domain waktu**, namun nilai amplitudonya **masih kontinu** (dapat bernilai desimal tak hingga seperti $2.71828\dots$ Volt).
+* **Proses:** Mengubah waktu kontinu $t \to n \cdot T_s$.
+* **Pulsa Clock:** Osilator membangkitkan trigger periodik tiap $T_s = \frac{1}{F_s}$. Rangkaian *Sample-and-Hold* menangkap nilai sesaat $x[n] = x(n \cdot T_s)$.
+* **Status:** Diskrit dalam waktu, namun amplitudo masih kontinu.
 
 ---
 
 ## 2.3 Tahap 2: Kuantisasi (Quantization) & Level Pembulatan
-
-* **Apa itu Kuantisasi?**  
-  Proses memetakan dan membulatkan nilai amplitudo kontinu dari sampel $x[n]$ ke salah satu level diskrit terdekat $x_q[n]$ yang telah ditentukan sebelumnya.
-* **Kapasitas Resolusi Bit ($B$-bit ADC):**  
-  Jika sebuah konverter ADC memiliki resolusi $B$ bit, maka jumlah level kuantisasi diskrit yang tersedia adalah:
-  $$L = 2^B$$
-  *Contoh:*
-  * ADC 3-bit: $2^3 = 8$ level.
-  * ADC 8-bit: $2^8 = 256$ level.
-  * ADC 16-bit (Audio CD): $2^{16} = 65.536$ level!
-  * ADC 24-bit (Studio Pro): $2^{24} = 16.777.216$ level!
-* **Lebar Langkah Kuantisasi (*Step Size* $\Delta$):**  
-  $$\Delta = \frac{V_{\text{max}} - V_{\text{min}}}{2^B - 1}$$
-* **Derau Kuantisasi (*Quantization Noise / Error*):**  
-  Perbedaan antara nilai asli dengan nilai yang dibulatkan:
-  $$e[n] = x_q[n] - x[n], \quad -\frac{\Delta}{2} \leq e[n] \leq \frac{\Delta}{2}$$
-  *Semakin banyak jumlah bit $B$, nilai $\Delta$ semakin kecil, dan derau kuantisasi semakin hilang.*
+* **Proses:** Memetakan dan membulatkan amplitudo kontinu ke level diskrit terdekat $x_q[n]$.
+* **Jumlah Level ($L = 2^B$):** Untuk ADC beresolusi $B$-bit, terdapat $2^B$ level diskrit.
+* **Lebar Langkah (*Step Size* $\Delta$):**
+  $$\Delta = \frac{V_{\text{maks}} - V_{\text{min}}}{2^B}$$
 
 ---
 
-## 2.4 Tahap 3: Pengkodean (Encoding) ke Bit Biner
+## 2.4 Studi Kasus & Contoh Perhitungan ADC 3-Bit (Tegangan 0V - 10V)
 
-* **Apa itu Encoding?**  
-  Proses menetapkan deretan kode biner ($B$-bit digital word) yang unik untuk setiap level kuantisasi yang dipilih.
-  *Contoh pada ADC 3-bit:*
-  * Level 0 ($V_{\text{min}}$) $\to$ `000`
-  * Level 1 $\to$ `001`
-  * Level 2 $\to$ `010`
-  * $\dots$
-  * Level 7 ($V_{\text{max}}$) $\to$ `111`
-* **Hasil Akhir:**  
-  Aliran data biner (*Digital Stream of Bits*) berkecepatan $R = F_s \times B \text{ bit/detik}$ yang siap dibaca, diolah, difilter, atau disimpan oleh prosesor digital (DSP, CPU, FPGA).
+Misalkan sebuah sensor menghasilkan **tegangan input analog $V_{\text{in}}$ dengan rentang $0\text{ V}$ sampai $10\text{ V}$**, dan dikonversi oleh **ADC 3-Bit ($B = 3$)**:
+
+### 1. Perhitungan Parameter ADC:
+* **Jumlah Level Diskrit ($L$):**
+  $$L = 2^B = 2^3 = 8\text{ buah level}$$
+* **Rentang Resolusi Per Step ($\Delta$):**
+  $$\Delta = \frac{V_{\text{maks}} - V_{\text{min}}}{8} = \frac{10\text{ V} - 0\text{ V}}{8} = 1.25\text{ Volt / step}$$
 
 ---
 
-## 2.5 Teorema Sampling Nyquist-Shannon & Aliasing
+### 2. Tabel Pemetaan 8 Level Kuantisasi & Kode Biner 3-Bit:
 
-Agar informasi pada sinyal analog asli $x(t)$ tidak rusak dan dapat direkonstruksi kembali secara sempurna, frekuensi sampling clock $F_s$ **wajib memenuhi syarat Teorema Nyquist**:
+| Level | Kode Biner ($3$-bit) | Rentang Tegangan Analog Input ($V_{\text{in}}$) | Nilai Representasi Ideal ($V_q$) |
+| :---: | :---: | :---: | :---: |
+| **Level 0** | `000` | $0.00\text{ V} \leq V_{\text{in}} < 1.25\text{ V}$ | $0.00\text{ V}$ (atau tengah $0.625\text{ V}$) |
+| **Level 1** | `001` | $1.25\text{ V} \leq V_{\text{in}} < 2.50\text{ V}$ | $1.25\text{ V}$ (atau tengah $1.875\text{ V}$) |
+| **Level 2** | `010` | $2.50\text{ V} \leq V_{\text{in}} < 3.75\text{ V}$ | $2.50\text{ V}$ (atau tengah $3.125\text{ V}$) |
+| **Level 3** | `011` | $3.75\text{ V} \leq V_{\text{in}} < 5.00\text{ V}$ | $3.75\text{ V}$ (atau tengah $4.375\text{ V}$) |
+| **Level 4** | `100` | $5.00\text{ V} \leq V_{\text{in}} < 6.25\text{ V}$ | $5.00\text{ V}$ (atau tengah $5.625\text{ V}$) |
+| **Level 5** | `101` | $6.25\text{ V} \leq V_{\text{in}} < 7.50\text{ V}$ | $6.25\text{ V}$ (atau tengah $6.875\text{ V}$) |
+| **Level 6** | `110` | $7.50\text{ V} \leq V_{\text{in}} < 8.75\text{ V}$ | $7.50\text{ V}$ (atau tengah $8.125\text{ V}$) |
+| **Level 7** | `111` | $8.75\text{ V} \leq V_{\text{in}} \leq 10.00\text{ V}$| $8.75\text{ V}$ (atau tengah $9.375\text{ V}$) |
 
+---
+
+### 3. Grafik Visual Karakteristik Tangga Kuantisasi:
+
+![Karakteristik Kuantisasi 3-Bit 0-10V](assets/kuantisasi_3bit_0_10v.png)
+
+---
+
+### 4. Contoh Kasus Nyata Konversi Tegangan:
+
+#### 📌 Contoh Kasus 1:
+* **Tegangan Masuk:** Sensor membaca $V_{\text{in}} = 3.20\text{ Volt}$.
+* **Pencarian Level:**
+  $$\text{Indeks Level} = \left\lfloor \frac{3.20 - 0}{1.25} \right\rfloor = \lfloor 2.56 \rfloor = 2$$
+* Karena $3.20\text{ V}$ berada dalam rentang $2.50\text{ V} \leq V_{\text{in}} < 3.75\text{ V}$, maka ia dipetakan ke **Level 2**.
+* **Output Biner Digital:** **`010`**
+* **Derau Kuantisasi (*Quantization Error*):**
+  $$e = |3.20\text{ V} - 3.125\text{ V}| = 0.075\text{ Volt}$$
+
+#### 📌 Contoh Kasus 2:
+* **Tegangan Masuk:** Sensor membaca $V_{\text{in}} = 6.80\text{ Volt}$.
+* **Pencarian Level:**
+  $$\text{Indeks Level} = \left\lfloor \frac{6.80 - 0}{1.25} \right\rfloor = \lfloor 5.44 \rfloor = 5$$
+* Karena $6.80\text{ V}$ berada dalam rentang $6.25\text{ V} \leq V_{\text{in}} < 7.50\text{ V}$, maka ia dipetakan ke **Level 5**.
+* **Output Biner Digital:** **`101`**
+
+---
+
+## 2.5 Tahap 3: Pengkodean (Encoding) ke Bit Biner
+Setiap level diskrit dikonversi menjadi kombinasi bit digital ($B$-bit). Aliran bit (*bitstream*) yang dihasilkan ditransmisikan ke bus data prosesor untuk pemrosesan lebih lanjut.
+
+---
+
+## 2.6 Teorema Sampling Nyquist-Shannon & Aliasing
 $$F_s \geq 2 \cdot f_{\text{max}}$$
-
-* $f_{\text{max}}$ = Frekuensi tertinggi yang terkandung di dalam sinyal analog.
-* $f_N = \frac{F_s}{2}$ = **Frekuensi Nyquist** (Batas frekuensi maksimum yang aman disampling).
-
-```mermaid
-graph TD
-    subgraph Dampak Pemilihan Frekuensi Sampling
-        S1["1. Fs >= 2·fmax (Memenuhi Nyquist)<br><b>✅ Rekonstruksi Sempurna Tanpa Hilang Data</b>"]
-        S2["2. Fs < 2·fmax (Under-sampling)<br><b>❌ Terjadi ALIASING (Frekuensi Tinggi Menyamar Jadi Frekuensi Rendah Palsu)</b>"]
-    end
-    style S1 fill:#064e3b,stroke:#22c55e,color:#fff
-    style S2 fill:#7f1d1d,stroke:#ef4444,color:#fff
-```
-
-> **🛡️ Peran Anti-Aliasing Filter:**  
-> Filter analog Low-Pass Filter (LPF) selalu diletakkan tepat **sebelum** proses pencuplikan (sampling) untuk memastikan tidak ada komponen frekuensi liar $f > F_s/2$ yang masuk ke ADC.
+* **Frekuensi Nyquist:** $f_N = \frac{F_s}{2}$.
+* Jika $F_s < 2 f_{\text{max}}$, terjadi fenomena **Aliasing** (frekuensi tinggi menyamar menjadi frekuensi rendah palsu).
+* Filter analog **Anti-Aliasing LPF** wajib dipasang sebelum ADC.
