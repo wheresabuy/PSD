@@ -31,6 +31,7 @@
   - [1.5.4 Sinyal Sinusoidal Waktu-Diskrit (1/3): Syarat Wajib Periodisitas Bilangan Rasional f = k/N](#154-sinyal-sinusoidal-waktu-diskrit-13-syarat-wajib-periodisitas-bilangan-rasional-f--kn)
   - [1.5.5 Sinyal Sinusoidal Waktu-Diskrit (2/3): Fenomena Frekuensi Identik Kelipatan 2π](#155-sinyal-sinusoidal-waktu-diskrit-23-fenomena-frekuensi-identik-kelipatan-2π)
   - [1.5.6 Sinyal Sinusoidal Waktu-Diskrit (3/3): Laju Osilasi Tertinggi pada ω = π (f = 1/2)](#156-sinyal-sinusoidal-waktu-diskrit-33-laju-osilasi-tertinggi-pada-ω--π-f--12)
+- [1.6 Glosarium Ringkas Istilah Kunci Persinyalan](#16-glosarium-ringkas-istilah-kunci-persinyalan)
 
 ---
 
@@ -427,6 +428,61 @@ $$\cos(2\pi f (n + N)) = \cos(2\pi f n + 2\pi k) \implies 2\pi f N = 2\pi k \imp
 
 4. **Grafik 4 (Frekuensi Tinggi Mendekati $2\pi$ — $\omega = \frac{7\pi}{4} \equiv -\frac{\pi}{4}$):**  
    Ketika $\omega$ dinaikkan melampaui $\pi$ menuju $2\pi$, laju osilasi **JUSTRU MELAMBAT KEMBALI** dan bentuk gelombangnya persis identik dengan $\omega = \frac{\pi}{4}$!
+
+---
+
+## 1.6 Glosarium Ringkas Istilah Kunci Persinyalan
+
+Rangkuman definisi super ringkas istilah-istilah esensial dalam pengolahan sinyal:
+
+### 🏷️ 1. Konsep Dasar & Paradigma
+| Istilah | Penjelasan Sangat Singkat |
+| :--- | :--- |
+| **Sinyal (*Signal*)** | Besaran fisik yang membawa informasi dan nilainya berubah terhadap waktu atau ruang (contoh: tegangan, suara, suhu). |
+| **Sistem (*System*)** | Entitas fisik atau algoritma komputasi yang memproses sinyal masukan (*input*) menghasilkan sinyal keluaran (*output*). |
+| **ASP (*Analog Signal Processing*)** | Pemrosesan sinyal kontinu langsung menggunakan komponen fisik (resistor, kapasitor, op-amp). |
+| **DSP (*Digital Signal Processing*)** | Pemrosesan sinyal diskrit menggunakan operasi matematika/algoritma pada prosesor digital (CPU/DSP). |
+| **Sensor / Transduser** | Perangkat pengubah besaran fisik non-listrik (tekanan, suhu, getaran) menjadi sinyal tegangan/arus listrik. |
+
+### 🏷️ 2. Anatomi & Parameter Gelombang
+| Istilah | Penjelasan Sangat Singkat |
+| :--- | :--- |
+| **Amplitudo ($A$)** | Simpangan puncak atau nilai tertinggi gelombang dari titik nol (mengindikasikan kekuatan/volume sinyal). |
+| **Frekuensi ($f, F$)** | Jumlah siklus getaran penuh dalam 1 detik, diukur dalam satuan $\text{Hertz (Hz)}$. |
+| **Periode ($T$)** | Waktu yang dibutuhkan untuk menempuh 1 siklus getaran penuh ($T = 1/f$). |
+| **Frekuensi Sudut ($\Omega, \omega$)** | Kecepatan putaran sudut fase gelombang, di mana $\Omega = 2\pi F\text{ (rad/s)}$ dan $\omega = 2\pi f\text{ (rad/sampel)}$. |
+| **Fase ($\phi, \theta$)** | Posisi sudut awal gelombang pada saat waktu acuan $t = 0$ (menentukan pergeseran awal gelombang). |
+
+### 🏷️ 3. Proses Digitalisasi (ADC)
+| Istilah | Penjelasan Sangat Singkat |
+| :--- | :--- |
+| **ADC (*Analog-to-Digital Converter*)** | Konverter pengubah sinyal kontinu analog menjadi deretan bilangan biner diskrit (`0` dan `1`). |
+| **Pencuplikan (*Sampling*)** | Proses memotret/mengambil nilai amplitudo sinyal analog secara periodik setiap interval waktu $T_s$. |
+| **Laju Cuplikan ($F_s$)** | Kecepatan pencuplikan data per detik ($F_s = 1/T_s$), misalnya $44.1\text{ kHz}$ pada audio CD. |
+| **Kuantisasi (*Quantization*)** | Proses pembulatan nilai amplitudo kontinu ke level tegangan diskrit terdekat yang tersedia. |
+| **Resolusi Bit ($B$)** | Jumlah bit biner penentu ketelitian/jumlah level kuantisasi ADC ($L = 2^B$). |
+| **Lebar Step ($\Delta$)** | Interval jarak tegangan antar-level kuantisasi yang berurutan ($\Delta = \frac{V_{\max} - V_{\min}}{2^B}$). |
+| **Teorema Nyquist** | Syarat mutlak sampling tanpa rusak: $F_s \geq 2 \cdot f_{\max}$ (laju sampling minimal $2\times$ frekuensi tertinggi sinyal). |
+| **Aliasing** | Cacat distorsi di mana frekuensi tinggi yang disampling terlalu lambat salah diterjemahkan menjadi gelombang frekuensi rendah tiruan. |
+
+### 🏷️ 4. Klasifikasi Sinyal & Domain
+| Istilah | Penjelasan Sangat Singkat |
+| :--- | :--- |
+| **Waktu-Kontinu** | Sinyal yang terdefinisi di setiap titik waktu riil tak terhingga ($t \in \mathbb{R}$). |
+| **Waktu-Diskrit (DTS)** | Sinyal yang hanya terdefinisi pada indeks titik-titik waktu bernomor bulat ($n \in \mathbb{Z}$). |
+| **Sinyal Digital** | Sinyal yang sudah berwaktu-diskrit ($n$) dan beramplitudo-diskrit ($x_q$) dalam kode biner. |
+| **Sinyal Multikanal** | Kumpulan sinyal yang direkam simultan dari beberapa kanal sensor berbeda (berbentuk vektor/matriks). |
+| **Sinyal Multi-Dimensi (M-D)** | Sinyal dengan banyak variabel bebas (1D: audio $f(t)$, 2D: citra $f(x,y)$, 3D: video $f(x,y,t)$). |
+| **Deterministik** | Sinyal yang masa lalu, kini, dan depannya dapat dihitung pasti 100% dengan formula matematika eksak. |
+| **Stokastik (Acak/Random)** | Sinyal acak yang tidak dapat diprediksi secara eksak dan hanya dapat dianalisis lewat teori statistik & probabilitas. |
+
+### 🏷️ 5. Karakteristik Sistem Sinyal
+| Istilah | Penjelasan Sangat Singkat |
+| :--- | :--- |
+| **Linearitas (*Linear*)** | Sifat sistem yang mematuhi hukum superposisi: respon dari penjumlahan input sama dengan penjumlahan respon masing-masing. |
+| **Kekekalan Waktu (*Time-Invariant*)** | Karakteristik sistem yang tidak berubah seiring waktu; menunda input sejauh $k$ hanya menunda output sejauh $k$. |
+| **Kausalitas (*Causal*)** | Sistem yang keluaran saat ininya hanya dipengaruhi oleh masukan saat ini dan masa lalu, bukan masa depan. |
+| **Stabilitas BIBO** | Sistem yang dijamin selalu menghasilkan keluaran terbatas jika diberikan masukan terbatas (*Bounded-Input Bounded-Output*). |
 
 ---
 *Dokumen ini disusun sebagai Modul Pembelajaran Visual Pengolahan Sinyal Digital (PSD) berstandar industri dan akademis.*
