@@ -1,5 +1,5 @@
 # 📘 BUKU AJAR VISUAL KOMPREHENSIF PENGOLAHAN SINYAL DIGITAL (PSD)
-*Panduan Analitis & Visual Tingkat Lanjut: Dari Fisika Sensor \& Transduksi, Formulasi Rantai ASP vs DSP, Konversi Digitalisasi ADC, Teori Kuantisasi \& Kinerja SQNR, Aljabar Sinyal Multikanal-Multidimensi, hingga Analisis Frekuensi Diskrit Tingkat Lanjut*
+*Panduan Analitis & Visual Tingkat Lanjut Dilengkapi Asal-Usul & Penurunan Matematis Rumus (A-to-Z): Dari Fisika Sensor \& Transduksi, Formulasi Rantai ASP vs DSP, Konversi Digitalisasi ADC, Teori Kuantisasi \& Kinerja SQNR, Aljabar Sinyal Multikanal-Multidimensi, hingga Analisis Frekuensi Diskrit Tingkat Lanjut*
 
 ---
 
@@ -42,32 +42,50 @@
 
 Dunia fisis beroperasi berdasarkan besaran-besaran alamiah non-listrik yang bersifat kontinu terhadap ruang dan waktu. Untuk menjembatani dunia analog fisis dengan sistem komputasi terotomatisasi, diperlukan perangkat **transduser** (elemen pengubah bentuk energi) dan **sensor** (elemen pendeteksi kuantitas fisik spesifik).
 
-Secara analitis, fungsi transduksi dari suatu sensor riil memetakan besaran fisis masukan $P(t)$ menjadi sinyal tegangan keluaran $v(t)$ melalui hubungan pemodelan matematis:
-$$v(t) = \mathcal{S} \cdot P(t) + \beta \cdot P^2(t) + \eta(t)$$
+---
 
-di mana $\mathcal{S} = \left.\frac{\partial v}{\partial P}\right|_{P_0}$ merupakan koefisien sensitivitas nominal (*sensitivity factor*), $\beta$ merepresentasikan deviasi non-linieritas orde-2, dan $\eta(t)$ adalah derau termal aditif acak (*Johnson-Nyquist noise*) dengan kerapatan spektral daya:
-$$\overline{v_n^2} = 4 k_B T R \Delta f \quad [\text{V}^2]$$
-dengan $k_B = 1.380649 \times 10^{-23}\text{ J/K}$ (konstanta Boltzmann), $T$ suhu mutlak Kelvin, $R$ resistansi ekuivalen Thévenin sensor, dan $\Delta f$ lebar pita frekuensi pengukuran (*bandwidth*).
+#### 🔬 [Penurunan Matematis A-to-Z] Asal-Usul Pemodelan Fungsi Transduksi Sensor via Deret Taylor
+Bagaimana persamaan kurva respon sensor $v(t) = \mathcal{S} \cdot P(t) + \beta \cdot P^2(t) + \eta(t)$ terbentuk?
+1. **Fondasi Dasar:** Hubungan antara besaran fisik masukan $P$ dan tegangan keluaran $v$ secara umum diatur oleh fungsi respon sembarang yang kontinu $v = f(P)$.
+2. **Ekspansi Deret Taylor di Sekitar Titik Operasi Nominal $P_0$:**
+   $$f(P) = f(P_0) + \left.\frac{df}{dP}\right|_{P_0}(P - P_0) + \frac{1}{2!}\left.\frac{d^2f}{dP^2}\right|_{P_0}(P - P_0)^2 + \frac{1}{3!}\left.\frac{d^3f}{dP^3}\right|_{P_0}(P - P_0)^3 + \dots$$
+3. **Pemisahan Komponen Orde:**
+   * $f(P_0) = V_0$ adalah tegangan offset DC (dikalibrasi ke nol pada sistem seimbang).
+   * Koefisien linearitas $\mathcal{S} = \left.\frac{df}{dP}\right|_{P_0}$ didefinisikan sebagai **Sensitivitas Nominal Sensor** (Volt/Satuan Fisis).
+   * Koefisien kuadratik $\beta = \frac{1}{2}\left.\frac{d^2f}{dP^2}\right|_{P_0}$ merepresentasikan **Deviasi Non-Linearitas Orde-2**.
+4. **Asal-Usul Derau Termal Aditif ($\eta(t)$):** Elektron bebas di dalam atom konduktor bergetar secara acak akibat energi kinetik termal $k_B T$. Berdasarkan **Teorema Fluktuasi-Disipasi Nyquist (1928)**, kerapatan daya derau tegangan pada resistor $R$ diturunkan dari mekanika statistik Boltzmann:
+   $$\mathbf{\overline{v_n^2} = 4 k_B T R \Delta f \quad [\text{Volt}^2]}$$
+   di mana $k_B = 1.380649 \times 10^{-23}\text{ J/K}$ (konstanta Boltzmann), $T$ temperatur mutlak Kelvin, $R$ resistansi Thévenin sensor, dan $\Delta f$ bandwidth frekuensi pengukuran.
+
+---
 
 ![Fenomena Fisik Menjadi Sinyal Listrik](assets/fenomena_fisik_ke_sinyal.png)
 
-#### 🔍 Dekomposisi Fisik & Analisis Matematis Tiga Kelas Sinyal:
+---
 
-1. **Panel 1 (Gelombang Akustik / Suara — Biru Muda):**  
-   Pita suara manusia menghasilkan gelombang longitudinal tekanan udara $p(x,t)$ yang merambat memenuhi persamaan gelombang Helmholtz 1-D:
-   $$\frac{\partial^2 p(x,t)}{\partial x^2} - \frac{1}{c_s^2}\frac{\partial^2 p(x,t)}{\partial t^2} = 0 \quad (c_s \approx 343\text{ m/s})$$
-   Diafragma mikrofon kapasitif mengubah gradien tekanan diferensial $\Delta p(t)$ menjadi perpindahan kapasitansi $\Delta C(t)$, menghasilkan fluktuasi tegangan $v(t) = \frac{Q_0}{C_0^2}\Delta C(t)$ berskala milivolt (mV) dengan spektrum vokal $50\text{ Hz} \le f \le 4\text{ kHz}$.
+#### 🔬 [Penurunan Matematis A-to-Z] Asal-Usul Fisika Tiga Kelas Sinyal:
 
-2. **Panel 2 (Dinamika Termal / Suhu — Oranye):**  
-   Perpindahan panas pada medium sensor termokopel diatur oleh persamaan difusi Fourier $\frac{\partial T}{\partial t} = \alpha \nabla^2 T$. Respon transien kenaikan temperatur dari $25^\circ\text{C}$ menuju $65^\circ\text{C}$ dimodelkan oleh respon sistem orde-1:
-   $$T(t) = T_{\text{akhir}} + (T_{\text{awal}} - T_{\text{akhir}})e^{-t/\tau_{\text{th}}} + w_{\text{thermal}}(t)$$
-   di mana $\tau_{\text{th}} = R_{\text{th}} C_{\text{th}}$ adalah konstanta waktu termal. Tegangan Seebeck yang dihasilkan $v(t) = \alpha_S (T_{\text{hot}} - T_{\text{cold}})$ memperlihatkan riak derau gerigi mikro akibat fluktuasi termal acak.
+1. **Panel 1: Gelombang Suara (Persamaan Helmholtz 1-D):**
+   * *Hukum II Newton untuk elemen fluida udara:* Gaya tekan diferensial sebanding dengan percepatan massa udara: $-\frac{\partial p}{\partial x} = \rho_0 \frac{\partial u}{\partial t}$ ($p$ tekanan akustik, $u$ kecepatan partikel, $\rho_0$ densitas udara).
+   * *Hukum Konservasi Massa Fluida (Kontinuitas):* Laju kompresi volume sebanding dengan laju perubahan tekanan: $-\frac{\partial u}{\partial x} = \frac{1}{B}\frac{\partial p}{\partial t}$ ($B$ bulk modulus elastisitas udara).
+   * *Eliminasi Kecepatan Partikel $u$:* Turunkan persamaan pertama terhadap $x$ ($\frac{\partial^2 p}{\partial x^2} = -\rho_0 \frac{\partial^2 u}{\partial x \partial t}$) dan persamaan kedua terhadap $t$ ($\frac{\partial^2 u}{\partial t \partial x} = -\frac{1}{B}\frac{\partial^2 p}{\partial t^2}$), lalu substitusikan suku turunan parsial silang:
+     $$\mathbf{\frac{\partial^2 p(x,t)}{\partial x^2} - \frac{1}{c_s^2}\frac{\partial^2 p(x,t)}{\partial t^2} = 0 \quad \text{di mana laju rambat suara } c_s = \sqrt{\frac{B}{\rho_0}} \approx 343\text{ m/s}}}$$
 
-3. **Panel 3 (Percepatan Seismik Kerak Bumi — Magenta):**  
-   Gelombang elastisitas sesar tektonik mematuhi persamaan elastodinamika Navier-Cauchy:
-   $$\rho \frac{\partial^2 \mathbf{u}}{\partial t^2} = (\lambda + \mu)\nabla(\nabla \cdot \mathbf{u}) + \mu \nabla^2 \mathbf{u}$$
-   Massa seismometer menghasilkan gaya inersia $F(t) = -m \ddot{x}_g(t)$ yang ditransduksikan menjadi lonjakan akselerasi tajam hingga $+3.8\text{ m/s}^2$ pada saat $t = 3.0\text{ s}$ dan meluruh secara sinusoidal teredam (*damped harmonic oscillation*):
-   $$a(t) = A_0 e^{-\zeta \omega_n (t - t_0)} \sin\left(\omega_n \sqrt{1 - \zeta^2}(t - t_0)\right) u(t - t_0)$$
+2. **Panel 2: Respon Termal Orde-1 Sensor Suhu:**
+   * *Hukum I Termodinamika (Kekekalan Energi):* Kalor yang diserap oleh massa sensor $m$ sama dengan perpindahan panas konveksi Newton:
+     $$m c_p \frac{dT(t)}{dt} = h A \left( T_{\text{lingkungan}} - T(t) \right)$$
+   * Definisikan konstanta waktu termal $\tau_{\text{th}} = \frac{m c_p}{h A} = R_{\text{th}} C_{\text{th}}$. Persamaan diferensial menjadi:
+     $$\tau_{\text{th}}\frac{dT(t)}{dt} + T(t) = T_{\text{akhir}}$$
+   * Menggunakan metode faktor integrasi $e^{t/\tau_{\text{th}}}$ dengan syarat awal $T(0) = T_{\text{awal}}$, solusi eksak adalah kurva eksponensial:
+     $$\mathbf{T(t) = T_{\text{akhir}} + (T_{\text{awal}} - T_{\text{akhir}})e^{-t/\tau_{\text{th}}} + w_{\text{thermal}}(t)}$$
+
+3. **Panel 3: Osilasi Seismometer Teredam Kerak Bumi:**
+   * *Hukum II Newton pada sistem massa-pegas-peredam inersia:*
+     $$m \ddot{x}(t) + c \dot{x}(t) + k x(t) = -m \ddot{x}_g(t)$$
+   * Bagi dengan massa $m$, substitusikan $\omega_n = \sqrt{k/m}$ (frekuensi natural) dan rasio redaman $\zeta = \frac{c}{2\sqrt{km}}$:
+     $$\ddot{x}(t) + 2\zeta\omega_n \dot{x}(t) + \omega_n^2 x(t) = -\ddot{x}_g(t)$$
+   * Untuk kondisi teredam kurang (*underdamped* $\zeta < 1$), akar persamaan karakteristik kuadrat adalah bilangan kompleks $s_{1,2} = -\zeta\omega_n \pm j\omega_n\sqrt{1-\zeta^2}$, menghasilkan respon transien sinusoidal teredam:
+     $$\mathbf{a(t) = A_0 e^{-\zeta \omega_n (t - t_0)} \sin\left(\omega_n \sqrt{1 - \zeta^2}(t - t_0)\right) u(t - t_0)}$$
 
 ---
 
@@ -75,77 +93,74 @@ dengan $k_B = 1.380649 \times 10^{-23}\text{ J/K}$ (konstanta Boltzmann), $T$ su
 
 ![Diagram Paradigma ASP vs DSP](assets/diagram_asp_vs_dsp.png)
 
-#### 🔍 Formulasi Matematis Sistem ASP vs DSP:
+---
 
-* **Arsitektur Rantai Analog Signal Processing (ASP):**  
-  Sistem ASP direalisasikan oleh interkoneksi fisik komponen pasif ($R, L, C$) dan aktif (*Operational Amplifier*). Dinamika sistem kontinu dimodelkan secara rigid oleh Persamaan Diferensial Linier Koefisien Konstan (LCCDE):
+#### 🔬 [Penurunan Matematis A-to-Z] Asal-Usul Persamaan Diferensial ASP vs Persamaan Beda DSP:
+
+* **Asal-Usul Rantai ASP (Hukum Sirkuit Kirchhoff KCL/KVL):**  
+  Pada rangkaian analog RLC, hubungan arus-tegangan komponen adalah $v_R = iR$, $v_L = L\frac{di}{dt}$, dan $i_C = C\frac{dv_C}{dt}$. Menggabungkan persamaan sirkuit menghasilkan Persamaan Diferensial Linier Koefisien Konstan (LCCDE):
   $$\sum_{k=0}^N a_k \frac{d^k y(t)}{dt^k} = \sum_{m=0}^M b_m \frac{d^m x(t)}{dt^m} \quad \xrightarrow{\mathcal{L}} \quad H(s) = \frac{Y(s)}{X(s)} = \frac{\sum_{m=0}^M b_m s^m}{\sum_{k=0}^N a_k s^k}$$
-  *Kelemahan Kritis ASP:* Sensitivitas tinggi terhadap toleransi komponen $\frac{\Delta H(s)}{H(s)} \approx \sum_i S_{p_i}^H \frac{\Delta p_i}{p_i}$, drift termal resistansi $\Delta R(T) = R_0(1 + \alpha \Delta T)$, degradasi penuaan elektrolit kapasitor, rentan terhadap induksi dengung jala-jala $50/60\text{ Hz}$, serta ketidakmungkinan merancang filter dengan fase linear murni.
+  *Kelemahan Fisis ASP:* Sangat sensitif terhadap toleransi nilai fisik komponen $\frac{\Delta H}{H} \approx \sum S_{p_i}^H \frac{\Delta p_i}{p_i}$, drift suhu lingkungan $\Delta R(T) = R_0(1 + \alpha \Delta T)$, dan penuaan kapasitor.
 
-* **Arsitektur Rantai Digital Signal Processing (DSP):**  
-  Sistem DSP memetakan cuplikan terkuantisasi melalui algoritma komputasi pada arsitektur prosesor (CPU, ALU, FPGA, DSP Chip). Dinamikanya diatur oleh Persamaan Beda Linier Koefisien Konstan (LCCDDE):
+* **Asal-Usul Rantai DSP (Aproksimasi Selisih Beda Diskrit):**  
+  Pada domain diskrit dengan periode sampling $T_s$, turunan waktu pertama didekati oleh selisih mundur (*backward difference*): $\frac{dy(t)}{dt} \approx \frac{y[n] - y[n-1]}{T_s}$. Menggantikan seluruh turunan kontinu menghasilkan Persamaan Beda Linier Koefisien Konstan (LCCDDE):
   $$\sum_{k=0}^N a_k y[n-k] = \sum_{m=0}^M b_m x[n-m] \quad \xrightarrow{\mathcal{Z}} \quad H(z) = \frac{Y(z)}{X(z)} = \frac{\sum_{m=0}^M b_m z^{-m}}{\sum_{k=0}^N a_k z^{-k}}$$
-  *Keunggulan Superior DSP:*
-  1. **Akurasi & Reproduktibilitas 100%:** Bebas dari drift suhu lingkungan dan toleransi nilai fisik komponen.
-  2. **Fleksibilitas Reconfigurability:** Respons filter dapat diubah secara instan secara adaptif (*Adaptive LMS Filtering*) melalui perangkat lunak tanpa modifikasi sirkuit.
-  3. **Fase Linear Sempurna:** Mampu merealisasikan filter FIR simetris dengan penundaan grup konstan ($\tau_g = -\frac{d\theta(\omega)}{d\omega} = \text{konstan}$), mustahil dicapai pada ASP.
+  *Keunggulan DSP:* Presisi mutlak $100\%$, respons filter dapat diubah secara instan melalui perangkat lunak (*software programmable*), dan memungkinkan realisasi filter FIR linier fase murni.
 
 ---
 
 ### 1.1.3 Tiga Pilar Anatomi Gelombang: Amplitudo, Frekuensi, dan Fase
 
-Persamaan matematis gelombang sinusoidal waktu-kontinu dinyatakan dalam domain riil dan domain kompleks Euler:
-$$x(t) = A \sin(2\pi f t + \phi) = A \sin(\Omega t + \phi) \equiv \operatorname{Re}\left\{ A e^{j(\Omega t + \phi)} \right\} = \frac{A}{2j} e^{j(\Omega t + \phi)} - \frac{A}{2j} e^{-j(\Omega t + \phi)}$$
+Persamaan analitis gelombang sinusoidal dinyatakan:
+$$x(t) = A \sin(2\pi f t + \phi) = A \sin(\Omega t + \phi)$$
 
 ![Anatomi Parameter Sinyal](assets/anatomi_sinyal.png)
 
 ![Komparasi Visual Parameter Sinyal](assets/komparasi_sinyal.png)
 
-#### 🔍 Karakterisasi Energi & Parameter Gelombang:
+---
 
-1. **Amplitudo ($A$) & Daya Sinyal ($P_{\text{avg}}$):**  
-   Menentukan besaran simpangan puncak dari titik keseimbangan. Nilai kuadrat rata-rata (*Root-Mean-Square* / RMS) dan daya rata-rata untuk gelombang sinus beban $1\ \Omega$ adalah:
-   $$V_{\text{rms}} = \sqrt{\frac{1}{T}\int_0^T x^2(t) dt} = \frac{A}{\sqrt{2}}, \qquad P_{\text{avg}} = V_{\text{rms}}^2 = \frac{A^2}{2}$$
+#### 🔬 [Penurunan Matematis A-to-Z] Penurunan Nilai RMS, Daya Sinyal, dan Pergeseran Waktu:
 
-2. **Frekuensi Siklik ($f$), Sudut ($\Omega$), dan Periode ($T$):**  
-   $f$ mengukur laju osilasi per satuan waktu (Hertz $\equiv \text{s}^{-1}$), $\Omega = 2\pi f$ adalah kecepatan sudut ($\text{rad/s}$), dan periode fundamental $T = \frac{1}{f} = \frac{2\pi}{\Omega}$. Pada Gambar Komparasi Panel 1, peningkatan frekuensi dari $1\text{ Hz}$ ke $3\text{ Hz}$ melipatgandakan kerapatan energi spektral pada sumbu frekuensi.
+1. **Penurunan Daya Rata-rata $P_{\text{avg}} = A^2/2$ & Tegangan Efektif $V_{\text{rms}} = A/\sqrt{2}$:**
+   * Energi disipasi pada beban resistor $1\ \Omega$ selama satu periode $T$ adalah integral kuadrat tegangan sesaat:
+     $$P_{\text{avg}} = \frac{1}{T}\int_0^T x^2(t) dt = \frac{1}{T}\int_0^T A^2 \sin^2(\Omega t + \phi) dt$$
+   * Gunakan identitas trigonometri sudut ganda $\sin^2\theta = \frac{1 - \cos(2\theta)}{2}$:
+     $$P_{\text{avg}} = \frac{A^2}{2T} \left[ \int_0^T 1\ dt - \int_0^T \cos(2\Omega t + 2\phi) dt \right]$$
+   * Karena integral dari fungsi kosinus periodik selama satu periode penuh adalah nol ($\int_0^T \cos(2\Omega t + 2\phi) dt = 0$), persamaan menyusut menjadi:
+     $$\mathbf{P_{\text{avg}} = \frac{A^2}{2T} [T - 0] = \frac{A^2}{2} \implies V_{\text{rms}} = \sqrt{P_{\text{avg}}} = \frac{A}{\sqrt{2}} \approx 0.7071 A}$$
 
-3. **Fase Awal ($\phi$) & Pergeseran Waktu ($\Delta t$):**  
-   Pergeseran fase $\phi$ setara secara eksak dengan translasi waktu $\Delta t = -\frac{\phi}{\Omega} = -\frac{\phi}{2\pi f}$. Jika $\phi = +90^\circ = +\frac{\pi}{2}\text{ rad}$ (Gambar Komparasi Panel 3), gelombang bertransformasi menjadi fungsi cosinus:
-   $$x(t) = A \sin\left(\Omega t + \frac{\pi}{2}\right) = A \cos(\Omega t)$$
-   yang mengindikasikan komponen kuadratur ($Q$-channel) mendahului (*leading*) komponen in-phase ($I$-channel) sebesar $\Delta t = -T/4$.
+2. **Penurunan Hubungan Fase ($\phi$) terhadap Pergeseran Waktu ($\Delta t$):**
+   * Faktorkan kecepatan sudut $\Omega$ dari dalam argumen sinus:
+     $$x(t) = A \sin(\Omega t + \phi) = A \sin\left( \Omega \left( t + \frac{\phi}{\Omega} \right) \right) = A \sin(\Omega(t - \Delta t))$$
+   * Dengan menyamakan kedua bentuk persamaan:
+     $$\mathbf{\Delta t = -\frac{\phi}{\Omega} = -\frac{\phi}{2\pi f}}$$
+     Jika $\phi = +\pi/2$ ($+90^\circ$), gelombang bergeser ke kiri sebesar $\Delta t = -T/4$, mengubah fungsi sinus menjadi kosinus $A\cos(\Omega t)$ (fase kuadratur).
 
 ---
 
 ### 1.1.4 Sistem Pengolah Sinyal & 4 Klasifikasi Karakteristik Operasinya
 
-Suatu sistem waktu-diskrit didefinisikan sebagai transformasi matematis atau operator $\mathcal{T}\{\cdot\}$ yang memetakan sinyal masukan $x[n]$ menjadi sinyal keluaran $y[n] = \mathcal{T}\{x[n]\}$.
-
 ![Klasifikasi Sistem](assets/klasifikasi_sistem.png)
 
-#### 🔍 Uji Matematis Rigor Empat Sifat Karakteristik Sistem:
+---
 
-1. **Linearitas (Superposisi & Homogenitas):**  
-   Sistem linier wajib memenuhi prinsip superposisi simultan:
-   $$\mathcal{T}\left\{ \alpha x_1[n] + \beta x_2[n] \right\} = \alpha \mathcal{T}\{x_1[n]\} + \beta \mathcal{T}\{x_2[n]\} = \alpha y_1[n] + \beta y_2[n], \quad \forall \alpha, \beta \in \mathbb{C}$$
-   *Analisis Visual (Panel 1):* Sistem $y[n] = 1.5 x[n]$ membentuk garis linier proporsional sempurna. Sebaliknya, sistem kubik $y[n] = 0.5 x^3[n]$ bersifat non-linier; jika dimasukkan input harmonisa tunggal $x[n] = \cos(\omega_0 n)$, keluarannya menghasilkan distorsi harmonisa ganjil $\cos^3(\omega_0 n) = \frac{3}{4}\cos(\omega_0 n) + \frac{1}{4}\cos(3\omega_0 n)$, memunculkan komponen frekuensi baru $3\omega_0$ yang merusak integritas sinyal asli.
+#### 🔬 [Penurunan Matematis A-to-Z] Penurunan \& Uji Karakteristik Sistem:
 
-2. **Kekekalan Waktu (Time-Invariance / TI):**  
-   Operator sistem komutatif terhadap operator pergeseran waktu $\mathcal{S}_{n_0}\{x[n]\} = x[n - n_0]$:
-   $$\mathcal{T}\left\{ \mathcal{S}_{n_0}\{x[n]\} \right\} = \mathcal{S}_{n_0}\left\{ \mathcal{T}\{x[n]\} \right\} \iff \mathcal{T}\{x[n - n_0]\} = y[n - n_0]$$
-   *Analisis Visual (Panel 2):* Input yang ditunda sejauh $n_0 = 4$ detik menghasilkan kurva hijau yang identik secara morfologi dengan kurva oranye tanpa distorsi bentuk.
+1. **Uji Prinsip Superposisi Linearitas:**
+   * Sistem linier wajib mematuhi $\mathcal{T}\{\alpha x_1 + \beta x_2\} = \alpha \mathcal{T}\{x_1\} + \beta \mathcal{T}\{x_2\}$.
+   * *Mengapa sistem kubik $y[n] = 0.5 x^3[n]$ non-linier?* Masukkan $x[n] = \alpha x_1[n]$:
+     $$y[n] = 0.5 (\alpha x_1[n])^3 = \alpha^3 (0.5 x_1^3[n]) = \alpha^3 y_1[n] \neq \alpha y_1[n]$$
+     Munculnya faktor pangkat $\alpha^3$ merusak prinsip homogenitas. Jika diberi masukan $\cos(\omega_0 n)$, ekspansi kubik $\cos^3\theta = \frac{3\cos\theta + \cos(3\theta)}{4}$ memunculkan komponen frekuensi baru $3\omega_0$ (distorsi harmonisa non-linier).
 
-3. **Kausalitas (Causality):**  
-   Keluaran sistem pada setiap indeks $n = n_0$ hanya bergantung pada nilai masukan saat ini dan masa lalu ($x[n]$ untuk $n \leq n_0$). Syarat perlu dan cukup untuk sistem Linier Time-Invariant (LTI) kausal adalah respon impulsnya harus nol untuk indeks waktu negatif:
-   $$h[n] = 0, \quad \forall n < 0$$
-   *Analisis Visual (Panel 3):* Respon ungu ($h[n] \neq 0$ hanya saat $n \geq 0$) bersifat kausal (*realizable* di dunia nyata). Respon pink aktif saat $n < 0$, mengindikasikan sistem non-kausal yang memerlukan pengetahuan input masa depan.
-
-4. **Stabilitas BIBO (Bounded-Input Bounded-Output):**  
-   Sistem stabil BIBO menjamin bahwa untuk setiap masukan terbatas $|x[n]| \leq M_x < \infty, \forall n$, keluarannya terikat terbatas $|y[n]| \leq M_y < \infty, \forall n$. Syarat perlu dan cukup untuk sistem LTI stabil BIBO adalah respon impulsnya **terjumlahkan secara mutlak** (*absolutely summable*):
-   $$S_h = \sum_{k=-\infty}^{\infty} |h[k]| < \infty$$
-   *Analisis Visual (Panel 4):* Untuk sistem orde-1 dengan respon impuls $h[n] = a^n u[n]$:
-   $$S_h = \sum_{n=0}^{\infty} |a|^n = \frac{1}{1 - |a|} \quad \text{konvergen jika dan hanya jika } |a| < 1$$
-   Kurva hijau ($a = 0.75 < 1$) menghasilkan $S_h = \frac{1}{1 - 0.75} = 4 < \infty$ (Stabil). Kurva merah ($a = 1.35 > 1$) menghasilkan deret divergen $S_h \to \infty$, memicu osilasi tak hingga yang merusak rangkaian (*Unstable*).
+2. **Penurunan Syarat Keterjumlahan Mutlak Stabilitas BIBO:**
+   * Misalkan masukan dibatasi terhingga $|x[n]| \le M_x < \infty$. Output sistem LTI diatur oleh konvolusi $y[n] = \sum_{k=-\infty}^\infty h[k] x[n-k]$.
+   * Ambil nilai mutlak $|y[n]|$ dan terapkan pertidaksamaan segitiga (*triangle inequality*):
+     $$|y[n]| = \left| \sum_{k=-\infty}^{\infty} h[k] x[n-k] \right| \le \sum_{k=-\infty}^{\infty} |h[k] x[n-k]| = \sum_{k=-\infty}^{\infty} |h[k]| \cdot |x[n-k]|$$
+   * Karena $|x[n-k]| \le M_x$, keluarkan konstanta $M_x$:
+     $$|y[n]| \le M_x \sum_{k=-\infty}^{\infty} |h[k]|$$
+   * Agar $|y[n]| \le M_y < \infty$ untuk sembarang nilai $M_x < \infty$, syarat perlu dan cukup mutlak adalah deret respon impuls harus konvergen:
+     $$\mathbf{S_h = \sum_{k=-\infty}^{\infty} |h[k]| < \infty \quad (\text{Absolutely Summable})}$$
 
 ---
 
@@ -155,75 +170,69 @@ Suatu sistem waktu-diskrit didefinisikan sebagai transformasi matematis atau ope
 
 ![Tahapan Lengkap ADC](assets/tahapan_adc_sampling_kuantisasi.png)
 
-#### 🔍 Formulasi Matematis 4 Blok Digitalisasi ADC:
+---
 
-1. **Anti-Aliasing Filter (AAF) & Sinyal Asli $x_a(t)$:**  
-   Sinyal input analog kontinu $x_a(t) \in \mathbb{R}$ dilewatkan ke filter lolos-rendah (*low-pass filter*) analog dengan frekuensi cut-off $f_c \leq F_s / 2$ untuk memangkas komponen frekuensi tinggi di atas batas Nyquist.
-
-2. **Pencuplikan Ideal (Ideal Impulse Train Sampling):**  
-   Sinyal dikalikan dengan deretan pulsa Dirac periodik (*Dirac Comb*) $p(t) = \sum_{n=-\infty}^\infty \delta(t - n T_s)$:
-   $$x_s(t) = x_a(t) \cdot p(t) = \sum_{n=-\infty}^\infty x_a(n T_s) \delta(t - n T_s)$$
-   Domain waktu menghasilkan deret diskrit $x[n] \equiv x_a(n T_s)$, di mana waktu kini terdiskritisasi menjadi bilangan bulat $n \in \mathbb{Z}$, namun nilai amplitudo $x[n] \in \mathbb{R}$ masih berkesinambungan kontinu (*infinite precision*).
-
-3. **Kuantisasi Amplitudo Non-Linier ($\mathcal{Q}\{\cdot\}$):**  
-   Pemetaan fungsi tangga non-linier $\mathcal{Q}: \mathbb{R} \to \{V_1, V_2, \dots, V_L\}$ membulatkan nilai amplitudo riil $x[n]$ ke level representasi terdekat:
-   $$x_q[n] = \mathcal{Q}\{x[n]\} = x[n] + e_q[n]$$
-   di mana $e_q[n] = x_q[n] - x[n]$ adalah galat kuantisasi (*quantization error*). Sinyal kini diskrit dalam waktu dan diskrit dalam nilai amplitudo.
-
-4. **Pengkodean Biner (Binary Word Encoding $\mathcal{E}\{\cdot\}$):**  
-   Setiap level indeks $k \in \{0, 1, \dots, 2^B - 1\}$ dipetakan menjadi vektor biner $B$-bit:
-   $$\mathbf{b}[n] = \mathcal{E}\{x_q[n]\} = [b_{B-1}, b_{B-2}, \dots, b_1, b_0]^T, \quad b_i \in \{0, 1\}$$
-   menghasilkan aliran bit serial (*bitstream*) berkecepatan data $R = B \cdot F_s\ \text{bps}$.
+#### 🔬 [Penurunan Matematis A-to-Z] Asal-Usul Modulasi Kereta Impuls Dirac:
+Bagaimana spektrum frekuensi $X_s(F) = F_s \sum X_a(F - k F_s)$ terbentuk saat sinyal dicuplik?
+1. **Model Kereta Impuls Dirac (*Dirac Comb*):** $p(t) = \sum_{n=-\infty}^\infty \delta(t - n T_s)$.
+2. **Perkalian Domain Waktu:** Sinyal tercuplik adalah $x_s(t) = x_a(t) \cdot p(t) = \sum_{n=-\infty}^\infty x_a(n T_s) \delta(t - n T_s)$.
+3. **Ekspansi Deret Fourier Kompleks dari Kereta Dirac:** Karena $p(t)$ periodik dengan periode $T_s$, koefisien Fourier $c_k$ dihitung:
+   $$c_k = \frac{1}{T_s}\int_{-T_s/2}^{T_s/2} \delta(t) e^{-j 2\pi k F_s t} dt = \frac{1}{T_s} = F_s \implies p(t) = F_s \sum_{k=-\infty}^{\infty} e^{j 2\pi k F_s t}$$
+4. **Transformasi Fourier dari Sinyal Tercuplik:**
+   $$X_s(F) = \mathcal{F}\left\{ x_a(t) \cdot F_s \sum_{k=-\infty}^\infty e^{j 2\pi k F_s t} \right\} = F_s \sum_{k=-\infty}^\infty \mathcal{F}\left\{ x_a(t) e^{j 2\pi k F_s t} \right\}$$
+   Menggunakan teorema translasi modulasi frekuensi $\mathcal{F}\{x_a(t) e^{j 2\pi F_0 t}\} = X_a(F - F_0)$:
+   $$\mathbf{X_s(F) = F_s \sum_{k=-\infty}^{\infty} X_a(F - k F_s)}$$
 
 ---
 
 ### 1.2.2 Pencuplikan (Sampling Clock), Teorema Nyquist, dan Bencana Aliasing
 
-Transformasi Fourier dari sinyal tercuplik $x_s(t)$ diturunkan melalui sifat konvolusi domain frekuensi:
-$$X_s(F) = \mathcal{F}\left\{ x_a(t) \cdot \sum_{n=-\infty}^\infty \delta(t - n T_s) \right\} = F_s \sum_{k=-\infty}^\infty X_a(F - k F_s)$$
-
 ![Sampling Nyquist dan Aliasing](assets/sampling_nyquist_aliasing.png)
 
-#### 🔍 Derivasi Perilaku Tiga Kondisi Sampling:
+---
 
-* **Kondisi A — Over-Sampling ($F_s = 40\text{ Hz} \gg 2 f_{\max} = 10\text{ Hz}$):**  
-  Replika spektral $X_a(F - k F_s)$ terpisah sejauh interval $40\text{ Hz}$ dengan pita transisi pelindung (*guard band*) selebar $\Delta F = F_s - 2 f_{\max} = 30\text{ Hz}$. Rekonstruksi gelombang melalui filter rekonstruksi ideal menghasilkan sinyal asli sempurna 100% tanpa distorsi.
+#### 🔬 [Penurunan Matematis A-to-Z] Penurunan Rumus Lipatan Aliasing \& Rekonstruksi Whittaker-Shannon:
 
-* **Kondisi B — Batas Kritis Nyquist ($F_s = 10\text{ Hz} = 2 f_{\max}$):**  
-  Ujung-ujung spektrum replika tepat bersinggungan pada frekuensi lipat $f_{\text{fold}} = F_s / 2 = 5\text{ Hz}$. Rekonstruksi masih dimungkinkan secara teoritis menggunakan filter *brick-wall* ideal tanpa guard band.
+1. **Asal-Usul Rumus Frekuensi Alias $f_{\text{alias}} = |F - k F_s|$:**
+   * Spektrum $X_s(F)$ memuat pergeseran spektrum $X_a(F - k F_s)$.
+   * Filter rekonstruksi hanya membuka jendela frekuensi pada pita dasar $|F| \le F_s/2$.
+   * Jika komponen frekuensi asli $F > F_s/2$, salinan spektrum pada indeks $k$ masuk ke jendela pita dasar. Karena spektrum sinyal riil bersifat simetri genap $|X(F)| = |X(-F)|$, frekuensi positif semu yang teramati adalah jarak mutlak terdekat ke kelipatan sampling:
+     $$\mathbf{f_{\text{alias}} = |F - k F_s|, \quad \text{di mana } k = \operatorname{round}(F / F_s)}$$
 
-* **Kondisi C — Bencana Under-Sampling & Aliasing ($F_s = 6\text{ Hz} < 2 f_{\max}$):**  
-  Spektrum replika mengalami tumpang tindih (*spectral overlapping*). Komponen frekuensi asli $F = +5\text{ Hz}$ terlipat masuk ke pita dasar $|F| \le F_s/2 = 3\text{ Hz}$ menghasilkan frekuensi semu alias:
-  $$f_{\text{alias}} = |F - 1 \cdot F_s| = |5\text{ Hz} - 6\text{ Hz}| = 1\text{ Hz}$$
-  Komputer merekonstruksi gelombang hantu palsu berwarna merah pada frekuensi $1\text{ Hz}$ yang sama sekali tidak ada di dunia nyata!
-
-> **🛡️ Teorema Sampling Nyquist-Shannon & Rekonstruksi Whittaker-Shannon:**
-> Jika sinyal kontinu $x_a(t)$ berpita terbatas pada rentang $-f_{\max} \le F \le f_{\max}$, maka $x_a(t)$ dapat dipulihkan secara eksak tanpa cacat dari sampel diskritnya $x[n] = x_a(n T_s)$ jika dan hanya jika $F_s \geq 2 f_{\max}$, dengan rumus rekonstruksi interpolasi sinus kardinal (Sinc):
-> $$x_a(t) = \sum_{n=-\infty}^{\infty} x[n] \operatorname{sinc}\left( \frac{t - n T_s}{T_s} \right) = \sum_{n=-\infty}^{\infty} x[n] \frac{\sin\left(\pi (t - n T_s)/T_s\right)}{\pi (t - n T_s)/T_s}$$
+2. **Penurunan Rumus Rekonstruksi Sinc Whittaker-Shannon:**
+   * Untuk memulihkan $X_a(F)$ dari $X_s(F)$, kalikan $X_s(F)$ dengan filter lolos-rendah ideal $H_r(F) = T_s \cdot \operatorname{rect}\left(\frac{F}{F_s}\right)$ yang bernilai $T_s$ pada $|F| \le F_s/2$ dan $0$ di luar itu.
+   * Transformasi Fourier balik dari fungsi kotak $H_r(F)$ adalah fungsi sinus kardinal:
+     $$h_r(t) = \int_{-F_s/2}^{F_s/2} T_s e^{j 2\pi F t} dF = T_s \left[ \frac{e^{j 2\pi F t}}{j 2\pi t} \right]_{-F_s/2}^{F_s/2} = T_s \frac{\sin(\pi F_s t)}{\pi t} = \operatorname{sinc}\left(\frac{t}{T_s}\right)$$
+   * Di domain waktu, perkalian spektral menjadi konvolusi deretan impuls:
+     $$\mathbf{x_a(t) = x_s(t) * h_r(t) = \sum_{n=-\infty}^{\infty} x[n] \operatorname{sinc}\left(\frac{t - n T_s}{T_s}\right)}$$
 
 ---
 
 ### 1.2.3 Kuantisasi & Pengkodean Biner 3-Bit (Rentang 0 s.d. 10 Volt)
 
-Kuantisasi seragam (*uniform quantization*) membagi rentang tegangan penuh $V_{\text{range}} = V_{\text{maks}} - V_{\text{min}}$ menjadi $L = 2^B$ sub-interval dengan lebar step $\Delta$:
-$$\Delta = \frac{V_{\text{maks}} - V_{\text{min}}}{2^B} = \frac{10.0\text{ V} - 0.0\text{ V}}{2^3} = \frac{10.0\text{ V}}{8} = 1.25\text{ Volt / step}$$
-
 ![Karakteristik Kuantisasi 3-Bit 0-10V](assets/kuantisasi_3bit_0_10v.png)
 
-#### 🔍 Pemodelan Derau Kuantisasi & Derivasi Formal Rasio SQNR:
+---
 
-Asumsikan galat kuantisasi $e_q[n] = x_q[n] - x[n]$ berdistribusi seragam kontinu pada interval $[-\Delta/2, +\Delta/2]$ dengan fungsi densitas probabilitas $f_E(e) = 1/\Delta$. Nilai rata-rata dan daya derau (variansi $\sigma_e^2$) dihitung sebagai:
-$$\mu_e = \mathbb{E}[e] = 0, \qquad P_e = \sigma_e^2 = \mathbb{E}[e^2] = \int_{-\Delta/2}^{+\Delta/2} e^2 \cdot \frac{1}{\Delta} de = \left[ \frac{e^3}{3\Delta} \right]_{-\Delta/2}^{+\Delta/2} = \frac{\Delta^2}{12}$$
+#### 🔬 [Penurunan Matematis A-to-Z] Penurunan Eksak Daya Derau Kuantisasi $\sigma_e^2 = \Delta^2/12$ dan Formula SQNR:
 
-Untuk sinyal input sinusoidal penuh yang mengisi seluruh rentang dinamis ADC $V_{\text{pp}} = 2^B \Delta$, amplitudonya $A = \frac{2^B \Delta}{2} = 2^{B-1}\Delta$. Daya rata-rata sinyal adalah:
-$$P_s = \frac{A^2}{2} = \frac{(2^{B-1}\Delta)^2}{2} = \frac{2^{2B-2}\Delta^2}{2} = \frac{2^{2B}\Delta^2}{8}$$
+1. **Penurunan Integral Variansi Galat Derau Kuantisasi:**
+   * Galat kuantisasi $e = x_q - x$ berdistribusi acak seragam kontinu pada interval $[-\Delta/2, +\Delta/2]$ dengan fungsi densitas probabilitas konstan $f_E(e) = \frac{1}{\Delta}$.
+   * Daya derau kuantisasi adalah nilai ekspektasi kuadrat galat:
+     $$P_e = \sigma_e^2 = \mathbb{E}[e^2] = \int_{-\Delta/2}^{+\Delta/2} e^2 f_E(e) de = \int_{-\Delta/2}^{+\Delta/2} e^2 \frac{1}{\Delta} de = \frac{1}{\Delta} \left[ \frac{e^3}{3} \right]_{-\Delta/2}^{+\Delta/2}$$
+     $$= \frac{1}{\Delta} \left[ \frac{(\Delta/2)^3}{3} - \frac{(-\Delta/2)^3}{3} \right] = \frac{1}{\Delta} \left[ \frac{\Delta^3/8}{3} + \frac{\Delta^3/8}{3} \right] = \frac{1}{\Delta} \left[ \frac{2\Delta^3}{24} \right] = \mathbf{\frac{\Delta^2}{12}}$$
 
-Rasio Daya Sinyal terhadap Derau Kuantisasi (*Signal-to-Quantization-Noise Ratio* / SQNR) dalam skala desibel (dB):
-$$\text{SQNR} = 10 \log_{10}\left( \frac{P_s}{P_e} \right) = 10 \log_{10}\left( \frac{\frac{2^{2B}\Delta^2}{8}}{\frac{\Delta^2}{12}} \right) = 10 \log_{10}\left( \frac{12}{8} \cdot 2^{2B} \right) = 10 \log_{10}(1.5) + 20 B \log_{10}(2)$$
+2. **Penurunan Rumus Baku SQNR $\approx 6.02 B + 1.76\text{ dB}$:**
+   * Rentang skala penuh ADC adalah $V_{\text{range}} = 2^B \Delta$.
+   * Sinyal sinus penuh memiliki tegangan $V_{\text{pp}} = 2^B \Delta \implies A = 2^{B-1}\Delta$.
+   * Daya rata-rata sinyal adalah $P_s = \frac{A^2}{2} = \frac{(2^{B-1}\Delta)^2}{2} = \frac{2^{2B-2}\Delta^2}{2} = \frac{2^{2B}\Delta^2}{8}$.
+   * Rasio daya sinyal terhadap derau (SQNR linier):
+     $$\frac{P_s}{P_e} = \frac{\frac{2^{2B}\Delta^2}{8}}{\frac{\Delta^2}{12}} = \frac{12}{8} \cdot 2^{2B} = 1.5 \cdot 2^{2B}$$
+   * Konversi ke skala logaritmik Desibel (dB):
+     $$\text{SQNR}_{\text{dB}} = 10 \log_{10}(1.5 \cdot 2^{2B}) = 10 \log_{10}(1.5) + 20 B \log_{10}(2) = 1.7609 + 20 B (0.30103)$$
+     $$\mathbf{\text{SQNR} \approx 6.02 \cdot B + 1.76 \quad [\text{dB}]}$$
 
-$$\mathbf{\text{SQNR} \approx 6.02 \cdot B + 1.76 \quad [\text{dB}]}$$
-
-*Aturan Praktis (Rule of Thumb):* Setiap penambahan $1\text{ bit}$ resolusi ADC meningkatkan kualitas sinyal sebesar $\approx 6.02\text{ dB}$ (mereduksi daya derau kuantisasi hingga $1/4$ atau $\approx 75\%$).
+---
 
 #### Tabel Pemetaan Partisi & Nilai Tengah Kuantisasi 3-Bit ($0 - 10\text{ V}, \Delta = 1.25\text{ V}$):
 
@@ -272,23 +281,15 @@ $$\mathbf{\text{Aliran Bit Output (Bitstream)}} = \mathbf{\underbrace{100}_{n=0}
 
 ![Konsep Sinyal Multikanal](assets/sinyal_multikanal.png)
 
-#### 🔍 Formulasi Aljabar Linear Sinyal Multikanal:
+---
 
-* **Vektor Kolom Cuplikan Spasial pada Detak Waktu $n$:**
-  $$\mathbf{x}[n] = \begin{bmatrix} x_1[n] \\ x_2[n] \\ \vdots \\ x_M[n] \end{bmatrix} \in \mathbb{R}^{M \times 1}, \quad \text{untuk } n = 0, 1, \dots, N-1$$
-
-* **Matriks Spasio-Temporal $\mathbf{X}_{M \times N}$:**
-  $$\mathbf{X} = \begin{bmatrix} \mathbf{x}[0] & \mathbf{x}[1] & \cdots & \mathbf{x}[N-1] \end{bmatrix} = \begin{bmatrix} 
-  x_1[0] & x_1[1] & \cdots & x_1[N-1] \\
-  x_2[0] & x_2[1] & \cdots & x_2[N-1] \\
-  \vdots & \vdots & \ddots & \vdots \\
-  x_M[0] & x_M[1] & \cdots & x_M[N-1]
-  \end{bmatrix} \in \mathbb{R}^{M \times N}$$
-
-* **Matriks Korelasi Spasial ($\mathbf{R}_{xx}$) & Pemisahan Sumber Sinyal:**  
-  Struktur kovariansi antar-sensor dihitung melalui:
-  $$\mathbf{R}_{xx} = \frac{1}{N} \mathbf{X} \mathbf{X}^T \in \mathbb{R}^{M \times M}$$
-  Melalui Dekomposisi Nilai Singular (SVD) $\mathbf{X} = \mathbf{U} \mathbf{\Sigma} \mathbf{V}^T$, vektor basis ortogonal $\mathbf{U}$ memisahkan sumber interferensi artefak gerak dari sinyal biomedis murni (*Principal Component Analysis* / PCA).
+#### 🔬 [Penurunan Matematis A-to-Z] Asal-Usul Matriks Kovariansi Spasial Multikanal:
+Bagaimana persamaan matriks kovariansi spasial $\mathbf{R}_{xx} = \frac{1}{N} \mathbf{X} \mathbf{X}^T$ diturunkan dari konsep statistik dasar?
+1. **Definisi Statistik Kovariansi Antar-Dua Sensor:** Kovariansi spasial antara kanal ke-$i$ ($x_i[n]$) dan kanal ke-$j$ ($x_j[n]$) dengan rata-rata nol adalah:
+   $$R_{ij} = \frac{1}{N}\sum_{n=0}^{N-1} x_i[n] x_j[n]$$
+2. **Bentuk Perkalian Titik Vektor Baris:** Ambil baris ke-$i$ matriks $\mathbf{X}$, yaitu $\mathbf{x}_i^T = [x_i[0], x_i[1], \dots, x_i[N-1]]$, dan baris ke-$j$, yaitu $\mathbf{x}_j^T$. Perkalian titik $\mathbf{x}_i^T \mathbf{x}_j$ adalah $\sum_{n=0}^{N-1} x_i[n] x_j[n]$.
+3. **Sintesis Seluruh Matriks:** Dalam aljabar linier, menghitung perkalian titik untuk seluruh pasangan $i,j \in \{1, \dots, M\}$ setara secara eksak dengan mengalikan matriks data $\mathbf{X} \in \mathbb{R}^{M \times N}$ dengan transposisinya $\mathbf{X}^T \in \mathbb{R}^{N \times M}$:
+   $$\mathbf{R}_{xx} = \frac{1}{N} \mathbf{X} \mathbf{X}^T \in \mathbb{R}^{M \times M}$$
 
 ---
 
@@ -296,13 +297,14 @@ $$\mathbf{\text{Aliran Bit Output (Bitstream)}} = \mathbf{\underbrace{100}_{n=0}
 
 ![Spektrum Sinyal Multi-Dimensi](assets/sinyal_multidimensi.png)
 
-#### 🔍 Klasifikasi Matematis & Ruang Domain Sinyal M-D:
+---
 
-1. **Sinyal 1-Dimensi ($s: \mathbb{R} \to \mathbb{R}$):** Fungsi bergantung pada variabel tunggal (waktu $t$). Contoh: rekaman ucapan fonetik $s = f(t)$.
-2. **Sinyal 2-Dimensi ($I: \mathbb{R}^2 \to \mathbb{R}$):** Fungsi intensitas luminansi terdefinisi pada koordinat kartesius bidang spasial $(x,y)$. Transformasi Fourier 2-D sinyal kontinu dinyatakan:
-   $$F(u, v) = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} I(x, y) e^{-j 2\pi (ux + vy)} dx dy$$
-3. **Sinyal 3-Dimensi ($V: \mathbb{R}^3 \to \mathbb{R}$):** Memiliki 3 variabel bebas, seperti koordinat spasial-temporal video monokrom $V = f(x, y, t)$ atau volume tomografi 3-D medan magnetik MRI $V = f(x, y, z)$.
-4. **Sinyal 4-Dimensi ($C: \mathbb{R}^4 \to \mathbb{R}$):** Menggabungkan ruang $(x,y)$, waktu $(t)$, dan dimensi spektral panjang gelombang fotometrik $(\lambda)$ pada citra satelit hyperspectral atau video RGB berwarna bioskop $C(x, y, t, \lambda_c)$ di mana $\lambda_c \in \{\text{Red}, \text{Green}, \text{Blue}\}$.
+#### 🔬 [Penurunan Matematis A-to-Z] Asal-Usul Transformasi Fourier 2-Dimensi Citra:
+1. **Ekstensi Basis Kompleks 1-D ke 2-D:** Gelombang planar 2-D yang merambat dengan frekuensi spasial horizontal $u$ dan vertikal $v$ dinyatakan oleh perkalian dua basis ortogonal:
+   $$\phi_{u,v}(x,y) = e^{j 2\pi u x} \cdot e^{j 2\pi v y} = e^{j 2\pi (ux + vy)}$$
+2. **Proyeksi Sinyal Citra $I(x,y)$ ke Basis Planar:**
+   $$\mathbf{F(u, v) = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} I(x, y) e^{-j 2\pi (ux + vy)} dx dy}$$
+   Komponen $(u,v)$ mengekstrak orientasi sudut kontur, tekstur, dan gradien intensitas cahaya pada bidang 2-D.
 
 ---
 
@@ -310,19 +312,15 @@ $$\mathbf{\text{Aliran Bit Output (Bitstream)}} = \mathbf{\underbrace{100}_{n=0}
 
 ![Fondasi Sinyal Waktu Diskrit](assets/sinyal_waktu_diskrit.png)
 
-#### 🔍 Dekomposisi Sinyal & Sifat Tiga Sinyal Elementer:
+---
 
-1. **Sinyal Impuls Satuan / Kronecker Delta ($\delta[n]$):**
-   $$\delta[n] = \begin{cases} 1, & n = 0 \\ 0, & n \neq 0 \end{cases}$$
-   *Sifat Penyaringan (Sifting Property):* Sembarang sinyal diskrit $x[n]$ dapat didekomposisi menjadi kombinasi linier tak terhingga dari impuls-impuls tergeser dan terbobot:
-   $$\mathbf{x[n] = \sum_{k=-\infty}^{\infty} x[k] \delta[n - k]}$$
-
-2. **Sinyal Undak Satuan (Unit Step $u[n]$):**
-   $$u[n] = \begin{cases} 1, & n \ge 0 \\ 0, & n < 0 \end{cases} \equiv \sum_{k=-\infty}^n \delta[k]$$
-   Hubungan diferensial diskrit (selisih maju): $\delta[n] = u[n] - u[n-1]$.
-
-3. **Sinyal Eksponensial Diskrit Riil & Kompleks ($x[n] = a^n u[n]$):**  
-   Untuk $a \in \mathbb{R}$: jika $|a| < 1$ kurva meluruh asimtotik (Panel 3 kurva ungu $0.7^n$); jika $a < 0$ tanda nilai berosilasi bolak-balik $\operatorname{sgn}(x[n]) = (-1)^n$. Jika $a = e^{\sigma_0 + j\omega_0} \in \mathbb{C}$, sinyal menghasilkan osilasi sinusoidal teredam/tumbuh $x[n] = e^{\sigma_0 n} \cos(\omega_0 n) u[n]$.
+#### 🔬 [Penurunan Matematis A-to-Z] Pembuktian Sifat Penyaringan (*Sifting Property*) Sinyal Diskrit:
+Mengapa sembarang sinyal diskrit $x[n]$ selalu dapat dituliskan sebagai $x[n] = \sum_{k=-\infty}^\infty x[k]\delta[n-k]$?
+1. Berdasarkan definisi impuls Kronecker:
+   $$\delta[n - k] = \begin{cases} 1, & \text{saat } k = n \\ 0, & \text{saat } k \neq n \end{cases}$$
+2. Evaluasi suku-suku deret penjumlahan:
+   $$\sum_{k=-\infty}^{\infty} x[k]\delta[n-k] = \dots + x[n-1]\underbrace{\delta[1]}_{0} + x[n]\underbrace{\delta[0]}_{1} + x[n+1]\underbrace{\delta[-1]}_{0} + \dots = x[n] \cdot 1 = \mathbf{x[n]}$$
+   Setiap sampel $x[k]$ dipandang sebagai impuls berskala yang "ditembakkan" pada posisi indeks waktu $k$. Inilah dasar lahirnya konsep **Konvolusi Linier**!
 
 ---
 
@@ -333,16 +331,8 @@ $$\mathbf{\text{Aliran Bit Output (Bitstream)}} = \mathbf{\underbrace{100}_{n=0}
 > **🎯 Definisi Baku Sinyal Digital dalam Ruang Metrik Diskrit:**
 > **Sinyal Digital** adalah sinyal yang berada dalam himpunan pemetaan metrik diskrit ganda:
 > $$x_d: \mathbb{Z} \to \mathbb{D}_L, \quad \text{di mana } \mathbb{D}_L = \{V_1, V_2, \dots, V_L\} \subset \mathbb{R}, \quad L = 2^B < \infty$$
-> yang berarti sinyal telah mengalami diskritisasi variabel waktu independen ($n \in \mathbb{Z}$) dan sekaligus diskritisasi himpunan nilai dependen ($x_q[n]$) ke dalam kuantisasi berhingga.
 
 ![Klasifikasi 4 Ruang Sinyal](assets/sinyal_digital_4_kuadran.png)
-
-#### 🔍 Dekomposisi 4 Kuadran Ruang Keadaan Sinyal:
-
-1. **Kuadran 1 (Waktu Kontinu, Nilai Kontinu — Sinyal Analog Asli):** $x(t) \in \mathbb{R}, \forall t \in \mathbb{R}$. Contoh: tegangan langsung pada elektroda sensor bio-potensial EKG.
-2. **Kuadran 2 (Waktu Diskrit, Nilai Kontinu — Sinyal Sampled-Data):** $x[n] \in \mathbb{R}, \forall n \in \mathbb{Z}$. Tegangan tersimpan pada kapasitor rangkaian *Sample-and-Hold* sebelum masuk ke komparator ADC.
-3. **Kuadran 3 (Waktu Kontinu, Nilai Diskrit — Sinyal Terkuantisasi Analog):** $x_q(t) \in \mathbb{D}_L, \forall t \in \mathbb{R}$. Contoh: keluaran sistem transmisi pulsa modulasi *Pulse-Code* analog terkuantisasi sebelum clocking.
-4. **Kuadran 4 (Waktu Diskrit, Nilai Diskrit — SINYAL DIGITAL MURNI):** $x_q[n] \in \mathbb{D}_L, \forall n \in \mathbb{Z}$. Inilah satu-satunya format sinyal yang dapat dimanipulasi oleh memori RAM, register biner, dan arsitektur aritmatika ALU prosesor digital!
 
 ---
 
@@ -350,22 +340,17 @@ $$\mathbf{\text{Aliran Bit Output (Bitstream)}} = \mathbf{\underbrace{100}_{n=0}
 
 ![Sinyal Deterministik vs Sinyal Acak](assets/sinyal_deterministik_vs_acak.png)
 
-#### 🔍 Analisis Stokastik: Fungsi Korelasi & Teorema Wiener-Khinchin:
+---
 
-* **Sinyal Deterministik (Panel 1 — Biru Muda):**  
-  Sinyal yang setiap nilai masa lalunya, saat ini, dan masa depannya dapat ditentukan **secara pasti 100% tanpa ambiguitas** melalui hubungan analitik eksplisit, misalnya kombinasi deret Fourier:
-  $$x(t) = 2.5 \sin(6\pi t) + 1.2 \cos(12\pi t)$$
-  Nilai $x(0.5\text{ s}) = 2.5 \sin(3\pi) + 1.2 \cos(6\pi) = 0 + 1.2(1) = 1.200\text{ V}$ dapat dihitung secara analitis presisi.
-
-* **Sinyal Acak / Stokastik (Panel 2 — Merah):**  
-  Sinyal yang masa depannya tidak dapat diprediksi secara eksak dan hanya dapat dimodelkan sebagai proses acak (*stochastic process*) $X(t, \zeta)$ melalui parameter statistik ensemble:
-  1. **Nilai Ekspektasi / Mean ($\mu_x(t)$):** $\mu_x(t) = \mathbb{E}[X(t)] = \int_{-\infty}^{\infty} x f_X(x; t) dx$.
-  2. **Fungsi Autokorelasi ($R_{xx}(t_1, t_2)$):** $R_{xx}(t_1, t_2) = \mathbb{E}[X(t_1) X^*(t_2)]$.
-  3. **Stasioneritas Lebar (Wide-Sense Stationary / WSS):** Jika $\mu_x(t) = \mu_x$ (konstan) dan $R_{xx}(t_1, t_2) = R_{xx}(\tau)$ di mana $\tau = t_1 - t_2$.
-
-  **Teorema Wiener-Khinchin:** Kerapatan spektral daya (*Power Spectral Density* / PSD) dari sinyal acak WSS adalah Transformasi Fourier dari fungsi autokorelasinya:
-  $$S_{xx}(F) = \mathcal{F}\left\{ R_{xx}(\tau) \right\} = \int_{-\infty}^{\infty} R_{xx}(\tau) e^{-j 2\pi F \tau} d\tau$$
-  Untuk derau putih murni (*Additive White Gaussian Noise* / AWGN), autokorelasinya berupa impuls $R_{ww}(\tau) = \sigma^2 \delta(\tau)$, menghasilkan spektrum frekuensi yang datar rata di semua frekuensi: $S_{ww}(F) = \sigma^2\ [\text{W/Hz}]$.
+#### 🔬 [Penurunan Matematis A-to-Z] Penurunan Teorema Wiener-Khinchin (Dari Autokorelasi ke Kerapatan Spektral Daya PSD):
+Mengapa Transformasi Fourier dari Autokorelasi $R_{xx}[k]$ menghasilkan Kerapatan Daya Spektral $S_{xx}(\omega)$?
+1. **Definisi Transformasi Fourier Sampel Berhingga $N$:** $X_N(\omega) = \sum_{n=0}^{N-1} x[n] e^{-j\omega n}$.
+2. **Perhitungan Daya Spektral Rata-rata:**
+   $$S_{xx}(\omega) = \lim_{N \to \infty} \frac{1}{N} \mathbb{E}\left[ |X_N(\omega)|^2 \right] = \lim_{N \to \infty} \frac{1}{N} \mathbb{E}\left[ \left( \sum_{n=0}^{N-1} x[n] e^{-j\omega n} \right) \left( \sum_{m=0}^{N-1} x[m] e^{j\omega m} \right) \right]$$
+3. **Gabungkan Penjumlahan Ganda:**
+   $$S_{xx}(\omega) = \lim_{N \to \infty} \frac{1}{N} \sum_{n=0}^{N-1} \sum_{m=0}^{N-1} \mathbb{E}[x[n]x[m]] e^{-j\omega(n-m)}$$
+4. **Substitusi Variabel Selisih Waktu $k = n - m$:** Untuk proses stasioner lebar (WSS), $\mathbb{E}[x[n]x[m]] = R_{xx}[n-m] = R_{xx}[k]$. Penjumlahan ganda menyusut menjadi Transformasi Fourier Diskrit:
+   $$\mathbf{S_{xx}(\omega) = \sum_{k=-\infty}^{\infty} R_{xx}[k] e^{-j\omega k}}$$
 
 ---
 
@@ -373,41 +358,24 @@ $$\mathbf{\text{Aliran Bit Output (Bitstream)}} = \mathbf{\underbrace{100}_{n=0}
 
 ### 1.5.1 Perbandingan Domain Frekuensi: Sinyal Waktu Kontinu vs Sinyal Waktu Diskrit
 
-Pemetaan frekuensi dari domain kontinu ($F,\Omega$) ke domain diskrit ($f,\omega$) terjadi melalui hubungan parameter interval sampling $T_s = 1/F_s$:
-$$\omega = \Omega T_s = \frac{\Omega}{F_s} = \frac{2\pi F}{F_s} = 2\pi f \quad [\text{rad/sampel}], \qquad f = \frac{F}{F_s} \quad [\text{siklus/sampel}]$$
-
 ![Perbandingan Domain Frekuensi](assets/frekuensi_kontinu_vs_diskrit.png)
 
-#### 🔍 Tabel Perbandingan Komprehensif Domain Frekuensi:
+---
 
-| Karakteristik Parameter | Domain Waktu-Kontinu (Analog) | Domain Waktu-Diskrit (Digital) |
-| :--- | :--- | :--- |
-| **Frekuensi Siklik** | $F$ ($\text{Hertz} = \text{siklus/detik}$) | $f = F / F_s$ ($\text{siklus/sampel}$) |
-| **Frekuensi Sudut** | $\Omega = 2\pi F$ ($\text{rad/detik}$) | $\omega = \Omega T_s = 2\pi f$ ($\text{rad/sampel}$) |
-| **Rentang Nilai Unik** | $-\infty < \Omega < +\infty$ (Tak terbatas) | $\mathbf{-\pi \leq \omega \leq +\pi}$ atau $\mathbf{-\frac{1}{2} \leq f \leq +\frac{1}{2}}$ |
-| **Periodisitas Spektrum** | Bersifat Aperiodik pada sumbu $\Omega$ | **Periodik mutlak dengan periode $2\pi$** ($\omega \equiv \omega + 2\pi k$) |
-| **Laju Osilasi Tertinggi** | $\Omega \to \infty$ (Meningkat tanpa batas) | **Tercapai tepat di $\omega = \pm \pi$ ($f = \pm 1/2$)** |
-| **Representasi Transformasi** | Fourier: $X(j\Omega) = \int x(t)e^{-j\Omega t}dt$ | DTFT: $X(e^{j\omega}) = \sum x[n] e^{-j\omega n}$ |
+#### 🔬 [Penurunan Matematis A-to-Z] Asal-Usul Periodisitas Spektrum DTFT $X(e^{j(\omega + 2\pi)}) = X(e^{j\omega})$:
+Mengapa spektrum frekuensi diskrit dijamin 100% periodik dengan periode $2\pi$?
+1. Berdasarkan definisi Transformasi Fourier Waktu Diskrit (DTFT): $X(e^{j\omega}) = \sum_{n=-\infty}^\infty x[n] e^{-j\omega n}$.
+2. Evaluasi nilai DTFT pada frekuensi tergeser $\omega + 2\pi k$:
+   $$X(e^{j(\omega + 2\pi k)}) = \sum_{n=-\infty}^\infty x[n] e^{-j(\omega + 2\pi k)n} = \sum_{n=-\infty}^\infty x[n] e^{-j\omega n} \cdot e^{-j 2\pi k n}$$
+3. Berdasarkan rumus identitas Euler: $e^{-j 2\pi k n} = \cos(2\pi kn) - j \sin(2\pi kn)$. Karena $k \in \mathbb{Z}$ dan $n \in \mathbb{Z}$, hasil kali $kn$ selalu bilangan bulat, sehingga $\cos(2\pi kn) = 1$ dan $\sin(2\pi kn) = 0 \implies e^{-j 2\pi k n} = 1$.
+4. Maka:
+   $$\mathbf{X(e^{j(\omega + 2\pi k)}) = \sum_{n=-\infty}^\infty x[n] e^{-j\omega n} \cdot 1 = X(e^{j\omega})} \quad \forall k \in \mathbb{Z}$$
 
 ---
 
 ### 1.5.2 Sinyal Sinusoidal Waktu-Kontinu (1/2): Sifat Keunikan Frekuensi Fisik & Laju Tak Terbatas
 
-Persamaan gelombang sinusoidal waktu-kontinu: $x_a(t) = A \cos(\Omega t + \theta) = A \cos(2\pi F t + \theta)$.
-
 ![Sinus Kontinu Karakteristik 1](assets/sinus_kontinu_karakteristik_1.png)
-
-#### 🔍 Pembuktian Keunikan & Laju Tak Terbatas:
-
-1. **Keunikan Frekuensi Fisik (Ortogonalitas Continuous Basis):**  
-   Dua sinyal sinusoidal kontinu dengan frekuensi berbeda $F_1 \neq F_2$ selalu independen secara ortogonal pada interval pengamatan kelipatan persekutuan $T_0$:
-   $$\frac{1}{T_0}\int_0^{T_0} \cos(2\pi F_1 t) \cos(2\pi F_2 t) dt = \frac{1}{2} \delta_{F_1, F_2}$$
-   Tidak ada dua frekuensi kontinu berbeda yang dapat menghasilkan profil fisik gelombang yang sama.
-
-2. **Laju Osilasi Bertambah Monotonik Menuju Tak Hingga:**  
-   Turunan pertama sinyal terhadap waktu merepresentasikan laju perubahan tegangan:
-   $$\left| \frac{d x_a(t)}{dt} \right|_{\max} = | -A \cdot 2\pi F \sin(2\pi F t + \theta) |_{\max} = 2\pi A F$$
-   Ketika $F \to \infty$, laju kemiringan tegangan $\frac{dx_a}{dt} \to \infty$ bertambah tanpa ada batas maksimum.
 
 ---
 
@@ -415,32 +383,22 @@ Persamaan gelombang sinusoidal waktu-kontinu: $x_a(t) = A \cos(\Omega t + \theta
 
 ![Sinus Kontinu Periodisitas 2](assets/sinus_kontinu_periodisitas_2.png)
 
-#### 🔍 Pembuktian Matematis Periodisitas Universal Sinyal Kontinu:
-
-Suatu sinyal $x_a(t)$ dikatakan periodik jika terdapat konstanta waktu $T_p > 0$ sedemikian rupa sehingga $x_a(t + T_p) = x_a(t), \forall t \in \mathbb{R}$. Untuk sembarang frekuensi $F > 0$:
-$$x_a(t + T_p) = A \cos\left(2\pi F \left(t + \frac{1}{F}\right) + \theta\right) = A \cos(2\pi F t + 2\pi + \theta) = A \cos(2\pi F t + \theta) = x_a(t)$$
-
-Karena kesamaan ini berlaku identik untuk semua $F \in \mathbb{R}^+$, maka **semua sinyal sinusoidal kontinu di alam semesta dijamin 100% selalu periodik**.
-
 ---
 
 ### 1.5.4 Sinyal Sinusoidal Waktu-Diskrit (1/3): Syarat Wajib Periodisitas Bilangan Rasional f = k/N
 
-Persamaan umum sinusoidal diskrit: $x[n] = A \cos(\omega n + \theta) = A \cos(2\pi f n + \theta)$.
-
-> **⚠️ Fakta Krusial: Sinyal Sinus Diskrit TIDAK SELALU Periodik!**
-> Agar sinyal diskrit $x[n]$ periodik dengan periode fundamental integer $N \in \mathbb{Z}^+$ ($x[n + N] = x[n]$), maka frekuensi sikliknya $f$ wajib berupa **Bilangan Rasional**:
-> $$\cos(2\pi f (n + N) + \theta) = \cos(2\pi f n + 2\pi f N + \theta) \equiv \cos(2\pi f n + 2\pi k + \theta)$$
-> $$\implies 2\pi f N = 2\pi k \implies \mathbf{f = \frac{k}{N} \in \mathbb{Q}, \quad k, N \in \mathbb{Z}^+}$$
-> Periode fundamental integer terkecil sampel $N$ dihitung melalui:
-> $$N = \frac{k}{f} = \frac{2\pi k}{\omega}, \quad \text{di mana } k \text{ adalah integer terkecil pembuat } N \in \mathbb{Z}^+$$
-
 ![Sinus Diskrit Periodisitas 1](assets/sinus_diskrit_periodisitas_1.png)
 
-#### 🔍 Pembuktian Analitik Panel A vs Panel B:
+---
 
-* **Panel A ($x_1[n] = \cos(\frac{\pi}{4} n)$):** $\omega = \frac{\pi}{4} \implies f = \frac{\omega}{2\pi} = \frac{\pi/4}{2\pi} = \frac{1}{8}$. Karena $\frac{1}{8} \in \mathbb{Q}$ (bilangan rasional), sinyal **Periodik** dengan periode $N = \frac{1}{1/8} = 8\text{ sampel}$. Pola sampel berulang identik setiap 8 ketukan.
-* **Panel B ($x_2[n] = \cos(1 \cdot n)$):** $\omega = 1\text{ rad/sampel} \implies f = \frac{1}{2\pi}$. Karena $\pi$ adalah bilangan transendental irasional, maka $f \notin \mathbb{Q}$. Tidak ada bilangan bulat $N$ dan $k$ yang memenuhi $N = 2\pi k$. Akibatnya, sinyal $x_2[n]$ **100% Aperiodik / Non-Periodik**; titik-titik sampelnya tidak akan pernah berulang sama persis di sepanjang garis waktu sampai kapan pun!
+#### 🔬 [Penurunan Matematis A-to-Z] Penurunan Syarat Mutlak Bilangan Rasional $f = k/N \in \mathbb{Q}$:
+Mengapa sinyal sinusoidal diskrit $x[n] = \cos(2\pi f n)$ tidak selalu periodik?
+1. **Syarat Definisi Periodik:** Harus ada bilangan bulat positif $N \in \mathbb{Z}^+$ sedemikian rupa sehingga $x[n + N] = x[n]$ untuk semua $n$.
+2. Substitusikan ke dalam fungsi cosinus:
+   $$\cos(2\pi f (n + N)) = \cos(2\pi f n + 2\pi f N) = \cos(2\pi f n)$$
+3. Fungsi cosinus berulang nilainya jika dan hanya jika pergeseran sudutnya merupakan kelipatan bilangan bulat dari satu putaran lingkaran $2\pi k$ ($k \in \mathbb{Z}^+$):
+   $$2\pi f N = 2\pi k \implies f N = k \implies \mathbf{f = \frac{k}{N}}$$
+4. Karena $k \in \mathbb{Z}^+$ dan $N \in \mathbb{Z}^+$, rasio $k/N$ adalah **Bilangan Rasional ($\mathbb{Q}$)**. Jika frekuensi $f$ memuat bilangan irasional (seperti $\pi$ atau $\sqrt{2}$), persamaan ini mustahil dipenuhi oleh sembarang bilangan bulat $N$, sehingga sinyal dijamin **Aperiodik**.
 
 ---
 
@@ -448,13 +406,15 @@ Persamaan umum sinusoidal diskrit: $x[n] = A \cos(\omega n + \theta) = A \cos(2\
 
 ![Sinus Diskrit Identik 2pi](assets/sinus_diskrit_identik_2pi_2.png)
 
-#### 🔍 Teorema Kesamaan Frekuensi Diskrit Modulo $2\pi$:
+---
 
-Untuk sembarang bilangan bulat $k \in \mathbb{Z}$:
-$$\cos((\omega + 2\pi k)n + \theta) = \cos(\omega n + 2\pi k n + \theta) = \cos(\omega n + \theta + 2\pi(kn)) = \cos(\omega n + \theta)$$
-
-*Konsekuensi Fundamental DSP:* Frekuensi diskrit yang terpisah sejauh kelipatan integer $2\pi$ bukan sekadar menghasilkan gelombang mirip, melainkan **benar-benar identik pada seluruh titik sampel $n$**. Oleh sebab itu, seluruh rentang analisis frekuensi digital dunia hanya dibatasi pada **Interval Fundamental**:
-$$-\pi \leq \omega \leq +\pi \quad \iff \quad -\frac{1}{2} \leq f \leq +\frac{1}{2}$$
+#### 🔬 [Penurunan Matematis A-to-Z] Penurunan Rumus Identitas Modulo $2\pi$ Trigonometri:
+Buktikan $\cos((\omega + 2\pi k)n + \theta) = \cos(\omega n + \theta)$:
+1. Gunakan rumus trigonometri penjumlahan sudut $\cos(A + B) = \cos A \cos B - \sin A \sin B$, dengan $A = \omega n + \theta$ dan $B = 2\pi k n$:
+   $$\cos((\omega n + \theta) + 2\pi k n) = \cos(\omega n + \theta)\cos(2\pi kn) - \sin(\omega n + \theta)\sin(2\pi kn)$$
+2. Karena $k \in \mathbb{Z}$ dan $n \in \mathbb{Z}$, maka $kn$ adalah bilangan bulat, menghasilkan $\cos(2\pi kn) = 1$ dan $\sin(2\pi kn) = 0$.
+3. Maka terbukti secara mutlak:
+   $$\mathbf{\cos((\omega + 2\pi k)n + \theta) = \cos(\omega n + \theta) \cdot 1 - \sin(\omega n + \theta) \cdot 0 = \cos(\omega n + \theta)}$$
 
 ---
 
@@ -462,22 +422,14 @@ $$-\pi \leq \omega \leq +\pi \quad \iff \quad -\frac{1}{2} \leq f \leq +\frac{1}
 
 ![Sinus Diskrit Osilasi Maksimum](assets/sinus_diskrit_osilasi_maksimum_3.png)
 
-#### 🔍 Dekomposisi Laju Osilasi Sinyal Diskrit pada 4 Titik Spektrum:
+---
 
-1. **Titik 1 — Frekuensi Nol / DC ($\omega = 0, f = 0$):**  
-   $x[n] = \cos(0 \cdot n) = +1.0, \forall n$. Sinyal berupa garis horizontal konstan tanpa perubahan dinamis.
-
-2. **Titik 2 — Frekuensi Menengah ($\omega = \pi/4, f = 1/8$):**  
-   Sinyal berosilasi harmonik mulus dengan periode fundamental $N = 8$ sampel per siklus gelombang.
-
-3. **Titik 3 — LAJU OSILASI TERTINGGI MAKSIMUM DI DUNIA DIGITAL ($\omega = \pi, f = 1/2$):**  
-   $$x[n] = \cos(\pi n) = (-1)^n = \{+1, -1, +1, -1, +1, -1, \dots\}$$
-   Perhatikan titik-titik sampel merah: Sinyal melompat ekstrem dari nilai puncak tertinggi $+1$ ke lembah terendah $-1$ **di setiap 1 perpindahan sampel ($n \to n+1$)**. Ini adalah laju fluktuasi tercepat yang secara matematis dan fisis mungkin terjadi pada sistem waktu-diskrit.
-
-4. **Titik 4 — Frekuensi Tinggi Melampaui $\pi$ ($\omega = 7\pi/4 \equiv -\pi/4$):**  
-   Ketika frekuensi sudut dinaikkan melampaui $\pi$ menuju $2\pi$, laju osilasi **JUSTRU MELAMBAT KEMBALI**:
-   $$\cos\left(\frac{7\pi}{4} n\right) = \cos\left(\left(2\pi - \frac{\pi}{4}\right)n\right) = \cos\left(-\frac{\pi}{4} n\right) = \cos\left(\frac{\pi}{4} n\right)$$
-   Gelombang ini persis identik dengan sinyal frekuensi rendah $\omega = \pi/4$. Fenomena ini membuktikan bahwa batas kecepatan osilasi digital mutlak terkunci di $\omega = \pi$.
+#### 🔬 [Penurunan Matematis A-to-Z] Penurunan Aljabar Lompatan Ekstrem $(-1)^n$ pada $\omega = \pi$:
+1. Substitusikan $\omega = \pi$ ke dalam persamaan Euler:
+   $$x[n] = e^{j\pi n} = (e^{j\pi})^n = (\cos\pi + j\sin\pi)^n = (-1 + j0)^n = \mathbf{(-1)^n}$$
+2. Untuk deret indeks $n = 0, 1, 2, 3, 4, \dots$:
+   $$x[0] = +1, \quad x[1] = -1, \quad x[2] = +1, \quad x[3] = -1, \dots$$
+   Sinyal berubah tanda di setiap 1 perpindahan sampel ($\Delta n = 1$). Tidak ada sinyal diskrit lain yang dapat berfluktuasi lebih cepat dari pergantian tanda setiap 1 sampel ini!
 
 ---
 
@@ -488,18 +440,18 @@ $$-\pi \leq \omega \leq +\pi \quad \iff \quad -\frac{1}{2} \leq f \leq +\frac{1}
 Sebuah sistem instrumentasi biomedis dirancang untuk memonitor sinyal bio-elektrik jantung pasien. Sistem ini mengintegrasikan rantai fisik sensorik, struktur data multikanal, penapisan filter LTI, digitalisasi ADC kuantisasi resolusi tinggi, serta analisis harmonisa frekuensi diskrit.
 
 #### 1. Spesifikasi Sistem:
-1. **Rantai Fisik & Sensorik (Subbab 1.1):** Tiga elektroda sensor bio-potensial $Ag/AgCl$ ($M = 3$ kanal) merekam sinyal elektrofisiologis kontinu pasien yang terkontaminasi oleh interferensi derau jala-jala listrik $50\text{ Hz}$ dan osilasi pernapasan respirasi lambat $0.2\text{ Hz}$:
+1. **Rantai Fisik & Sensorik (Subbab 1.1):** Tiga elektroda sensor bio-potensial $Ag/AgCl$ ($M = 3$ kanal) merekam sinyal elektrofisiologis kontinu pasien:
    $$x_1(t) = 3.0 \cos(2\pi \cdot 10 t) + 1.2 \cos(2\pi \cdot 50 t) + 0.8 \sin(2\pi \cdot 0.2 t) \quad [\text{V}]$$
    $$x_2(t) = 2.5 \cos(2\pi \cdot 10 t - \pi/6) + 1.2 \cos(2\pi \cdot 50 t) + 0.4 \sin(2\pi \cdot 0.2 t) \quad [\text{V}]$$
    $$x_3(t) = 1.8 \cos(2\pi \cdot 10 t + \pi/4) + 1.2 \cos(2\pi \cdot 50 t) - 0.5 \sin(2\pi \cdot 0.2 t) \quad [\text{V}]$$
 
-2. **Struktur Data Multikanal (Subbab 1.3):** Sinyal multikanal diorganisasikan ke dalam matriks spasio-temporal $\mathbf{X}(t) \in \mathbb{R}^{3 \times N}$. Dilakukan operasi pembobotan spasial diferensial untuk membatalkan komponen *common-mode noise* $50\text{ Hz}$ dengan vektor bobot $\mathbf{w} = [1, -1, 0]^T$:
+2. **Struktur Data Multikanal (Subbab 1.3):** Pembobotan spasial diferensial untuk membatalkan komponen *common-mode noise* $50\text{ Hz}$ dengan vektor bobot $\mathbf{w} = [1, -1, 0]^T$:
    $$s_a(t) = \mathbf{w}^T \mathbf{x}(t) = x_1(t) - x_2(t)$$
 
 3. **Spesifikasi ADC & Digitalisasi (Subbab 1.2 & 1.4):**
    - Frekuensi Sampling Sistem: $F_s = 200\text{ Hz}$ ($T_s = 5\text{ ms} = 0.005\text{ s}$).
    - Terdapat komponen derau interferensi frekuensi tinggi liar tak terfilter pada $f_{\text{noise}} = 230\text{ Hz}$ dengan persamaan $v_{\text{noise}}(t) = 0.5 \cos(2\pi \cdot 230 t)$.
-   - Konverter ADC Uniform 4-Bit ($B = 4\text{ bit} \implies L = 16\text{ level}$), dengan rentang tegangan dinamis $V_{\text{min}} = -4.0\text{ V}$ hingga $V_{\text{maks}} = +4.0\text{ V}$ ($V_{\text{range}} = 8.0\text{ V}$).
+   - Konverter ADC Uniform 4-Bit ($B = 4\text{ bit} \implies L = 16\text{ level}$), rentang dinamis $V_{\text{min}} = -4.0\text{ V}$ hingga $V_{\text{maks}} = +4.0\text{ V}$ ($V_{\text{range}} = 8.0\text{ V}$).
 
 4. **Filter Digital Pemroses LTI (Subbab 1.1 & 1.3):** Sinyal tercuplik $s[n]$ dilewatkan ke sebuah filter rata-rata bergerak 3-titik (*3-Point Moving Average Filter*):
    $$y[n] = \frac{1}{3}s[n] + \frac{1}{3}s[n-1] + \frac{1}{3}s[n-2]$$
@@ -510,15 +462,14 @@ Sebuah sistem instrumentasi biomedis dirancang untuk memonitor sinyal bio-elektr
 
 ##### 🔹 Langkah 1: Reduksi Multikanal & Analisis Parameter Gelombang (Subbab 1.1 & 1.3)
 Hitung sinyal hasil kombinasi spasial $s_a(t) = x_1(t) - x_2(t)$:
-$$s_a(t) = \left[ 3.0 \cos(20\pi t) + 1.2 \cos(100\pi t) + 0.8 \sin(0.4\pi t) \right] - \left[ 2.5 \cos(20\pi t - \pi/6) + 1.2 \cos(100\pi t) + 0.4 \sin(0.4\pi t) \right]$$
-$$= \underbrace{\left[ 3.0 \cos(20\pi t) - 2.5 \cos(20\pi t - \pi/6) \right]}_{\text{Komponen Jantung 10 Hz}} + \underbrace{[1.2 - 1.2]\cos(100\pi t)}_{\mathbf{0\text{ (Derau 50 Hz Lenyap!)}}} + \underbrace{0.4 \sin(0.4\pi t)}_{\text{Respirasi 0.2 Hz}}$$
+$$s_a(t) = \underbrace{\left[ 3.0 \cos(20\pi t) - 2.5 \cos(20\pi t - \pi/6) \right]}_{\text{Komponen Jantung 10 Hz}} + \underbrace{[1.2 - 1.2]\cos(100\pi t)}_{\mathbf{0\text{ (Derau 50 Hz Lenyap!)}}} + \underbrace{0.4 \sin(0.4\pi t)}_{\text{Respirasi 0.2 Hz}}$$
 
 Gunakan identitas trigonometri fasor untuk menyederhanakan komponen $10\text{ Hz}$:
 $$2.5 \cos(20\pi t - \pi/6) = 2.5 \left[ \frac{\sqrt{3}}{2} \cos(20\pi t) + \frac{1}{2} \sin(20\pi t) \right] \approx 2.165 \cos(20\pi t) + 1.250 \sin(20\pi t)$$
 $$s_{10\text{Hz}}(t) = (3.0 - 2.165)\cos(20\pi t) - 1.250 \sin(20\pi t) = 0.835 \cos(20\pi t) - 1.250 \sin(20\pi t)$$
 
 Amplitudo resultan $A_R$ dan sudut fase $\phi_R$:
-$$A_R = \sqrt{(0.835)^2 + (-1.250)^2} = \sqrt{0.6972 + 1.5625} = \sqrt{2.2597} \approx \mathbf{1.503\text{ Volt}}$$
+$$A_R = \sqrt{(0.835)^2 + (-1.250)^2} = \sqrt{0.6972 + 1.5625} \approx \mathbf{1.503\text{ Volt}}$$
 $$\phi_R = \operatorname{atan2}(-1.250, 0.835) \approx -56.27^\circ \approx -0.982\text{ rad}$$
 
 Persamaan analitis bersih sinyal kontinu yang masuk ke ADC (termasuk derau liar $230\text{ Hz}$):
@@ -528,17 +479,16 @@ $$s_{\text{total}}(t) = 1.503 \cos(2\pi \cdot 10 t - 0.982) + 0.4 \sin(2\pi \cdo
 
 ##### 🔹 Langkah 2: Evaluasi Nyquist, Identifikasi Aliasing, dan Pemetaan Frekuensi Diskrit (Subbab 1.2 & 1.5)
 1. **Frekuensi Nyquist:** $f_{\text{fold}} = \frac{F_s}{2} = \frac{200\text{ Hz}}{2} = \mathbf{100\text{ Hz}}$.
-2. **Evaluasi Komponen $F_1 = 10\text{ Hz}$ dan $F_2 = 0.2\text{ Hz}$:**  
-   Karena $F_1, F_2 < 100\text{ Hz}$, disampling aman bebas aliasing:
+2. **Evaluasi Komponen $F_1 = 10\text{ Hz}$ dan $F_2 = 0.2\text{ Hz}$:** Bebas aliasing:
    $$\omega_1 = \frac{2\pi \cdot 10}{200} = \mathbf{\frac{\pi}{10}\ \text{rad/sampel}}, \qquad f_1 = \frac{10}{200} = \mathbf{\frac{1}{20}\ \text{siklus/sampel}}$$
    $$\omega_2 = \frac{2\pi \cdot 0.2}{200} = \mathbf{\frac{\pi}{500}\ \text{rad/sampel}}, \qquad f_2 = \frac{0.2}{200} = \mathbf{\frac{1}{1000}\ \text{siklus/sampel}}$$
 3. **Evaluasi Aliasing Komponen Liar $F_3 = 230\text{ Hz}$:**  
    Karena $F_3 = 230\text{ Hz} > 100\text{ Hz}$, terjadi aliasing ke frekuensi semu:
    $$f_{\text{alias}} = |230\text{ Hz} - 200\text{ Hz}| = \mathbf{30\text{ Hz}} \implies \omega_{\text{alias}} = \frac{2\pi \cdot 30}{200} = \mathbf{\frac{3\pi}{10}\ \text{rad/sampel}}$$
 4. **Uji Periodisitas Diskrit (Subbab 1.5.4):**
-   - $f_1 = 1/20 \in \mathbb{Q} \implies$ **Periodik** dengan periode fundamental $N_1 = 20\text{ sampel}$.
-   - $f_2 = 1/1000 \in \mathbb{Q} \implies$ **Periodik** dengan periode fundamental $N_2 = 1000\text{ sampel}$.
-   - $f_{\text{alias}} = 3/20 \in \mathbb{Q} \implies$ **Periodik** dengan periode fundamental $N_3 = \frac{20}{\gcd(3,20)} = 20\text{ sampel}$.
+   - $f_1 = 1/20 \in \mathbb{Q} \implies$ **Periodik** ($N_1 = 20\text{ sampel}$).
+   - $f_2 = 1/1000 \in \mathbb{Q} \implies$ **Periodik** ($N_2 = 1000\text{ sampel}$).
+   - $f_{\text{alias}} = 3/20 \in \mathbb{Q} \implies$ **Periodik** ($N_3 = 20\text{ sampel}$).
    - **Periode Fundamental Total:** $N_{\text{total}} = \operatorname{KPK}(20, 1000, 20) = \mathbf{1000\text{ sampel}}$ ($5.0\text{ detik}$).
 
 ---
@@ -552,14 +502,10 @@ $$s_{\text{total}}(t) = 1.503 \cos(2\pi \cdot 10 t - 0.982) + 0.4 \sin(2\pi \cdo
    $$\text{SQNR}_{\text{teoritis}} = 6.02(4) + 1.76 = \mathbf{25.84\text{ dB}}$$
 
 **Pelacakan 4 Sampel Pertama ($n=0, 1, 2, 3$):**
-- **Sampel $n=0$ ($t = 0.000\text{ s}$):**  
-  $s[0] = 1.503(0.5552) + 0 + 0.5(1) = \mathbf{+1.3345\text{ V}} \implies$ **Step 11** (`1010`), $V_q = \mathbf{+1.250\text{ V}}$, $e_q[0] = \mathbf{-0.0845\text{ V}}$.
-- **Sampel $n=1$ ($t = 0.005\text{ s}$):**  
-  $s[1] = 1.503(0.7856) + 0.0025 + 0.2939 = \mathbf{+1.4772\text{ V}} \implies$ **Step 11** (`1010`), $V_q = \mathbf{+1.250\text{ V}}$, $e_q[1] = \mathbf{-0.2272\text{ V}}$.
-- **Sampel $n=2$ ($t = 0.010\text{ s}$):**  
-  $s[2] = 1.503(0.9377) + 0.0050 - 0.1545 = \mathbf{+1.2599\text{ V}} \implies$ **Step 11** (`1010`), $V_q = \mathbf{+1.250\text{ V}}$, $e_q[2] = \mathbf{-0.0099\text{ V}}$.
-- **Sampel $n=3$ ($t = 0.015\text{ s}$):**  
-  $s[3] = 1.503(0.9992) + 0.0075 - 0.4755 = \mathbf{+1.0338\text{ V}} \implies$ **Step 11** (`1010`), $V_q = \mathbf{+1.250\text{ V}}$, $e_q[3] = \mathbf{+0.2162\text{ V}}$.
+- **Sampel $n=0$ ($t = 0.000\text{ s}$):** $s[0] = \mathbf{+1.3345\text{ V}} \implies$ **Step 11** (`1010`), $V_q = \mathbf{+1.250\text{ V}}$, $e_q[0] = \mathbf{-0.0845\text{ V}}$.
+- **Sampel $n=1$ ($t = 0.005\text{ s}$):** $s[1] = \mathbf{+1.4772\text{ V}} \implies$ **Step 11** (`1010`), $V_q = \mathbf{+1.250\text{ V}}$, $e_q[1] = \mathbf{-0.2272\text{ V}}$.
+- **Sampel $n=2$ ($t = 0.010\text{ s}$):** $s[2] = \mathbf{+1.2599\text{ V}} \implies$ **Step 11** (`1010`), $V_q = \mathbf{+1.250\text{ V}}$, $e_q[2] = \mathbf{-0.0099\text{ V}}$.
+- **Sampel $n=3$ ($t = 0.015\text{ s}$):** $s[3] = \mathbf{+1.0338\text{ V}} \implies$ **Step 11** (`1010`), $V_q = \mathbf{+1.250\text{ V}}$, $e_q[3] = \mathbf{+0.2162\text{ V}}$.
 
 $$\mathbf{\text{Frame Bitstream Serial [4 Sampel]}} = \mathbf{\underbrace{1010}_{n=0} \ \underbrace{1010}_{n=1} \ \underbrace{1010}_{n=2} \ \underbrace{1010}_{n=3}} \quad (16\text{ bit})$$
 
