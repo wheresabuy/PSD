@@ -1,12 +1,12 @@
 # 📘 BUKU AJAR & MODUL LENGKAP PENGOLAHAN SINYAL DIGITAL (PSD)
-*Panduan Komprehensif: Dari Konsep Dasar, Sinyal Multikanal, Sistem, hingga Proses Digitalisasi (ADC)*
+*Panduan Komprehensif: Dari Konsep Dasar, Sinyal Multi-Dimensi, Multikanal, Sistem, hingga Proses Digitalisasi (ADC)*
 
 ---
 
 ## 📑 DAFTAR ISI
 1. [BAB 1: Memahami Fondasi Sinyal, Sistem, dan Paradigma Pemrosesan](#bab-1-memahami-fondasi-sinyal-sistem-dan-paradigma-pemrosesan)
    - [1.1 Apa Sebenarnya Sinyal Itu? (Konsep Awam & Filosofi)](#11-apa-sebenarnya-sinyal-itu-konsep-awam--filosofi)
-   - [1.2 Dimensi Sinyal dalam Kehidupan Sehari-hari (1D, 2D, 3D)](#12-dimensi-sinyal-dalam-kehidupan-sehari-hari-1d-2d-3d)
+   - [1.2 Sinyal Multi-Dimensi (M-Dimensi): 1D, 2D, 3D, hingga 4D](#12-sinyal-multi-dimensi-m-dimensi-1d-2d-3d-hingga-4d)
    - [1.3 Sinyal Kanal Tunggal vs Sinyal Multikanal (Multi-Channel Signals)](#13-sinyal-kanal-tunggal-vs-sinyal-multikanal-multi-channel-signals)
    - [1.4 Tiga Pilar Anatomi Gelombang: Amplitudo, Frekuensi, dan Fase](#14-tiga-pilar-anatomi-gelombang-amplitudo-frekuensi-dan-fase)
    - [1.5 Anatomi Visual Grafik Sinyal](#15-anatomi-visual-grafik-sinyal)
@@ -50,79 +50,78 @@ graph LR
     style Hasil fill:#064e3b,stroke:#10b981,color:#fff
 ```
 
-### Mengapa Sinyal Harus Memiliki Variabel Bebas?
-Jika suatu besaran bernilai tetap dan tidak pernah berubah (misalnya tegangan baterai mati yang selalu $0\text{ Volt}$ selamanya), besaran tersebut **tidak membawa informasi baru**. Sinyal baru memiliki makna ketika nilainya berubah seiring berjalannya variabel bebas (paling umum adalah **waktu $t$**).
+---
+
+## 1.2 Sinyal Multi-Dimensi (M-Dimensi): 1D, 2D, 3D, hingga 4D
+
+Berapa banyak variabel yang menentukan nilai suatu sinyal? Inilah konsep dari **Dimensi Sinyal ($M$-Dimensi)**.
+
+> **📌 Definisi Sinyal $M$-Dimensi:**  
+> Suatu sinyal disebut **$M$-Dimensi ($M$-D)** apabila nilai amplitudonya merupakan fungsi matematis dari **$M$ buah variabel bebas (*independent variables*)**:
+> $$s = f(v_1, v_2, v_3, \dots, v_M)$$
+
+![Spektrum Sinyal Multi-Dimensi](assets/sinyal_multidimensi.png)
 
 ---
 
-## 1.2 Dimensi Sinyal dalam Kehidupan Sehari-hari (1D, 2D, 3D)
+### A. Hierarki & Klasifikasi Dimensi Sinyal:
 
-Sinyal dikelompokkan berdasarkan berapa banyak variabel independen yang memengaruhinya:
+#### 1. Sinyal Satu Dimensi (1D) — $s = f(t)$
+* **Variabel Bebas:** $1$ variabel, yaitu **Waktu ($t$)**.
+* **Cara Kerja:** Nilai tegangan listrik atau tekanan udara hanya berubah seiring berjalannya detik waktu.
+* **Contoh Nyata:** Sinyal suara manusia melalui mikrofon mono, rekaman detak jantung ECG, sinyal seismometer pendeteksi gempa bumi, sinyal fluktuasi harga saham harian.
 
-1. **Sinyal 1-Dimensi (1D) — $x = f(t)$:**
-   * Hanya bergantung pada 1 variabel bebas, yaitu waktu $t$.
-   * *Contoh:* Sinyal audio mikrofon mono, sinyal detak jantung ECG.
-2. **Sinyal 2-Dimensi (2D) — $I = f(x, y)$:**
-   * Bergantung pada posisi ruang dua dimensi (baris horizontal $x$ dan kolom vertikal $y$).
-   * *Contoh:* Foto digital di layar HP Anda (intensitas kecerahan tiap piksel pada koordinat $x, y$).
-3. **Sinyal 3-Dimensi / Spatio-Temporal — $V = f(x, y, t)$:**
-   * Bergantung pada koordinat ruang $(x, y)$ dan berubah seiring waktu $t$.
-   * *Contoh:* Video digital (rangkaian foto 2D yang diperbarui seiring waktu $t$) atau citra medis MRI 3D.
+#### 2. Sinyal Dua Dimensi (2D) — Citra Intensitas $I = f(x, y)$
+* **Variabel Bebas:** $2$ variabel, yaitu **Koordinat Spasial Bidang Datar $(x, y)$** (sumbu kolom $x$ dan sumbu baris $y$).
+* **Cara Kerja:** Pada sebuah foto atau citra diam, nilai fungsi $f(x, y)$ merepresentasikan **tingkat intensitas kecerahan (*brightness/luminance*)** atau derajat keabuan (*grayscale*) pada titik piksel koordinat $(x, y)$. Nilainya berkisar dari $0$ (hitam pekat) hingga $255$ (putih terang pada citra 8-bit).
+* **Contoh Nyata:** Foto digital JPEG hitam-putih, citra rontgen medis X-Ray, foto satelit permukaan bumi.
+
+#### 3. Sinyal Tiga Dimensi (3D) — $V = f(x, y, t)$ atau $f(x, y, z)$
+* **Bentuk A (Video / Citra Televisi Hitam-Putih):** $f(x, y, t)$
+  * **Variabel Bebas:** $2$ variabel spasial $(x, y)$ dan $1$ variabel temporal waktu $(t)$.
+  * **Cara Kerja:** Citra televisi hitam-putih adalah rangkaian frame foto 2D $f(x, y)$ yang diputar dan diperbarui terus-menerus setiap detik $t$ (misal 30 atau 60 frame per detik).
+* **Bentuk B (Citra Medis Volume 3D):** $f(x, y, z)$
+  * **Variabel Bebas:** $3$ koordinat ruang tiga dimensi $(x, y, z)$ yaitu panjang, lebar, dan kedalaman.
+  * **Cara Kerja:** Pemindaian organ tubuh menghasilkan kumpulan titik volume bernama ***Voxel* (*Volumetric Pixel*)**.
+  * **Contoh Nyata:** Pemindaian otak 3D menggunakan MRI (*Magnetic Resonance Imaging*) atau CT-Scan.
+
+#### 4. Sinyal Empat Dimensi (4D) & Multi-Spektral — $C = f(x, y, t, \lambda)$
+* **Variabel Bebas:** Ruang $(x, y)$, Waktu $(t)$, dan Panjang Gelombang Spektral / Saluran Warna ($\lambda$ atau kanal $R, G, B$).
+* **Contoh Nyata:** Video digital berwarna (setiap piksel $(x, y)$ pada waktu $t$ memiliki 3 nilai intensitas warna Red, Green, Blue), atau rekaman animasi 3D organ jantung yang sedang berdetak terhadap waktu $f(x, y, z, t)$.
+
+---
+
+### B. Perbedaan Kunci: Sinyal Multi-Dimensi vs Sinyal Multi-Kanal
+
+Banyak pemula yang bingung membedakan kedua istilah ini. Mari kita luruskan:
+
+| Parameter Pembeda | Sinyal Multi-Dimensi ($M$-D) | Sinyal Multi-Kanal (*Multi-Channel*) |
+| :--- | :--- | :--- |
+| **Fokus Utama** | **Jumlah Variabel Bebas Masukan ($M$)**. Sinyal dipengaruhi oleh berapa banyak sumbu (waktu, ruang $x, y, z$, dsb.). | **Jumlah Sensor / Jalur Keluaran ($M$)**. Sinyal direkam oleh berapa banyak sensor fisik secara serentak. |
+| **Bentuk Matematis** | Fungsi skalar dari banyak variabel: $s = f(x, y, t)$. | Vektor dari banyak fungsi: $\mathbf{x}(t) = [x_1(t), x_2(t), \dots, x_M(t)]^T$. |
+| **Contoh Kasus** | Foto Citra 2D $f(x, y)$ atau Video 3D $f(x, y, t)$. | Rekaman ECG 12-Lead (12 sensor merekam waktu $t$) atau Audio Surround 7.1. |
 
 ---
 
 ## 1.3 Sinyal Kanal Tunggal vs Sinyal Multikanal (Multi-Channel Signals)
 
-Dalam dunia nyata, kita sering kali tidak hanya menggunakan 1 buah sensor, melainkan **sekumpulan sensor sekaligus** yang bekerja bersamaan. Inilah yang membedakan **Sinyal Kanal Tunggal (*Single-Channel*)** dengan **Sinyal Multikanal (*Multi-Channel*)**.
+Dalam dunia nyata, kita sering kali tidak hanya menggunakan 1 buah sensor, melainkan **sekumpulan sensor sekaligus** yang bekerja bersamaan:
 
 ![Konsep Sinyal Multikanal](assets/sinyal_multikanal.png)
 
-### A. Apa Itu Sinyal Multikanal?
-> **📌 Definisi:**  
-> **Sinyal Multikanal** adalah sekumpulan sinyal individual yang dihasilkan secara simultan oleh beberapa sumber atau sensor (*sensor array*) yang ditempatkan pada titik-titik ruang yang berbeda.
-
-### B. Representasi Matematis dalam Bentuk Vektor dan Matriks:
-
-1. **Representasi Vektor pada Setiap Detik Waktu $t$:**
-   Jika terdapat $M$ buah sensor yang merekam secara serentak, maka pada setiap saat $t$, data yang masuk bukan lagi berupa satu angka skalar tunggal, melainkan sebuah **Vektor Kolom Sinyal $\mathbf{x}(t)$** berukuran $M \times 1$:
+1. **Representasi Vektor Kolom pada Setiap Saat $t$:**
    $$\mathbf{x}(t) = \begin{bmatrix} x_1(t) \\ x_2(t) \\ x_3(t) \\ \vdots \\ x_M(t) \end{bmatrix} \in \mathbb{R}^{M \times 1}$$
 
-2. **Representasi Matriks Spasio-Temporal (Sepanjang $N$ Titik Cuplikan):**
-   Setelah sinyal dicuplik sebanyak $N$ titik sampel waktu ($n = 0, 1, \dots, N-1$), seluruh data rekaman membentuk **Matriks Data $\mathbf{X}$** berukuran $M \times N$:
+2. **Representasi Matriks Spasio-Temporal ($N$ Sampel):**
    $$\mathbf{X} = \begin{bmatrix} 
-   x_1[0] & x_1[1] & x_1[2] & \dots & x_1[N-1] \\ 
-   x_2[0] & x_2[1] & x_2[2] & \dots & x_2[N-1] \\ 
-   x_3[0] & x_3[1] & x_3[2] & \dots & x_3[N-1] \\ 
-   \vdots & \vdots & \vdots & \ddots & \vdots \\ 
-   x_M[0] & x_M[1] & x_M[2] & \dots & x_M[N-1] 
+   x_1[0] & x_1[1] & \dots & x_1[N-1] \\ 
+   x_2[0] & x_2[1] & \dots & x_2[N-1] \\ 
+   x_3[0] & x_3[1] & \dots & x_3[N-1] \\ 
+   \vdots & \vdots & \ddots & \vdots \\ 
+   x_M[0] & x_M[1] & \dots & x_M[N-1] 
    \end{bmatrix}_{M \times N}$$
-   * **Baris Matriks ($M$):** Merepresentasikan **Dimensi Spasial (Ruang / Posisi Sensor)**.
-   * **Kolom Matriks ($N$):** Merepresentasikan **Dimensi Temporal (Waktu Pencuplikan)**.
 
----
-
-### C. Contoh Kasus Nyata Sinyal Multikanal:
-
-```mermaid
-flowchart TD
-    Multi["Aplikasi Nyata Sinyal Multikanal"]
-    
-    Multi --> ECG["1. Medis Jantung (ECG 12-Lead)<br>12 elektroda merekam kelistrikan jantung dari 12 sudut pandang dada berbeda."]
-    Multi --> EEG["2. Medis Otak (EEG 32/64-Channel)<br>Helm dengan puluhan elektroda memetakan persebaran gelombang otak (Alpha/Beta)."]
-    Multi --> Audio["3. Spatial Audio / Surround Sound (5.1 / 7.1)<br>6 hingga 8 mikrofon menangkap arah datang suara untuk sensasi 3D."]
-    Multi --> Radar["4. Radar & Sonar Array (Beamforming)<br>Larik antena mendeteksi koordinat dan kecepatan pesawat/kapal selam."]
-
-    style ECG fill:#7f1d1d,stroke:#ef4444,color:#fff
-    style EEG fill:#312e81,stroke:#6366f1,color:#fff
-    style Audio fill:#064e3b,stroke:#10b981,color:#fff
-    style Radar fill:#78350f,stroke:#f59e0b,color:#fff
-```
-
-### D. Mengapa Harus Dinyatakan dalam Bentuk Vektor/Matriks?
-Karena dengan representasi vektor-matriks, komputer dapat menerapkan operasi **Aljabar Linier Tingkat Lanjut**:
-* **Spatial Filtering & Beamforming:** Mengarahkan "fokus pendengaran" mikrofon pintar (seperti smart speaker Amazon Echo / Google Nest) ke arah orang yang berbicara sambil mematikan bising dari arah lain.
-* **Blind Source Separation (Masalah Pesta Koktail / *Cocktail Party Problem*):** Memisahkan suara dua orang yang berbicara bersamaan menggunakan algoritma **Independent Component Analysis (ICA)**.
-* **Reduksi Dimensi (PCA):** Memampatkan ratusan saluran sensor menjadi beberapa fitur utama tanpa kehilangan informasi krusial.
+3. **Keunggulan Analisis:** Membuka pintu penerapan operasi **Aljabar Linier**, seperti *Spatial Filtering & Beamforming* (fokus pendengaran mikrofon), *Independent Component Analysis* (ICA untuk memisahkan suara bertumpuk), dan *Principal Component Analysis* (PCA).
 
 ---
 
@@ -144,10 +143,6 @@ graph TD
     style P2 fill:#0f172a,stroke:#38bdf8,color:#fff
     style P3 fill:#312e81,stroke:#a855f7,color:#fff
 ```
-
-1. **Amplitudo ($A$):** Simpangan terjauh dari garis tengah. Dalam audio merepresentasikan **Kekuatan/Volume Suara (*Loudness*)**.
-2. **Frekuensi ($f$):** Jumlah siklus gelombang penuh per 1 detik ($f = 1/T$). Dalam audio merepresentasikan **Tinggi-Rendahnya Nada (*Pitch*)**.
-3. **Fase ($\phi$):** Posisi awal gelombang saat $t=0$. Merepresentasikan **Pergeseran Waktu / Arah Kedatangan Gelombang**.
 
 ---
 
@@ -179,11 +174,6 @@ flowchart LR
     style Output fill:#064e3b,stroke:#10b981,color:#fff
 ```
 
-Sinyal suara membawa:
-1. **Informasi Tekstual/Fonem:** Resonansi rongga mulut (*Formant* $F_1, F_2, F_3$).
-2. **Informasi Identitas:** Frekuensi dasar pita suara ($F_0$) dan warna suara (*Timbre*).
-3. **Informasi Emosi:** Modulasi volume dan intonasi nada.
-
 ---
 
 ## 1.8 Apa Itu Sistem? (Analogi Mesin Pemroses)
@@ -191,15 +181,6 @@ Sinyal suara membawa:
 > **📌 Definisi Sistem:**  
 > **Sistem** adalah perangkat fisik (elektronika) atau algoritma perangkat lunak yang menerima sinyal masukan $x[n]$, melakukan operasi matematis terhadapnya, lalu mengeluarkan sinyal baru $y[n]$ yang telah dimodifikasi:
 > $$y[n] = \mathcal{T}\{x[n]\}$$
-
-```mermaid
-graph LR
-    Input["Sinyal Masukan x[n]<br>(Contoh: Suara Bising Ada Desis)"] --> Trans["SISTEM PENGOLAH (T)<br><i>Operasi: Menghapus Frekuensi Desis</i>"] --> Output["Sinyal Keluaran y[n]<br>(Contoh: Suara Bersih Jernih)"]
-
-    style Input fill:#0f172a,stroke:#38bdf8,stroke-width:2px,color:#fff
-    style Trans fill:#1e1b4b,stroke:#6366f1,stroke-width:2px,color:#fff
-    style Output fill:#064e3b,stroke:#10b981,stroke-width:2px,color:#fff
-```
 
 ---
 
@@ -270,7 +251,6 @@ flowchart LR
 
 ## 2.3 Tahap 1: Pencuplikan (Sampling) & Peran Detak Clock
 
-* **Analogi:** Seperti kamera film bioskop yang memotret 24 foto terpisah per detik.
 * Generator clock osilator membangkitkan trigger periodik tiap $T_s = \frac{1}{F_s}$. Rangkaian *Sample-and-Hold* menangkap nilai tegangan sesaat $x[n] = x(n \cdot T_s)$.
 * **Status:** Diskrit dalam waktu, namun amplitudo masih berupa bilangan riil kontinu.
 
@@ -280,7 +260,7 @@ flowchart LR
 
 > **🛡️ Teorema Sampling Nyquist:**  
 > $$F_s \geq 2 \cdot f_{\text{maks}}$$
-* Jika $F_s < 2 f_{\text{maks}}$, terjadi fenomena **Aliasing** (frekuensi tinggi menyamar menjadi frekuensi rendah palsu, seperti pelek roda mobil yang terlihat berputar mundur di video).
+* Jika $F_s < 2 f_{\text{maks}}$, terjadi fenomena **Aliasing** (frekuensi tinggi menyamar menjadi frekuensi rendah palsu).
 
 ---
 
@@ -292,7 +272,6 @@ Filter analog Low-Pass Filter (LPF) dipasang tepat sebelum ADC untuk memangkas f
 
 ## 2.6 Tahap 2: Kuantisasi (Quantization) — Seni Membulatkan Nilai
 
-* **Analogi:** Seperti membulatkan uang receh ke pecahan uang kertas terdekat di kasir.
 * **Jumlah Step ($L$):** $L = 2^B$.
 * **Lebar Rentang Per Step (*Step Size* $\Delta$):**
   $$\Delta = \frac{V_{\text{maks}} - V_{\text{min}}}{2^B}$$
