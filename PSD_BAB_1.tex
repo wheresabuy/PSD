@@ -1,0 +1,709 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- PACKAGES ---
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.3cm, right=2.3cm]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage[dvipsnames,svgnames,x11names,table]{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{booktabs, tabularx, array, multirow}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{caption}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+% --- COLOR DEFINITIONS ---
+\definecolor{primary}{RGB}{26, 54, 93}       % Deep Navy
+\definecolor{secondary}{RGB}{43, 108, 176}   % Slate Blue
+\definecolor{accent}{RGB}{44, 122, 123}      % Teal
+\definecolor{boxbg}{RGB}{247, 250, 252}      % Off-white / Cool Grey
+\definecolor{boxborder}{RGB}{203, 213, 224}  % Light Slate
+\definecolor{warningbg}{RGB}{254, 243, 199}  % Soft Amber
+\definecolor{warningborder}{RGB}{217, 119, 6}% Dark Amber
+\definecolor{darkred}{RGB}{155, 44, 44}
+
+% --- TCOLORBOX CUSTOM STYLES ---
+\newtcolorbox{analisisbox}[1][]{
+  enhanced,
+  breakable,
+  colback=boxbg,
+  colframe=secondary,
+  arc=3mm,
+  boxrule=1pt,
+  leftrule=4mm,
+  title={\textbf{\sffamily #1}},
+  coltitle=white,
+  colbacktitle=secondary,
+  attach boxed title to top left={yshift=-2mm, xshift=4mm},
+  boxed title style={arc=1.5mm, boxrule=0pt},
+  fonttitle=\small\sffamily\bfseries,
+  top=4mm, bottom=3mm, left=3mm, right=3mm
+}
+
+\newtcolorbox{teoremabox}[1][]{
+  enhanced,
+  breakable,
+  colback=warningbg,
+  colframe=warningborder,
+  arc=2mm,
+  boxrule=1pt,
+  leftrule=4mm,
+  title={\textbf{\sffamily #1}},
+  coltitle=black,
+  colbacktitle=warningborder!30,
+  attach boxed title to top left={yshift=-2mm, xshift=4mm},
+  boxed title style={arc=1.5mm, boxrule=0pt},
+  fonttitle=\small\sffamily\bfseries,
+  top=4mm, bottom=3mm, left=3mm, right=3mm
+}
+
+\newtcolorbox{definisibox}[1][]{
+  enhanced,
+  breakable,
+  colback=accent!5,
+  colframe=accent,
+  arc=2mm,
+  boxrule=1pt,
+  leftrule=4mm,
+  title={\textbf{\sffamily #1}},
+  coltitle=white,
+  colbacktitle=accent,
+  attach boxed title to top left={yshift=-2mm, xshift=4mm},
+  boxed title style={arc=1.5mm, boxrule=0pt},
+  fonttitle=\small\sffamily\bfseries,
+  top=4mm, bottom=3mm, left=3mm, right=3mm
+}
+
+% --- HYPERREF SETUP ---
+\hypersetup{
+  colorlinks=true,
+  linkcolor=secondary,
+  urlcolor=accent,
+  citecolor=secondary,
+  pdftitle={Buku Ajar Visual Pengolahan Sinyal Digital (PSD) - BAB 1},
+  pdfauthor={Muhammad Ayub Rahman},
+  pdfsubject={Pengolahan Sinyal Digital},
+  pdfkeywords={DSP, PSD, Sinyal, Sistem, ADC, Nyquist, Aliasing, Kuantisasi, Frekuensi Diskrit}
+}
+
+% --- SECTION FORMATTING ---
+\titleformat{\section}
+  {\Large\bfseries\sffamily\color{primary}}
+  {\thesection}{1em}{}[\titlerule]
+
+\titleformat{\subsection}
+  {\large\bfseries\sffamily\color{secondary}}
+  {\thesubsection}{1em}{}
+
+\titleformat{\subsubsection}
+  {\normalsize\bfseries\sffamily\color{darkgray}}
+  {\thesubsubsection}{1em}{}
+
+% --- HEADER & FOOTER ---
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small\sffamily\color{gray} Pengolahan Sinyal Digital (PSD) — Modul Visual}
+\fancyhead[R]{\small\sffamily\color{gray} BAB 1: Fondasi Pemrosesan Sinyal}
+\fancyfoot[C]{\small\sffamily\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% --- DOCUMENT BEGIN ---
+\begin{document}
+
+% --- COVER / TITLE HEADER ---
+\begin{center}
+  \vspace*{0.5cm}
+  {\huge\bfseries\sffamily\color{primary} BUKU AJAR VISUAL}\\[0.3cm]
+  {\LARGE\bfseries\sffamily\color{secondary} PENGOLAHAN SINYAL DIGITAL (PSD)}\\[0.4cm]
+  {\large\itshape Panduan Komprehensif Berbasis Visual: Dari Paradigma ASP vs DSP, Konversi Digitalisasi ADC, Sinyal Multikanal \& Multi-Dimensi, hingga Analisis Mendalam Sinusoidal Kontinu vs Diskrit}\\[0.5cm]
+  \rule{\textwidth}{1.5pt}\\[0.4cm]
+  {\Large\bfseries\sffamily\color{primary} BAB 1: Fondasi Pemrosesan Sinyal \& Analisis Gelombang}
+  \vspace*{0.5cm}
+\end{center}
+
+% --- TABLE OF CONTENTS ---
+\begin{tcolorbox}[colback=white, colframe=primary!30, arc=2mm, boxrule=0.8pt]
+\tableofcontents
+\end{tcolorbox}
+
+\vspace{0.8cm}
+\newpage
+
+% =========================================================================
+\section{Paradigma Pemrosesan Sinyal — Dari Fisik Analog (ASP) ke Era Digital (DSP)}
+% =========================================================================
+
+\subsection{Dari Fenomena Fisik Menjadi Sinyal Listrik (Peran Sensor \& Transduser)}
+
+Dunia nyata bekerja berdasarkan fenomena fisik alamiah yang bersifat kontinu, seperti getaran tekanan akustik suara manusia, perubahan energi termal suhu ruangan, maupun pergeseran mekanis gelombang seismik kerak bumi. Agar berbagai fenomena fisis tersebut dapat diolah dan dianalisis secara komputasi, perangkat \textbf{sensor} dan \textbf{transduser} bertindak sebagai jembatan utama untuk mengonversi besaran non-listrik tersebut menjadi fluktuasi sinyal tegangan ($v(t)$) atau arus listrik ($i(t)$) yang proporsional.
+
+\begin{center}
+  \includegraphics[width=0.95\linewidth]{assets/fenomena_fisik_ke_sinyal.png}
+  \captionof{figure}{Konversi fenomena fisik nyata (Akustik, Termal, Seismik) menjadi sinyal tegangan listrik kontinu.}
+\end{center}
+
+\begin{analisisbox}[Bedah Contoh Berdasarkan Visualisasi di Atas]
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Panel 1 (Sinyal Akustik / Suara — Biru Muda):}  
+  Ketika pita suara manusia bergetar di udara (tekanan Pascal), diafragma mikrofon menangkap gelombang mekanik tersebut dan mengubahnya menjadi fluktuasi \textbf{tegangan listrik $v(t)$ dalam skala milivolt (mV)}. Grafik menunjukkan getaran suara berosilasi bolak-balik dalam rentang $50\text{ ms}$.
+  
+  \item \textbf{Panel 2 (Sinyal Termal / Suhu — Oranye):}  
+  Sensor termokopel mendeteksi kenaikan suhu panas ruangan dari $25^\circ\text{C}$ menuju $65^\circ\text{C}$ selama durasi $60\text{ detik}$. Terlihat riak gerigi halus (\textit{thermal noise}) yang menyertai kenaikan kurva eksponensial tersebut.
+  
+  \item \textbf{Panel 3 (Sinyal Seismik / Gempa Bumi — Pink Magenta):}  
+  Kerak bumi yang tenang tiba-tiba bergeser pada detik ke-$3$. Sensor seismometer langsung merekam lonjakan akselerasi tanah hingga $+3.8\text{ m/s}^2$ yang kemudian mereda perlahan.
+\end{itemize}
+\end{analisisbox}
+
+\vspace{0.4cm}
+\subsection{Paradigma Pemrosesan: Rantai ASP (Analog) vs Rantai DSP (Digital)}
+
+Pemrosesan sinyal dapat dilakukan melalui dua paradigma arsitektur yang fundamental, yaitu \textit{Analog Signal Processing} (ASP) dan \textit{Digital Signal Processing} (DSP).
+
+\begin{center}
+  \includegraphics[width=0.92\linewidth]{assets/diagram_asp_vs_dsp.png}
+  \captionof{figure}{Diagram komparasi alur rantai pemrosesan ASP versus DSP.}
+\end{center}
+
+\begin{analisisbox}[Bedah Alur Pemrosesan Berdasarkan Diagram Rantai]
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Rantai Atas — Analog Signal Processing (ASP):}
+  \begin{center}
+  \small
+  $x(t)\text{ [Analog]} \longrightarrow \mathbf{\text{[Sistem ASP: R, C, Op-Amp]}} \longrightarrow y(t)\text{ [Analog]}$
+  \end{center}
+  \textit{Kelemahan:} Rentan terhadap derau termal solderan komponen, interferensi medan elektromagnetik lingkungan, degradasi usia komponen, dan toleransi nilai fisik kapasitor/resistor yang berubah terhadap suhu kerja.
+
+  \item \textbf{Rantai Bawah — Digital Signal Processing (DSP):}
+  \begin{center}
+  \small
+  $x(t)\text{ [Analog]} \longrightarrow \mathbf{\text{[A/D]}} \longrightarrow \mathbf{\text{[DSP CPU / Algoritma]}} \longrightarrow \mathbf{\text{[D/A]}} \longrightarrow y(t)\text{ [Analog]}$
+  \end{center}
+  \textit{Keunggulan:} Kebal terhadap fluktuasi temperatur ($100\%$ deterministik), sangat presisi dengan resolusi angka floating-point/fixed-point, serta algoritma pemrosesan dapat dimodifikasi dan diperbarui secara fleksibel melalui \textit{firmware software} tanpa perlu merombak jalur fisik PCB sirkuit perangkat keras.
+\end{itemize}
+\end{analisisbox}
+
+\vspace{0.4cm}
+\subsection{Tiga Pilar Anatomi Gelombang: Amplitudo, Frekuensi, dan Fase}
+
+Persamaan matematis analitis dari suatu gelombang sinusoidal murni dinyatakan sebagai berikut:
+\begin{equation}
+x(t) = A \cdot \sin(2\pi f t + \phi) = A \cdot \sin(\Omega t + \phi)
+\end{equation}
+
+\begin{center}
+  \includegraphics[width=0.88\linewidth]{assets/anatomi_sinyal.png}
+  \captionof{figure}{Anatomi parameter gelombang sinusoidal: Titik Puncak ($+A$), Titik Lembah ($-A$), Periode ($T$), dan Sudut Fase ($\phi$).}
+\end{center}
+
+\begin{center}
+  \includegraphics[width=0.92\linewidth]{assets/komparasi_sinyal.png}
+  \captionof{figure}{Pengaruh independen masing-masing parameter terhadap karakteristik visual gelombang.}
+\end{center}
+
+\begin{analisisbox}[Bedah Parameter Berdasarkan Gambar Visual]
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Amplitudo ($A = 3.0\text{ Volt}$):}  
+  Ketinggian puncak simpangan dari titik seimbang $y=0$ menuju puncak (\textit{Peak} di $+3\text{V}$) atau dasar lembah (\textit{Trough} di $-3\text{V}$). Memperbesar $A$ membuat intensitas gelombang semakin kuat (pada audio: suara semakin keras).
+  
+  \item \textbf{Frekuensi ($f = 2\text{ Hz}$) \& Periode ($T = 0.5\text{ detik}$):}  
+  Periode $T$ adalah durasi waktu untuk 1 siklus penuh ($T = 1/f$). Frekuensi $f = \frac{1}{0.5} = 2\text{ Hz}$ menunjukkan berapa kali gelombang berosilasi dalam 1 detik. Semakin tinggi frekuensi, semakin rapat getaran gelombang.
+  
+  \item \textbf{Fase ($\phi = 90^\circ$ atau $\pi/2\text{ rad}$):}  
+  Pergeseran sudut mula gelombang pada saat $t=0$. Gelombang dengan pergeseran fase $+90^\circ$ telah berada pada posisi puncak saat $t=0$, sehingga memulai siklus lebih awal (mendahului) gelombang tanpa pergeseran fase.
+\end{enumerate}
+\end{analisisbox}
+
+\vspace{0.4cm}
+\subsection{Sistem Pengolah Sinyal \& 4 Klasifikasi Karakteristik Operasinya}
+
+Suatu sistem sinyal $\mathcal{T}\{\cdot\}$ memetakan sinyal masukan $x[n]$ menjadi sinyal keluaran $y[n] = \mathcal{T}\{x[n]\}$. Perilaku sistem diklasifikasikan ke dalam 4 pilar fundamental:
+
+\begin{center}
+  \includegraphics[width=0.95\linewidth]{assets/klasifikasi_sistem.png}
+  \captionof{figure}{Empat klasifikasi karakteristik sistem: Linearitas, Kekekalan Waktu, Kausalitas, dan Stabilitas BIBO.}
+\end{center}
+
+\begin{analisisbox}[Bedah Karakteristik Sistem Berdasarkan 4 Panel di Atas]
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Linearitas (Linear vs Non-Linear):}  
+  Sistem linier mematuhi prinsip superposisi dan homogenitas: $\mathcal{T}\{a x_1[n] + b x_2[n]\} = a y_1[n] + b y_2[n]$. Garis lurus biru $y[n] = 1.5 x[n]$ merepresentasikan respon linier sempurna, sedangkan kurva kubik merah $y[n] = 0.5 x^3[n]$ memicu harmonisa non-linier dan distorsi sinyal.
+  
+  \item \textbf{Kekekalan Waktu (Time-Invariant / TI):}  
+  Karakteristik sistem tidak berubah seiring berjalannya waktu. Jika input digeser sejauh $n_0$ ($x[n - n_0]$), maka bentuk output tetap identik sama persis dan hanya bergeser waktu sebesar $y[n - n_0]$.
+  
+  \item \textbf{Kausalitas (Kausal vs Non-Kausal):}  
+  Sistem kausal hanya merespon saat input telah masuk ($h[n] = 0$ untuk $n < 0$). Sistem non-kausal memerlukan nilai sinyal masa depan ($n < 0$), sehingga tidak dapat diimplementasikan pada pemrosesan \textit{real-time} tanpa penundaan buffer.
+  
+  \item \textbf{Stabilitas BIBO (Bounded-Input Bounded-Output):}  
+  Setiap input yang terbatas $|x[n]| \leq M_x < \infty$ harus menghasilkan output yang terbatas pula $|y[n]| \leq M_y < \infty$. Kurva hijau meluruh ($0.75^n$) stabil menuju nol, sedangkan kurva eksponensial merah ($1.35^n$) tidak stabil karena meledak menuju $\infty$.
+\end{enumerate}
+\end{analisisbox}
+
+\newpage
+% =========================================================================
+\section{Proses Digitalisasi Sinyal (Analog-to-Digital Converter / ADC)}
+% =========================================================================
+
+\subsection{Rantai 4 Tahap Lengkap Digitalisasi ADC}
+
+Konversi sinyal dari dunia fisik analog ke ranah digital melibatkan empat tahapan sekuensial yang ketat:
+
+\begin{center}
+  \includegraphics[width=0.95\linewidth]{assets/tahapan_adc_sampling_kuantisasi.png}
+  \captionof{figure}{Empat tahapan lengkap digitalisasi sinyal pada Analog-to-Digital Converter (ADC).}
+\end{center}
+
+\begin{analisisbox}[Bedah Alur Kerja 4 Tahap ADC]
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Panel 1 (Sinyal Analog Asli):} Sinyal bersifat kontinu pada sumbu waktu $t \in \mathbb{R}$ dan kontinu pada amplitudo tegangan $x(t) \in \mathbb{R}$.
+  \item \textbf{Panel 2 (Pencuplikan / Sampling Clock):} Sakelar analog memotret tegangan pada interval waktu diskrit $T_s$. Sinyal menjadi \textbf{Diskrit Waktu}, namun nilainya masih berupa bilangan riil pecahan tak terbatas.
+  \item \textbf{Panel 3 (Kuantisasi Tegangan):} Nilai pecahan riil dibulatkan ke garis batas level anak tangga horizontal terdekat ($x_q[n]$). Sinyal kini menjadi \textbf{Diskrit Nilai Amplitudo}.
+  \item \textbf{Panel 4 (Pengkodean Biner / Encoding):} Nomor level kuantisasi dikodekan menjadi representasi kata biner (\textit{bitstream}) deretan angka `0' dan `1' untuk diolah oleh ALU prosesor.
+\end{enumerate}
+\end{analisisbox}
+
+\vspace{0.4cm}
+\subsection{Pencuplikan (Sampling Clock), Teorema Nyquist, dan Bencana Aliasing}
+
+\begin{center}
+  \includegraphics[width=0.95\linewidth]{assets/sampling_nyquist_aliasing.png}
+  \captionof{figure}{Efek variasi laju pencuplikan ($F_s$) terhadap rekontruksi sinyal asli berfrekuensi $f = 5\text{ Hz}$.}
+\end{center}
+
+\begin{analisisbox}[Bedah Kasus Berdasarkan Tiga Grafik di Atas]
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Grafik A — Over-Sampling ($F_s = 40\text{ Hz} \gg 2 \times 5\text{ Hz}$):} Clock mengambil 40 titik per detik. Rekonstruksi gelombang kembali sempurna 100\% tanpa distorsi.
+  \item \textbf{Grafik B — Batas Kritis Nyquist ($F_s = 10\text{ Hz} = 2 \times 5\text{ Hz}$):} Clock mengambil tepat 2 titik per siklus gelombang. Batas matematis minimum agar frekuensi asli tidak musnah.
+  \item \textbf{Grafik C — Bencana Aliasing ($F_s = 6\text{ Hz} < 2 \times 5\text{ Hz}$):} Clock terlalu lambat. Algoritma salah menafsirkan titik cuplikan dan membentuk \textbf{Gelombang Hantu Merah berfrekuensi palsu $1\text{ Hz}$ ($|5 - 6| = 1\text{ Hz}$)}. Inilah bencana \textbf{Aliasing}.
+\end{itemize}
+\end{analisisbox}
+
+\begin{teoremabox}[Teorema Pencuplikan Nyquist-Shannon]
+Agar suatu sinyal analog pita-terbatas (\textit{band-limited}) dengan frekuensi tertinggi $f_{\text{maks}}$ dapat direkonstruksi kembali secara sempurna dari sampel-sampelnya tanpa kehilangan informasi (bebas aliasing), maka frekuensi pencuplikan $F_s$ wajib memenuhi:
+\begin{equation}
+F_s \geq 2 \cdot f_{\text{maks}}
+\end{equation}
+Frekuensi $F_N = 2 \cdot f_{\text{maks}}$ disebut sebagai \textbf{Laju Nyquist (Nyquist Rate)}, dan batas tertinggi frekuensi yang dapat diolah $f_{\text{fold}} = F_s / 2$ disebut sebagai \textbf{Frekuensi Nyquist (Folding Frequency)}.
+\end{teoremabox}
+
+\newpage
+\subsection{Kuantisasi \& Pengkodean Biner 3-Bit (Rentang 0 s.d. 10 Volt)}
+
+Pada tahap kuantisasi, rentang dinamis tegangan analog $[V_{\text{min}}, V_{\text{maks}}]$ dibagi menjadi $L = 2^B$ interval diskrit yang seragam (\textit{uniform quantization}), di mana $B$ adalah resolusi bit ADC.
+
+\begin{center}
+  \includegraphics[width=0.92\linewidth]{assets/kuantisasi_3bit_0_10v.png}
+  \captionof{figure}{Karakteristik tangga kuantisasi 3-bit pada rentang tegangan 0 hingga 10 Volt.}
+\end{center}
+
+\begin{analisisbox}[Perhitungan Parameter Kuantisasi 3-Bit]
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Jumlah Level Kuantisasi:} $L = 2^B = 2^3 = 8\text{ tingkat level}$.
+  \item \textbf{Lebar Resolusi Per Step (\textit{Step Size} $\Delta$):}
+  \begin{equation}
+  \Delta = \frac{V_{\text{maks}} - V_{\text{min}}}{2^B} = \frac{10.0\text{ V} - 0.0\text{ V}}{8} = 1.25\text{ Volt / step}
+  \end{equation}
+\end{itemize}
+\end{analisisbox}
+
+\begin{table}[h!]
+\centering
+\small
+\caption{Tabel Pemetaan Kuantisasi 3-Bit (0.0 V s.d. 10.0 V, $\Delta = 1.25\text{ V}$)}
+\begin{tabularx}{\textwidth}{>{\centering\arraybackslash}m{2.3cm} >{\centering\arraybackslash}X >{\centering\arraybackslash}m{2.0cm} >{\centering\arraybackslash}m{3.2cm} >{\centering\arraybackslash}m{2.6cm}}
+\toprule
+\textbf{Step Kuantisasi} & \textbf{Rentang Tegangan Input ($V_{\text{in}}$)} & \textbf{Kode Biner} & \textbf{Level Representasi ($V_q$)} & \textbf{Error Maks ($\pm \Delta/2$)} \\
+\midrule
+\textbf{Step 1} & $0.00\text{ V} \leq V_{\text{in}} < 1.25\text{ V}$ & \texttt{000} & $0.625\text{ V}$ & $\pm 0.625\text{ V}$ \\
+\textbf{Step 2} & $1.25\text{ V} \leq V_{\text{in}} < 2.50\text{ V}$ & \texttt{001} & $1.875\text{ V}$ & $\pm 0.625\text{ V}$ \\
+\textbf{Step 3} & $2.50\text{ V} \leq V_{\text{in}} < 3.75\text{ V}$ & \texttt{010} & $3.125\text{ V}$ & $\pm 0.625\text{ V}$ \\
+\textbf{Step 4} & $3.75\text{ V} \leq V_{\text{in}} < 5.00\text{ V}$ & \texttt{011} & $4.375\text{ V}$ & $\pm 0.625\text{ V}$ \\
+\textbf{Step 5} & $5.00\text{ V} \leq V_{\text{in}} < 6.25\text{ V}$ & \texttt{100} & $5.625\text{ V}$ & $\pm 0.625\text{ V}$ \\
+\textbf{Step 6} & $6.25\text{ V} \leq V_{\text{in}} < 7.50\text{ V}$ & \texttt{101} & $6.875\text{ V}$ & $\pm 0.625\text{ V}$ \\
+\textbf{Step 7} & $7.50\text{ V} \leq V_{\text{in}} < 8.75\text{ V}$ & \texttt{110} & $8.125\text{ V}$ & $\pm 0.625\text{ V}$ \\
+\textbf{Step 8} & $8.75\text{ V} \leq V_{\text{in}} \leq 10.00\text{ V}$ & \texttt{111} & $9.375\text{ V}$ & $\pm 0.625\text{ V}$ \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\vspace{0.2cm}
+\subsection{Studi Kasus End-to-End: Konversi Sinyal Sinus ke Aliran Bit Biner}
+
+Diberikan sinyal input analog: $x(t) = 5 + 4 \cdot \sin(2\pi \cdot 1 \cdot t)\text{ Volt}$, disampling dengan laju $F_s = 8\text{ Hz}$ ($T_s = 0.125\text{ s}$).
+
+\begin{center}
+  \includegraphics[width=0.95\linewidth]{assets/studi_kasus_konversi_lengkap.png}
+  \captionof{figure}{Visualisasi proses lengkap pelacakan 8 titik cuplikan dari gelombang sinus kontinu menjadi bitstream.}
+\end{center}
+
+\begin{analisisbox}[Pelacakan 8 Titik Cuplikan ($n=0 \dots 7$)]
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Titik $n = 0$ ($t = 0.000\text{ s}$):} $V = 5.00\text{V} \implies$ Masuk \textbf{Step 5} $\implies V_q = 5.625\text{V} \implies$ \textbf{Biner \texttt{100}}
+  \item \textbf{Titik $n = 1$ ($t = 0.125\text{ s}$):} $V = 7.83\text{V} \implies$ Masuk \textbf{Step 7} $\implies V_q = 8.125\text{V} \implies$ \textbf{Biner \texttt{110}}
+  \item \textbf{Titik $n = 2$ ($t = 0.250\text{ s}$):} $V = 9.00\text{V} \implies$ Masuk \textbf{Step 8} $\implies V_q = 9.375\text{V} \implies$ \textbf{Biner \texttt{111}}
+  \item \textbf{Titik $n = 3$ ($t = 0.375\text{ s}$):} $V = 7.83\text{V} \implies$ Masuk \textbf{Step 7} $\implies V_q = 8.125\text{V} \implies$ \textbf{Biner \texttt{110}}
+  \item \textbf{Titik $n = 4$ ($t = 0.500\text{ s}$):} $V = 5.00\text{V} \implies$ Masuk \textbf{Step 5} $\implies V_q = 5.625\text{V} \implies$ \textbf{Biner \texttt{100}}
+  \item \textbf{Titik $n = 5$ ($t = 0.625\text{ s}$):} $V = 2.17\text{V} \implies$ Masuk \textbf{Step 2} $\implies V_q = 1.875\text{V} \implies$ \textbf{Biner \texttt{001}}
+  \item \textbf{Titik $n = 6$ ($t = 0.750\text{ s}$):} $V = 1.00\text{V} \implies$ Masuk \textbf{Step 1} $\implies V_q = 0.625\text{V} \implies$ \textbf{Biner \texttt{000}}
+  \item \textbf{Titik $n = 7$ ($t = 0.875\text{ s}$):} $V = 2.17\text{V} \implies$ Masuk \textbf{Step 2} $\implies V_q = 1.875\text{V} \implies$ \textbf{Biner \texttt{001}}
+\end{enumerate}
+\[
+\mathbf{\text{Aliran Bit Output (Bitstream)}} = \mathbf{100 \ 110 \ 111 \ 110 \ 100 \ 001 \ 000 \ 001}
+\]
+\end{analisisbox}
+
+\newpage
+% =========================================================================
+\section{Klasifikasi Lanjutan Sinyal Modern}
+% =========================================================================
+
+\subsection{Sinyal Multikanal (Multi-Channel Signals) \& Representasi Vektor-Matriks}
+
+Dalam sistem modern seperti Elektrokardiogram (EKG), Elektroensefalogram (EEG), dan susunan antena \textit{Phased Array} radar, beberapa sensor ditempatkan di lokasi spasial berbeda untuk merekam fenomena fisik secara bersamaan.
+
+\begin{center}
+  \includegraphics[width=0.92\linewidth]{assets/sinyal_multikanal.png}
+  \captionof{figure}{Sinyal Multikanal 4-kanal sensor EKG dan representasi matematis vektor-matriks spatio-temporal.}
+\end{center}
+
+\begin{analisisbox}[Representasi Vektor dan Matriks Sinyal Multikanal]
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Vektor Kolom pada Detak Waktu $t$:}  
+  Setiap cuplikan waktu menghasilkan satu vektor berdimensi $M \times 1$:
+  \begin{equation}
+  \mathbf{x}(t) = \begin{bmatrix} x_1(t) \\ x_2(t) \\ x_3(t) \\ x_4(t) \end{bmatrix} \in \mathbb{R}^{4 \times 1}
+  \end{equation}
+  \item \textbf{Matriks Spasio-Temporal $\mathbf{X}_{M \times N}$:}  
+  Jika direkam selama $N$ sampel durasi waktu, matriks data total berukuran $M \times N$, di mana \textbf{baris} merepresentasikan dimensi spasial kanal sensor, dan \textbf{kolom} merepresentasikan evolusi temporal waktu:
+  \begin{equation}
+  \mathbf{X} = \begin{bmatrix} 
+  x_1[0] & x_1[1] & \cdots & x_1[N-1] \\
+  x_2[0] & x_2[1] & \cdots & x_2[N-1] \\
+  \vdots & \vdots & \ddots & \vdots \\
+  x_M[0] & x_M[1] & \cdots & x_M[N-1]
+  \end{bmatrix} \in \mathbb{R}^{M \times N}
+  \end{equation}
+\end{itemize}
+\end{analisisbox}
+
+\vspace{0.4cm}
+\subsection{Sinyal Multi-Dimensi (Multi-Dimensional Signals / M-D): 1D, 2D, 3D, hingga 4D}
+
+Dimensi suatu sinyal ditentukan oleh jumlah \textbf{variabel independen (bebas)} yang diperlukan untuk mengevaluasi nilai fungsi sinyal tersebut.
+
+\begin{center}
+  \includegraphics[width=0.95\linewidth]{assets/sinyal_multidimensi.png}
+  \captionof{figure}{Hierarki spektrum sinyal Multi-Dimensi: 1D (Waktu), 2D (Ruang $x,y$), 3D (Volume/Video), dan 4D (Spasio-Temporal-Spektral).}
+\end{center}
+
+\begin{analisisbox}[Bedah Hierarki Dimensi Sinyal]
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Sinyal 1D ($s = f(t)$):} Hanya memiliki 1 variabel bebas (waktu $t$). Contoh: rekaman suara audio mono.
+  \item \textbf{Sinyal 2D ($I = f(x, y)$):} Memiliki 2 variabel koordinat ruang spasial $(x, y)$. Nilai fungsi adalah intensitas intensitas terang/gelap piksel citra digital.
+  \item \textbf{Sinyal 3D Spasio-Temporal ($V = f(x, y, t)$ atau $f(x,y,z)$):} Tumpukan frame citra 2D yang berjalan seiring waktu $t$ (video hitam putih) atau irisan spasial 3D volume tomografi (CT-Scan / MRI).
+  \item \textbf{Sinyal 4D ($C = f(x, y, t, \lambda)$):} Ruang spasial $(x, y)$, domain waktu ($t$), dan spektrum panjang gelombang warna ($\lambda$) pada video berwarna bioskop atau citra hyperspectral satelit.
+\end{enumerate}
+\end{analisisbox}
+
+\newpage
+\subsection{Sinyal Waktu Diskrit (Discrete-Time Signals / DTS) \& Sinyal Elementer}
+
+Sinyal Waktu Diskrit didefinisikan sebagai fungsi dari variabel integer bulat $n \in \mathbb{Z}$.
+
+\begin{center}
+  \includegraphics[width=0.95\linewidth]{assets/sinyal_waktu_diskrit.png}
+  \captionof{figure}{Representasi Sinyal Waktu Diskrit (DTS) dan 3 Sinyal Elementer Pembina Sistem.}
+\end{center}
+
+\begin{analisisbox}[Bedah 3 Sinyal Diskrit Elementer]
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Unit Impulse / Kronecker Delta ($\delta[n]$):}  
+  \begin{equation}
+  \delta[n] = \begin{cases} 1, & n = 0 \\ 0, & n \neq 0 \end{cases}
+  \end{equation}
+  Merupakan blok pembangun dasar analisis sistem; respon sistem terhadap $\delta[n]$ disebut \textit{Impulse Response} ($h[n]$).
+
+  \item \textbf{Unit Step ($u[n]$):}  
+  \begin{equation}
+  u[n] = \begin{cases} 1, & n \geq 0 \\ 0, & n < 0 \end{cases}
+  \end{equation}
+  Digunakan untuk memodelkan sinyal yang baru aktif (dinyalakan) mulai dari indeks $n=0$.
+
+  \item \textbf{Sinyal Eksponensial Diskrit ($a^n u[n]$):}  
+  Untuk $|a| < 1$ (misal $a = 0.7$), sinyal meluruh secara asimtotik mendekati nol; memodelkan redaman energi fisik.
+\end{enumerate}
+\end{analisisbox}
+
+% =========================================================================
+\section{Klasifikasi Ruang Nilai \& Kepastian Sinyal}
+% =========================================================================
+
+\subsection{Definisi Hakiki Sinyal Digital: Diskrit Waktu \& Diskrit Amplitudo (4 Ruang Sinyal)}
+
+\begin{definisibox}[Definisi Baku Sinyal Digital]
+\textbf{Sinyal Digital} adalah sinyal yang berada secara simultan dalam \textbf{domain waktu-diskrit ($n \in \mathbb{Z}$)} dan memiliki himpunan \textbf{nilai amplitudo diskrit ($x_q[n] \in \{V_1, V_2, \dots, V_L\}$)} yang terkuantisasi ke dalam kode biner berhingga.
+\end{definisibox}
+
+\begin{center}
+  \includegraphics[width=0.92\linewidth]{assets/sinyal_digital_4_kuadran.png}
+  \captionof{figure}{Klasifikasi 4 Ruang Sinyal berdasarkan kombinasi kontinuitas waktu dan amplitudo.}
+\end{center}
+
+\begin{analisisbox}[Bedah 4 Kuadran Ruang Sinyal]
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Kuadran 1 (Kiri Atas — Sinyal Analog Asli):} Waktu kontinu ($t \in \mathbb{R}$) dan Amplitudo kontinu ($x(t) \in \mathbb{R}$). Berupa kurva kontinu mulus tanpa putus.
+  \item \textbf{Kuadran 2 (Kanan Atas — Sinyal Sampled-Data):} Waktu diskrit ($n \in \mathbb{Z}$) dan Amplitudo kontinu ($x[n] \in \mathbb{R}$). Hasil keluaran blok \textit{Sample-and-Hold}.
+  \item \textbf{Kuadran 3 (Kiri Bawah — Sinyal Terkuantisasi Waktu-Kontinu):} Waktu kontinu ($t \in \mathbb{R}$) dan Amplitudo diskrit ($x_q(t) \in \{V_k\}$). Garis berbentuk balok-balok tangga kontinu.
+  \item \textbf{Kuadran 4 (Kanan Bawah — SINYAL DIGITAL MURNI):} Waktu diskrit ($n \in \mathbb{Z}$) dan Amplitudo diskrit ($x_q[n] \in \text{Kode Biner}$). Inilah satu-satunya bentuk yang dapat diproses oleh arsitektur register dan memori mikroprosesor komputer.
+\end{enumerate}
+\end{analisisbox}
+
+\newpage
+\subsection{Sinyal Deterministik vs Sinyal Acak (Random / Stokastik)}
+
+\begin{center}
+  \includegraphics[width=0.95\linewidth]{assets/sinyal_deterministik_vs_acak.png}
+  \captionof{figure}{Perbandingan sifat sinyal Deterministik (matematis eksak) versus sinyal Acak / Stokastik (probabilistik).}
+\end{center}
+
+\begin{analisisbox}[Komparasi Sinyal Deterministik vs Acak]
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Panel 1 (Sinyal Deterministik — Biru Muda):}  
+  Sinyal yang setiap nilai masa lalu, saat ini, dan masa depannya dapat ditentukan \textbf{secara pasti 100\%} menggunakan persamaan eksplisit matematis (contoh: $x(t) = 2.5 \sin(6\pi t) + 1.2 \cos(12\pi t)$). Tidak ada ketidakpastian; nilai pada $t = 0.5\text{ s}$ dapat dihitung presisi.
+  
+  \item \textbf{Panel 2 (Sinyal Acak / Stokastik — Merah):}  
+  Sinyal yang tidak dapat dirumuskan oleh persamaan deterministik pasti karena mengandung faktor keacakan alamiah (derau termal resistor, interferensi kosmik, sinyal gelombang otak EEG). Hanya dapat dianalisis menggunakan \textbf{Parameter Statistik}:
+  \begin{enumerate}
+    \item \textit{Nilai Rata-rata / Mean} ($\mu_x = \mathbb{E}[x]$)
+    \item \textit{Variansi \& Standar Deviasi} ($\sigma^2 = \mathbb{E}[(x - \mu)^2]$)
+    \item \textit{Fungsi Kerapatan Probabilitas} (Probability Density Function / PDF)
+    \item \textit{Power Spectral Density} (PSD)
+  \end{enumerate}
+\end{itemize}
+\end{analisisbox}
+
+% =========================================================================
+\section{Analisis Frekuensi \& Gelombang Sinusoidal (Kontinu vs Diskrit)}
+% =========================================================================
+
+\subsection{Perbandingan Domain Frekuensi: Sinyal Waktu Kontinu vs Sinyal Waktu Diskrit}
+
+\begin{center}
+  \includegraphics[width=0.95\linewidth]{assets/frekuensi_kontinu_vs_diskrit.png}
+  \captionof{figure}{Perbandingan fundamental domain frekuensi waktu kontinu ($-\infty < \Omega < \infty$) vs waktu diskrit ($-\pi \leq \omega \leq \pi$).}
+\end{center}
+
+\begin{table}[h!]
+\centering
+\small
+\caption{Tabel Komparasi Domain Frekuensi Waktu Kontinu vs Waktu Diskrit}
+\begin{tabularx}{0.95\textwidth}{l>{\raggedright\arraybackslash}X>{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Parameter} & \textbf{Domain Waktu-Kontinu (Analog)} & \textbf{Domain Waktu-Diskrit (Digital)} \\
+\midrule
+\textbf{Frekuensi Siklik} & $F$ (Satuan: $\text{Hertz} = \text{siklus/detik}$) & $f = F / F_s$ (Satuan: $\text{siklus/sampel}$) \\
+\textbf{Frekuensi Sudut} & $\Omega = 2\pi F$ (Satuan: $\text{rad/detik}$) & $\omega = \Omega T_s = 2\pi f$ (Satuan: $\text{rad/sampel}$) \\
+\textbf{Rentang Frekuensi Unik} & $-\infty < \Omega < +\infty$ (Tak terbatas) & $\mathbf{-\pi \leq \omega \leq +\pi}$ atau $\mathbf{-\frac{1}{2} \leq f \leq +\frac{1}{2}}$ \\
+\textbf{Periodisitas Spektrum} & Bersifat Aperiodik & \textbf{Periodik dengan periode $2\pi$} ($\omega \equiv \omega + 2\pi k$) \\
+\textbf{Laju Osilasi Tertinggi} & $\Omega \to \infty$ (Semakin tinggi tak terbatas) & \textbf{Tepat di $\omega = \pm \pi$ ($f = \pm 1/2$)} \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\newpage
+\subsection{Sinyal Sinusoidal Waktu-Kontinu: Keunikan Frekuensi Fisik \& Laju Tak Terbatas}
+
+Persamaan umum gelombang sinusoidal waktu-kontinu:
+\begin{equation}
+x_a(t) = A \cos(\Omega t + \theta) = A \cos(2\pi F t + \theta)
+\end{equation}
+
+\begin{center}
+  \includegraphics[width=0.92\linewidth]{assets/sinus_kontinu_karakteristik_1.png}
+  \captionof{figure}{Visualisasi sifat keunikan frekuensi fisik dan pertambahan laju osilasi tanpa batas pada sinyal kontinu.}
+\end{center}
+
+\begin{analisisbox}[Dua Sifat Kunci Sinusoidal Kontinu]
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Setiap Frekuensi Berbeda Menghasilkan Bentuk Gelombang Unik:}  
+  Untuk setiap $F_1 \neq F_2$, sinyal $x_1(t) \neq x_2(t)$. Tidak ada dua frekuensi fisik berbeda yang memiliki representasi bentuk gelombang yang identik.
+  \item \textbf{Laju Osilasi Bertambah Tanpa Batas:}  
+  Ketika frekuensi $F \to \infty$, gelombang fisik berosilasi semakin rapat dan bertambah cepat tanpa ada batas atas maksimal.
+\end{enumerate}
+\end{analisisbox}
+
+\vspace{0.3cm}
+\subsection{Sinyal Sinusoidal Waktu-Kontinu: Periodisitas Universal}
+
+\begin{center}
+  \includegraphics[width=0.92\linewidth]{assets/sinus_kontinu_periodisitas_2.png}
+  \captionof{figure}{Bukti visual periodisitas universal untuk setiap sinyal sinusoidal waktu kontinu ($F = 2\text{ Hz}, T_p = 0.5\text{ s}$).}
+\end{center}
+
+\begin{analisisbox}[Pembuktian Matematis Periodisitas Universal]
+Sinyal sinusoidal kontinu \textbf{selalu periodik} untuk setiap nilai $F > 0$, dengan periode fundamental $T_p = 1/F$:
+\begin{equation}
+x_a(t + T_p) = A \cos\left(2\pi F \left(t + \frac{1}{F}\right)\right) = A \cos(2\pi F t + 2\pi) = A \cos(2\pi F t) = x_a(t)
+\end{equation}
+\end{analisisbox}
+
+\newpage
+\subsection{Sinyal Sinusoidal Waktu-Diskrit: Syarat Wajib Periodisitas Bilangan Rasional}
+
+Persamaan umum gelombang sinusoidal waktu-diskrit:
+\begin{equation}
+x[n] = A \cos(\omega n + \theta) = A \cos(2\pi f n + \theta)
+\end{equation}
+
+\begin{teoremabox}[Fakta Krusial: Sinyal Sinus Diskrit Tidak Selalu Periodik!]
+Berbeda dengan sinyal analog yang selalu periodik, sinyal sinus diskrit $x[n]$ \textbf{hanya periodik jika dan hanya jika} frekuensi sikliknya $f$ merupakan \textbf{Bilangan Rasional}:
+\begin{equation}
+f = \frac{k}{N} \in \mathbb{Q}, \quad k, N \in \mathbb{Z}^+
+\end{equation}
+di mana $N$ adalah periode fundamental bulat terkecil sampel.
+\end{teoremabox}
+
+\begin{center}
+  \includegraphics[width=0.92\linewidth]{assets/sinus_diskrit_periodisitas_1.png}
+  \captionof{figure}{Komparasi sinyal diskrit periodik ($f = 1/8 \in \mathbb{Q}$) vs aperiodik ($f = 1/(2\pi) \notin \mathbb{Q}$).}
+\end{center}
+
+\begin{analisisbox}[Analisis Panel Periodik vs Aperiodik]
+\begin{itemize}[leftmargin=*]
+  \item \textbf{Panel A (Periodik — Biru Muda):} $x_1[n] = \cos(\frac{\pi}{4} n) = \cos(2\pi \cdot \frac{1}{8} n)$. Karena $f = 1/8$ rasional, sampel berulang persis sama setiap $N = 8$ sampel.
+  \item \textbf{Panel B (Aperiodik — Merah):} $x_2[n] = \cos(1 \cdot n) = \cos(2\pi \cdot \frac{1}{2\pi} n)$. Karena $f = \frac{1}{2\pi}$ irasional, titik-titik sampel tidak akan pernah berulang persis sama sampai kapan pun.
+\end{itemize}
+\end{analisisbox}
+
+\vspace{0.3cm}
+\subsection{Sinyal Sinusoidal Waktu-Diskrit: Fenomena Frekuensi Identik Kelipatan \texorpdfstring{$2\pi$}{2pi}}
+
+\begin{center}
+  \includegraphics[width=0.92\linewidth]{assets/sinus_diskrit_identik_2pi_2.png}
+  \captionof{figure}{Bukti visual kesamaan identik 100\% antara frekuensi sudut $\omega_0 = \pi/6$ dan $\omega_1 = 13\pi/6 = \pi/6 + 2\pi$.}
+\end{center}
+
+\begin{analisisbox}[Teorema Kesamaan Frekuensi Diskrit]
+\begin{equation}
+\cos((\omega + 2\pi k)n) = \cos(\omega n + 2\pi k n) = \cos(\omega n)
+\end{equation}
+Frekuensi sudut yang terpisah sejauh kelipatan bilangan bulat $2\pi$ menghasilkan sinyal cuplikan diskrit yang \textbf{identik sama persis}. Oleh karena itu, analisis frekuensi diskrit cukup dibatasi pada rentang fundamental $-\pi \leq \omega \leq \pi$.
+\end{analisisbox}
+
+\newpage
+\subsection{Sinyal Sinusoidal Waktu-Diskrit: Laju Osilasi Tertinggi pada \texorpdfstring{$\omega = \pi$}{omega = pi} (\texorpdfstring{$f = 1/2$}{f = 1/2})}
+
+\begin{center}
+  \includegraphics[width=0.95\linewidth]{assets/sinus_diskrit_osilasi_maksimum_3.png}
+  \captionof{figure}{Evolusi laju osilasi sinyal diskrit: dari frekuensi rendah ($\omega = 0$), osilasi maksimum ($\omega = \pi$), hingga kembali melambat ($\omega = 7\pi/4$).}
+\end{center}
+
+\begin{analisisbox}[Bedah Pola Laju Osilasi Berdasarkan 4 Grafik]
+\begin{enumerate}[leftmargin=*]
+  \item \textbf{Grafik 1 ($\omega = 0, f = 0$):} $x[n] = \cos(0) = +1.0$. Sinyal DC datar, tanpa osilasi getaran.
+  \item \textbf{Grafik 2 ($\omega = \pi/4, f = 1/8$):} Berosilasi mulus dengan periode $N = 8$ sampel per siklus.
+  \item \textbf{Grafik 3 (OSILASI TERTINGGI MAKSIMUM — $\omega = \pi, f = 1/2$):}  
+  \begin{equation}
+  x[n] = \cos(\pi n) = (-1)^n = \{+1, -1, +1, -1, +1, -1, \dots\}
+  \end{equation}
+  Sinyal melompat bolak-balik antara puncak $+1$ dan $-1$ di setiap 1 sampel ($n \to n+1$). Ini adalah laju osilasi tercepat yang dapat terjadi di ranah digital!
+  \item \textbf{Grafik 4 ($\omega = 7\pi/4 \equiv -\pi/4$):} Ketika $\omega$ dinaikkan melampaui $\pi$ menuju $2\pi$, laju osilasi \textbf{melambat kembali} dan identik dengan $\omega = \pi/4$.
+\end{enumerate}
+\end{analisisbox}
+
+\newpage
+% =========================================================================
+\section{Glosarium Ringkas Istilah Kunci Persinyalan}
+% =========================================================================
+
+\subsection{Konsep Dasar \& Paradigma}
+\begin{table}[h!]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l>{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Istilah} & \textbf{Penjelasan Sangat Singkat} \\
+\midrule
+\textbf{Sinyal (\textit{Signal})} & Besaran fisik pembawa informasi yang berubah terhadap waktu atau ruang (suara, tegangan, suhu). \\
+\textbf{Sistem (\textit{System})} & Entitas fisik/algoritma yang memproses sinyal masukan (\textit{input}) menjadi sinyal keluaran (\textit{output}). \\
+\textbf{ASP (\textit{Analog Signal Processing})} & Pemrosesan sinyal kontinu langsung menggunakan komponen fisik (resistor, kapasitor, op-amp). \\
+\textbf{DSP (\textit{Digital Signal Processing})} & Pemrosesan sinyal diskrit menggunakan operasi matematika/algoritma di prosesor digital (CPU/DSP). \\
+\textbf{Sensor / Transduser} & Perangkat pengubah fenomena fisik non-listrik (suhu, getaran, tekanan) menjadi sinyal listrik. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Anatomi \& Parameter Gelombang}
+\begin{table}[h!]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l>{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Istilah} & \textbf{Penjelasan Sangat Singkat} \\
+\midrule
+\textbf{Amplitudo ($A$)} & Simpangan puncak atau nilai tertinggi gelombang dari titik nol (menentukan volume/kekuatan). \\
+\textbf{Frekuensi ($f, F$)} & Jumlah siklus getaran penuh dalam 1 detik, diukur dalam satuan $\text{Hertz (Hz)}$. \\
+\textbf{Periode ($T$)} & Waktu yang dibutuhkan untuk menempuh 1 siklus getaran penuh ($T = 1/f$). \\
+\textbf{Frekuensi Sudut ($\Omega, \omega$)} & Kecepatan putaran sudut fase gelombang ($\Omega = 2\pi F\text{ rad/s}$, $\omega = 2\pi f\text{ rad/sampel}$). \\
+\textbf{Fase ($\phi, \theta$)} & Posisi sudut awal gelombang pada saat $t = 0$ (menentukan awal mulai gelombang). \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Proses Digitalisasi (ADC)}
+\begin{table}[h!]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l>{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Istilah} & \textbf{Penjelasan Sangat Singkat} \\
+\midrule
+\textbf{ADC (\textit{Analog-to-Digital Converter})} & Konverter pengubah sinyal kontinu analog menjadi deretan bilangan biner diskrit. \\
+\textbf{Pencuplikan (\textit{Sampling})} & Proses memotret nilai amplitudo sinyal analog secara periodik setiap interval waktu $T_s$. \\
+\textbf{Laju Cuplikan ($F_s$)} & Kecepatan pencuplikan data per detik ($F_s = 1/T_s$, misal: $44.1\text{ kHz}$ pada audio CD). \\
+\textbf{Kuantisasi (\textit{Quantization})} & Proses pembulatan nilai amplitudo kontinu ke level tegangan diskrit terdekat yang tersedia. \\
+\textbf{Resolusi Bit ($B$)} & Jumlah bit biner penentu ketelitian/jumlah level kuantisasi ADC ($L = 2^B$). \\
+\textbf{Lebar Step ($\Delta$)} & Jarak tegangan antar-level kuantisasi yang berurutan ($\Delta = \frac{V_{\max} - V_{\min}}{2^B}$). \\
+\textbf{Teorema Nyquist} & Syarat mutlak sampling: $F_s \geq 2 \cdot f_{\max}$ agar sinyal dapat direkonstruksi tanpa cacat. \\
+\textbf{Aliasing} & Distorsi di mana frekuensi tinggi salah terdeteksi sebagai frekuensi rendah akibat sampling terlalu lambat. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Klasifikasi Sinyal \& Karakteristik Sistem}
+\begin{table}[h!]
+\centering
+\small
+\begin{tabularx}{\textwidth}{l>{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Istilah} & \textbf{Penjelasan Sangat Singkat} \\
+\midrule
+\textbf{Waktu-Kontinu} & Sinyal yang terdefinisi di setiap titik waktu riil tak terhingga ($t \in \mathbb{R}$). \\
+\textbf{Waktu-Diskrit (DTS)} & Sinyal yang hanya terdefinisi pada indeks titik-titik waktu bernomor bulat ($n \in \mathbb{Z}$). \\
+\textbf{Sinyal Digital} & Sinyal yang berwaktu-diskrit ($n$) dan beramplitudo-diskrit ($x_q$) dalam kode biner. \\
+\textbf{Sinyal Multikanal} & Sinyal dari beberapa kanal sensor berbeda yang direkam serentak (vektor/matriks). \\
+\textbf{Sinyal Multi-Dimensi} & Sinyal dengan banyak variabel bebas (1D: audio, 2D: citra, 3D: video/MRI). \\
+\textbf{Deterministik} & Sinyal yang nilainya dapat dihitung pasti 100\% dengan rumus matematika eksak. \\
+\textbf{Stokastik (Acak/Random)} & Sinyal acak yang hanya dapat dianalisis lewat teori statistik \& probabilitas. \\
+\textbf{Linearitas (\textit{Linear})} & Sistem yang mematuhi hukum superposisi (penjumlahan dan penskalaan). \\
+\textbf{Kekekalan Waktu (\textit{Time-Invariant})} & Karakteristik sistem tidak berubah seiring waktu ($x[n-k] \to y[n-k]$). \\
+\textbf{Kausalitas (\textit{Causal})} & Sistem yang keluarannya hanya dipengaruhi oleh masukan saat ini dan masa lalu. \\
+\textbf{Stabilitas BIBO} & Sistem yang selalu menghasilkan output terbatas untuk input terbatas (\textit{Bounded-Input Bounded-Output}). \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\vspace{0.8cm}
+\begin{center}
+\small\itshape\color{gray}
+--- Modul Pembelajaran Visual Pengolahan Sinyal Digital (PSD) berstandar industri dan akademis ---
+\end{center}
+
+\end{document}
