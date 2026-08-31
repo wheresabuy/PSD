@@ -3,42 +3,44 @@
 
 ---
 
-## 📑 DAFTAR ISI VISUAL LENGKAP
+# BAB 1: Fondasi Pemrosesan Sinyal & Analisis Gelombang
 
-1. [BAB 1: Paradigma Pemrosesan Sinyal — Dari Dunia Fisik Analog (ASP) ke Era Digital (DSP)](#bab-1-paradigma-pemrosesan-sinyal--dari-dunia-fisik-analog-asp-ke-era-digital-dsp)
-   - [1.1 Dari Fenomena Fisik Menjadi Sinyal Listrik (Peran Sensor & Transduser)](#11-dari-fenomena-fisik-menjadi-sinyal-listrik-peran-sensor--transduser)
-   - [1.2 Paradigma Pemrosesan: Rantai ASP (Analog) vs Rantai DSP (Digital)](#12-paradigma-pemrosesan-rantai-asp-analog-vs-rantai-dsp-digital)
-   - [1.3 Tiga Pilar Anatomi Gelombang: Amplitudo, Frekuensi, dan Fase](#13-tiga-pilar-anatomi-gelombang-amplitudo-frekuensi-dan-fase)
-   - [1.4 Sistem Pengolah Sinyal & 4 Klasifikasi Karakteristik Operasinya](#14-sistem-pengolah-sinyal--4-klasifikasi-karakteristik-operasinya)
-2. [BAB 2: Proses Digitalisasi Sinyal (Analog-to-Digital Converter / ADC)](#bab-2-proses-digitalisasi-sinyal-analog-to-digital-converter--adc)
-   - [2.1 Rantai 4 Tahap Lengkap Digitalisasi ADC](#21-rantai-4-tahap-lengkap-digitalisasi-adc)
-   - [2.2 Pencuplikan (Sampling Clock), Teorema Nyquist, dan Bencana Aliasing](#22-pencuplikan-sampling-clock-teorema-nyquist-dan-bencana-aliasing)
-   - [2.3 Kuantisasi & Pengkodean Biner 3-Bit (Rentang 0 s.d. 10 Volt)](#23-kuantisasi--pengkodean-biner-3-bit-rentang-0-sd-10-volt)
-   - [2.4 Studi Kasus End-to-End: Konversi Sinyal Sinus Utuh x(t) ke Aliran Bit Biner](#24-studi-kasus-end-to-end-konversi-sinyal-sinus-utuh-xt-ke-aliran-bit-biner)
-3. [BAB 3: Klasifikasi Lanjutan Sinyal Modern](#bab-3-klasifikasi-lanjutan-sinyal-modern)
-   - [3.1 Sinyal Multikanal (Multi-Channel Signals) & Representasi Vektor-Matriks](#31-sinyal-multikanal-multi-channel-signals--representasi-vektor-matriks)
-   - [3.2 Sinyal Multi-Dimensi (Multi-Dimensional Signals / M-D): 1D, 2D, 3D, hingga 4D](#32-sinyal-multi-dimensi-multi-dimensional-signals--m-d-1d-2d-3d-hingga-4d)
-   - [3.3 Sinyal Waktu Diskrit (Discrete-Time Signals / DTS) & Sinyal Elementer](#33-sinyal-waktu-diskrit-discrete-time-signals--dts--sinyal-elementer)
-4. [BAB 4: Klasifikasi Ruang Nilai & Kepastian Sinyal](#bab-4-klasifikasi-ruang-nilai--kepastian-sinyal)
-   - [4.1 Definisi Hakiki Sinyal Digital: Diskrit Waktu & Diskrit Amplitudo (4 Ruang Sinyal)](#41-definisi-hakiki-sinyal-digital-diskrit-waktu--diskrit-amplitudo-4-ruang-sinyal)
-   - [4.2 Sinyal Deterministik vs Sinyal Acak (Random / Stokastik)](#42-sinyal-deterministik-vs-sinyal-acak-random--stokastik)
-5. [BAB 5: Analisis Frekuensi & Gelombang Sinusoidal (Kontinu vs Diskrit)](#bab-5-analisis-frekuensi--gelombang-sinusoidal-kontinu-vs-diskrit)
-   - [5.1 Perbandingan Domain Frekuensi: Sinyal Waktu Kontinu vs Sinyal Waktu Diskrit](#51-perbandingan-domain-frekuensi-sinyal-waktu-kontinu-vs-sinyal-waktu-diskrit)
-   - [5.2 Sinyal Sinusoidal Waktu-Kontinu (1/2): Sifat Keunikan Frekuensi Fisik & Laju Tak Terbatas](#52-sinyal-sinusoidal-waktu-kontinu-12-sifat-keunikan-frekuensi-fisik--laju-tak-terbatas)
-   - [5.3 Sinyal Sinusoidal Waktu-Kontinu (2/2): Periodisitas Universal untuk Setiap Frekuensi F](#53-sinyal-sinusoidal-waktu-kontinu-22-periodisitas-universal-untuk-setiap-frekuensi-f)
-   - [5.4 Sinyal Sinusoidal Waktu-Diskrit (1/3): Syarat Wajib Periodisitas Bilangan Rasional f = k/N](#54-sinyal-sinusoidal-waktu-diskrit-13-syarat-wajib-periodisitas-bilangan-rasional-f--kn)
-   - [5.5 Sinyal Sinusoidal Waktu-Diskrit (2/3): Fenomena Frekuensi Identik Kelipatan 2π](#55-sinyal-sinusoidal-waktu-diskrit-23-fenomena-frekuensi-identik-kelipatan-2π)
-   - [5.6 Sinyal Sinusoidal Waktu-Diskrit (3/3): Laju Osilasi Tertinggi pada ω = π (f = 1/2)](#56-sinyal-sinusoidal-waktu-diskrit-33-laju-osilasi-tertinggi-pada-ω--π-f--12)
+## 📑 DAFTAR ISI BAB 1
+
+- [1.1 Paradigma Pemrosesan Sinyal — Dari Dunia Fisik Analog (ASP) ke Era Digital (DSP)](#11-paradigma-pemrosesan-sinyal--dari-dunia-fisik-analog-asp-ke-era-digital-dsp)
+  - [1.1.1 Dari Fenomena Fisik Menjadi Sinyal Listrik (Peran Sensor & Transduser)](#111-dari-fenomena-fisik-menjadi-sinyal-listrik-peran-sensor--transduser)
+  - [1.1.2 Paradigma Pemrosesan: Rantai ASP (Analog) vs Rantai DSP (Digital)](#112-paradigma-pemrosesan-rantai-asp-analog-vs-rantai-dsp-digital)
+  - [1.1.3 Tiga Pilar Anatomi Gelombang: Amplitudo, Frekuensi, dan Fase](#113-tiga-pilar-anatomi-gelombang-amplitudo-frekuensi-dan-fase)
+  - [1.1.4 Sistem Pengolah Sinyal & 4 Klasifikasi Karakteristik Operasinya](#114-sistem-pengolah-sinyal--4-klasifikasi-karakteristik-operasinya)
+- [1.2 Proses Digitalisasi Sinyal (Analog-to-Digital Converter / ADC)](#12-proses-digitalisasi-sinyal-analog-to-digital-converter--adc)
+  - [1.2.1 Rantai 4 Tahap Lengkap Digitalisasi ADC](#121-rantai-4-tahap-lengkap-digitalisasi-adc)
+  - [1.2.2 Pencuplikan (Sampling Clock), Teorema Nyquist, dan Bencana Aliasing](#122-pencuplikan-sampling-clock-teorema-nyquist-dan-bencana-aliasing)
+  - [1.2.3 Kuantisasi & Pengkodean Biner 3-Bit (Rentang 0 s.d. 10 Volt)](#123-kuantisasi--pengkodean-biner-3-bit-rentang-0-sd-10-volt)
+  - [1.2.4 Studi Kasus End-to-End: Konversi Sinyal Sinus Utuh x(t) ke Aliran Bit Biner](#124-studi-kasus-end-to-end-konversi-sinyal-sinus-utuh-xt-ke-aliran-bit-biner)
+- [1.3 Klasifikasi Lanjutan Sinyal Modern](#13-klasifikasi-lanjutan-sinyal-modern)
+  - [1.3.1 Sinyal Multikanal (Multi-Channel Signals) & Representasi Vektor-Matriks](#131-sinyal-multikanal-multi-channel-signals--representasi-vektor-matriks)
+  - [1.3.2 Sinyal Multi-Dimensi (Multi-Dimensional Signals / M-D): 1D, 2D, 3D, hingga 4D](#132-sinyal-multi-dimensi-multi-dimensional-signals--m-d-1d-2d-3d-hingga-4d)
+  - [1.3.3 Sinyal Waktu Diskrit (Discrete-Time Signals / DTS) & Sinyal Elementer](#133-sinyal-waktu-diskrit-discrete-time-signals--dts--sinyal-elementer)
+- [1.4 Klasifikasi Ruang Nilai & Kepastian Sinyal](#14-klasifikasi-ruang-nilai--kepastian-sinyal)
+  - [1.4.1 Definisi Hakiki Sinyal Digital: Diskrit Waktu & Diskrit Amplitudo (4 Ruang Sinyal)](#141-definisi-hakiki-sinyal-digital-diskrit-waktu--diskrit-amplitudo-4-ruang-sinyal)
+  - [1.4.2 Sinyal Deterministik vs Sinyal Acak (Random / Stokastik)](#142-sinyal-deterministik-vs-sinyal-acak-random--stokastik)
+- [1.5 Analisis Frekuensi & Gelombang Sinusoidal (Kontinu vs Diskrit)](#15-analisis-frekuensi--gelombang-sinusoidal-kontinu-vs-diskrit)
+  - [1.5.1 Perbandingan Domain Frekuensi: Sinyal Waktu Kontinu vs Sinyal Waktu Diskrit](#151-perbandingan-domain-frekuensi-sinyal-waktu-kontinu-vs-sinyal-waktu-diskrit)
+  - [1.5.2 Sinyal Sinusoidal Waktu-Kontinu (1/2): Sifat Keunikan Frekuensi Fisik & Laju Tak Terbatas](#152-sinyal-sinusoidal-waktu-kontinu-12-sifat-keunikan-frekuensi-fisik--laju-tak-terbatas)
+  - [1.5.3 Sinyal Sinusoidal Waktu-Kontinu (2/2): Periodisitas Universal untuk Setiap Frekuensi F](#153-sinyal-sinusoidal-waktu-kontinu-22-periodisitas-universal-untuk-setiap-frekuensi-f)
+  - [1.5.4 Sinyal Sinusoidal Waktu-Diskrit (1/3): Syarat Wajib Periodisitas Bilangan Rasional f = k/N](#154-sinyal-sinusoidal-waktu-diskrit-13-syarat-wajib-periodisitas-bilangan-rasional-f--kn)
+  - [1.5.5 Sinyal Sinusoidal Waktu-Diskrit (2/3): Fenomena Frekuensi Identik Kelipatan 2π](#155-sinyal-sinusoidal-waktu-diskrit-23-fenomena-frekuensi-identik-kelipatan-2π)
+  - [1.5.6 Sinyal Sinusoidal Waktu-Diskrit (3/3): Laju Osilasi Tertinggi pada ω = π (f = 1/2)](#156-sinyal-sinusoidal-waktu-diskrit-33-laju-osilasi-tertinggi-pada-ω--π-f--12)
 
 ---
 
-# BAB 1: Paradigma Pemrosesan Sinyal — Dari Dunia Fisik Analog (ASP) ke Era Digital (DSP)
+## 1.1 Paradigma Pemrosesan Sinyal — Dari Dunia Fisik Analog (ASP) ke Era Digital (DSP)
 
-## 1.1 Dari Fenomena Fisik Menjadi Sinyal Listrik (Peran Sensor & Transduser)
+### 1.1.1 Dari Fenomena Fisik Menjadi Sinyal Listrik (Peran Sensor & Transduser)
 
 ![Fenomena Fisik Menjadi Sinyal Listrik](assets/fenomena_fisik_ke_sinyal.png)
 
-### 🔍 Bedah Contoh Berdasarkan Visualisasi di Atas:
+#### 🔍 Bedah Contoh Berdasarkan Visualisasi di Atas:
 
 * **Panel 1 (Sinyal Akustik / Suara — Biru Muda):**  
   Ketika pita suara manusia bergetar di udara (tekanan Pascal), diafragma mikrofon menangkap gelombang mekanik tersebut dan mengubahnya menjadi fluktuasi **tegangan listrik $v(t)$ dalam skala milivolt (mV)**. Grafik menunjukkan getaran suara berosilasi bolak-balik dalam rentang $50\text{ ms}$.
@@ -51,11 +53,11 @@
 
 ---
 
-## 1.2 Paradigma Pemrosesan: Rantai ASP (Analog) vs Rantai DSP (Digital)
+### 1.1.2 Paradigma Pemrosesan: Rantai ASP (Analog) vs Rantai DSP (Digital)
 
 ![Diagram Paradigma ASP vs DSP](assets/diagram_asp_vs_dsp.png)
 
-### 🔍 Bedah Alur Pemrosesan Berdasarkan Diagram di Atas:
+#### 🔍 Bedah Alur Pemrosesan Berdasarkan Diagram di Atas:
 
 * **Rantai Atas — Analog Signal Processing (ASP):**
   $$\text{Sinyal Analog } x(t) \longrightarrow \mathbf{\text{Sistem ASP (Resistor, Kapasitor, Op-Amp)}} \longrightarrow \text{Sinyal Output } y(t)$$
@@ -67,7 +69,7 @@
 
 ---
 
-## 1.3 Tiga Pilar Anatomi Gelombang: Amplitudo, Frekuensi, dan Fase
+### 1.1.3 Tiga Pilar Anatomi Gelombang: Amplitudo, Frekuensi, dan Fase
 
 Persamaan matematis gelombang sinus murni:
 $$x(t) = A \cdot \sin(2\pi f t + \phi)$$
@@ -76,7 +78,7 @@ $$x(t) = A \cdot \sin(2\pi f t + \phi)$$
 
 ![Komparasi Visual Parameter Sinyal](assets/komparasi_sinyal.png)
 
-### 🔍 Bedah Parameter Berdasarkan Gambar Visual:
+#### 🔍 Bedah Parameter Berdasarkan Gambar Visual:
 
 1. **Amplitudo ($A = 3.0\text{ Volt}$):**  
    * *Lihat Gambar Anatomi:* Ketinggian puncak dari titik seimbang $y=0$ menuju puncak (*Peak* di $+3\text{V}$) atau lembah (*Trough* di $-3\text{V}$).  
@@ -91,11 +93,11 @@ $$x(t) = A \cdot \sin(2\pi f t + \phi)$$
 
 ---
 
-## 1.4 Sistem Pengolah Sinyal & 4 Klasifikasi Karakteristik Operasinya
+### 1.1.4 Sistem Pengolah Sinyal & 4 Klasifikasi Karakteristik Operasinya
 
 ![Klasifikasi Sistem](assets/klasifikasi_sistem.png)
 
-### 🔍 Bedah Karakteristik Sistem Berdasarkan 4 Panel di Atas:
+#### 🔍 Bedah Karakteristik Sistem Berdasarkan 4 Panel di Atas:
 
 1. **Panel 1 — Linearitas (Linear vs Non-Linear):**  
    * Garis biru: Sistem linier $y[n] = 1.5 x[n]$ (lurus proporsional, mematuhi prinsip superposisi).  
@@ -115,13 +117,13 @@ $$x(t) = A \cdot \sin(2\pi f t + \phi)$$
 
 ---
 
-# BAB 2: Proses Digitalisasi Sinyal (Analog-to-Digital Converter / ADC)
+## 1.2 Proses Digitalisasi Sinyal (Analog-to-Digital Converter / ADC)
 
-## 2.1 Rantai 4 Tahap Lengkap Digitalisasi ADC
+### 1.2.1 Rantai 4 Tahap Lengkap Digitalisasi ADC
 
 ![Tahapan Lengkap ADC](assets/tahapan_adc_sampling_kuantisasi.png)
 
-### 🔍 Bedah Alur Kerja ADC Berdasarkan 4 Panel di Atas:
+#### 🔍 Bedah Alur Kerja ADC Berdasarkan 4 Panel di Atas:
 
 1. **Panel 1 (Sinyal Analog Asli):** Gelombang mulus kontinu terhadap waktu ($t$) dan nilai tegangan ($V$).
 2. **Panel 2 (Pencuplikan / Sampling Clock):** Sakelar clock memotret tegangan pada interval periodik $T_s$. Sinyal menjadi **Diskrit Waktu**, tapi amplitudonya masih bilangan pecahan riil tak terbatas.
@@ -130,11 +132,11 @@ $$x(t) = A \cdot \sin(2\pi f t + \phi)$$
 
 ---
 
-## 2.2 Pencuplikan (Sampling Clock), Teorema Nyquist, dan Bencana Aliasing
+### 1.2.2 Pencuplikan (Sampling Clock), Teorema Nyquist, dan Bencana Aliasing
 
 ![Sampling Nyquist dan Aliasing](assets/sampling_nyquist_aliasing.png)
 
-### 🔍 Bedah Kasus Berdasarkan 3 Grafik di Atas:
+#### 🔍 Bedah Kasus Berdasarkan 3 Grafik di Atas:
 *Sinyal uji: Frekuensi asli $f = 5\text{ Hz}$ (garis titik abu-abu).*
 
 * **Grafik A — Over-Sampling ($F_s = 40\text{ Hz} \gg 2 \times 5\text{ Hz}$):**  
@@ -151,17 +153,17 @@ $$x(t) = A \cdot \sin(2\pi f t + \phi)$$
 
 ---
 
-## 2.3 Kuantisasi & Pengkodean Biner 3-Bit (Rentang 0 s.d. 10 Volt)
+### 1.2.3 Kuantisasi & Pengkodean Biner 3-Bit (Rentang 0 s.d. 10 Volt)
 
 ![Karakteristik Kuantisasi 3-Bit 0-10V](assets/kuantisasi_3bit_0_10v.png)
 
-### 🔍 Bedah Tangga Kuantisasi Berdasarkan Grafik di Atas:
+#### 🔍 Bedah Tangga Kuantisasi Berdasarkan Grafik di Atas:
 
 * **Resolusi ADC:** $3\text{-bit} \implies 2^3 = 8\text{ Tingkat Level}$.
 * **Lebar Rentang Per Step (*Step Size* $\Delta$):**  
   $$\Delta = \frac{V_{\text{maks}} - V_{\text{min}}}{2^B} = \frac{10.0\text{ V} - 0.0\text{ V}}{8} = 1.25\text{ Volt / step}$$
 
-### Tabel Pemetaan Step 1 s.d. Step 8:
+#### Tabel Pemetaan Step 1 s.d. Step 8:
 
 | Step Kuantisasi | Rentang Tegangan Input ($V_{\text{in}}$) | Kode Biner Encoding | Nilai Tengah Level ($V_q$) |
 | :---: | :---: | :---: | :---: |
@@ -176,13 +178,13 @@ $$x(t) = A \cdot \sin(2\pi f t + \phi)$$
 
 ---
 
-## 2.4 Studi Kasus End-to-End: Konversi Sinyal Sinus Utuh x(t) ke Aliran Bit Biner
+### 1.2.4 Studi Kasus End-to-End: Konversi Sinyal Sinus Utuh x(t) ke Aliran Bit Biner
 
 * Sinyal Input: $x(t) = 5 + 4 \cdot \sin(2\pi \cdot 1 \cdot t)\text{ Volt}$, dengan laju cuplikan $F_s = 8\text{ Hz}$ ($T_s = 0.125\text{ s}$).
 
 ![Studi Kasus Konversi Lengkap](assets/studi_kasus_konversi_lengkap.png)
 
-### 🔍 Pelacakan 8 Titik Cuplikan Berdasarkan Grafik di Atas:
+#### 🔍 Pelacakan 8 Titik Cuplikan Berdasarkan Grafik di Atas:
 
 1. **Titik $n = 0$ ($t = 0.000\text{ s}$):** $V = 5.00\text{V} \implies$ Masuk **Step 5** $\implies$ Level $5.625\text{V} \implies$ **Biner `100`**
 2. **Titik $n = 1$ ($t = 0.125\text{ s}$):** $V = 7.83\text{V} \implies$ Masuk **Step 7** $\implies$ Level $8.125\text{V} \implies$ **Biner `110`**
@@ -197,13 +199,13 @@ $$\mathbf{\text{Aliran Bit Output (Bitstream)}} = \mathbf{100 \ 110 \ 111 \ 110 
 
 ---
 
-# BAB 3: Klasifikasi Lanjutan Sinyal Modern
+## 1.3 Klasifikasi Lanjutan Sinyal Modern
 
-## 3.1 Sinyal Multikanal (Multi-Channel Signals) & Representasi Vektor-Matriks
+### 1.3.1 Sinyal Multikanal (Multi-Channel Signals) & Representasi Vektor-Matriks
 
 ![Konsep Sinyal Multikanal](assets/sinyal_multikanal.png)
 
-### 🔍 Bedah Konsep Berdasarkan Visualisasi di Atas:
+#### 🔍 Bedah Konsep Berdasarkan Visualisasi di Atas:
 
 * **Panel Kiri (4 Kanal Sensor Simultan):**  
   Menampilkan 4 sensor/elektroda yang merekam secara serentak:
@@ -218,11 +220,11 @@ $$\mathbf{\text{Aliran Bit Output (Bitstream)}} = \mathbf{100 \ 110 \ 111 \ 110 
 
 ---
 
-## 3.2 Sinyal Multi-Dimensi (Multi-Dimensional Signals / M-D): 1D, 2D, 3D, hingga 4D
+### 1.3.2 Sinyal Multi-Dimensi (Multi-Dimensional Signals / M-D): 1D, 2D, 3D, hingga 4D
 
 ![Spektrum Sinyal Multi-Dimensi](assets/sinyal_multidimensi.png)
 
-### 🔍 Bedah Hierarki Dimensi Berdasarkan 4 Panel di Atas:
+#### 🔍 Bedah Hierarki Dimensi Berdasarkan 4 Panel di Atas:
 
 1. **Panel 1 — Sinyal 1D ($s = f(t)$):** Hanya 1 variabel bebas (Waktu $t$). Contoh: Audio ucapan manusia.
 2. **Panel 2 — Sinyal 2D ($I = f(x, y)$):** Memiliki 2 variabel koordinat ruang $(x, y)$. Nilai fungsi adalah intensitas terang-gelap piksel citra digital.
@@ -231,11 +233,11 @@ $$\mathbf{\text{Aliran Bit Output (Bitstream)}} = \mathbf{100 \ 110 \ 111 \ 110 
 
 ---
 
-## 3.3 Sinyal Waktu Diskrit (Discrete-Time Signals / DTS) & Sinyal Elementer
+### 1.3.3 Sinyal Waktu Diskrit (Discrete-Time Signals / DTS) & Sinyal Elementer
 
 ![Fondasi Sinyal Waktu Diskrit](assets/sinyal_waktu_diskrit.png)
 
-### 🔍 Bedah Sinyal Diskrit Berdasarkan 4 Panel di Atas:
+#### 🔍 Bedah Sinyal Diskrit Berdasarkan 4 Panel di Atas:
 
 1. **Panel 1 (Stem Plot Sampling):** Sinyal kontinu dipotret menjadi batang vertikal $x[n] = x(n T_s)$ dengan indeks integer bulat $n \in \mathbb{Z}$.
 2. **Panel 2 (Sinyal Diskrit Alami):** Fluktuasi harga saham harian per hari ke-$n$ yang memang lahir langsung dalam angka diskrit.
@@ -246,15 +248,15 @@ $$\mathbf{\text{Aliran Bit Output (Bitstream)}} = \mathbf{100 \ 110 \ 111 \ 110 
 
 ---
 
-# BAB 4: Klasifikasi Ruang Nilai & Kepastian Sinyal
+## 1.4 Klasifikasi Ruang Nilai & Kepastian Sinyal
 
-## 4.1 Definisi Hakiki Sinyal Digital: Diskrit Waktu & Diskrit Amplitudo (4 Ruang Sinyal)
+### 1.4.1 Definisi Hakiki Sinyal Digital: Diskrit Waktu & Diskrit Amplitudo (4 Ruang Sinyal)
 
 > **🎯 Definisi Baku:** **Sinyal Digital** adalah sinyal yang berada dalam domain **waktu-diskrit ($n \in \mathbb{Z}$)** dan sekaligus memiliki himpunan **nilai amplitudo diskrit ($x_q[n] \in \{V_1, V_2, \dots, V_L\}$)** yang terkuantisasi ke dalam kode biner berhingga.
 
 ![Klasifikasi 4 Ruang Sinyal](assets/sinyal_digital_4_kuadran.png)
 
-### 🔍 Bedah 4 Ruang Sinyal Berdasarkan Gambar di Atas:
+#### 🔍 Bedah 4 Ruang Sinyal Berdasarkan Gambar di Atas:
 
 1. **Kuadran 1 (Kiri Atas — Sinyal Analog Asli):**  
    * *Domain Waktu:* Kontinu ($t \in \mathbb{R}$).  
@@ -278,11 +280,11 @@ $$\mathbf{\text{Aliran Bit Output (Bitstream)}} = \mathbf{100 \ 110 \ 111 \ 110 
 
 ---
 
-## 4.2 Sinyal Deterministik vs Sinyal Acak (Random / Stokastik)
+### 1.4.2 Sinyal Deterministik vs Sinyal Acak (Random / Stokastik)
 
 ![Sinyal Deterministik vs Sinyal Acak](assets/sinyal_deterministik_vs_acak.png)
 
-### 🔍 Bedah Contoh & Perbedaan Berdasarkan Visualisasi di Atas:
+#### 🔍 Bedah Contoh & Perbedaan Berdasarkan Visualisasi di Atas:
 
 * **Panel 1 (Sinyal Deterministik — Biru Muda):**
   * **Definisi:** Sinyal yang setiap nilai masa lalu, saat ini, dan masa depannya dapat ditentukan **secara pasti 100%** menggunakan formula matematika eksplisit tanpa ada unsur ketidakpastian.
@@ -302,13 +304,13 @@ $$\mathbf{\text{Aliran Bit Output (Bitstream)}} = \mathbf{100 \ 110 \ 111 \ 110 
 
 ---
 
-# BAB 5: Analisis Frekuensi & Gelombang Sinusoidal (Kontinu vs Diskrit)
+## 1.5 Analisis Frekuensi & Gelombang Sinusoidal (Kontinu vs Diskrit)
 
-## 5.1 Perbandingan Domain Frekuensi: Sinyal Waktu Kontinu vs Sinyal Waktu Diskrit
+### 1.5.1 Perbandingan Domain Frekuensi: Sinyal Waktu Kontinu vs Sinyal Waktu Diskrit
 
 ![Perbandingan Domain Frekuensi](assets/frekuensi_kontinu_vs_diskrit.png)
 
-### 🔍 Komparasi Visual Dua Domain Frekuensi:
+#### 🔍 Komparasi Visual Dua Domain Frekuensi:
 
 | Parameter | Domain Waktu-Kontinu (Analog) | Domain Waktu-Diskrit (Digital) |
 | :--- | :--- | :--- |
@@ -320,14 +322,14 @@ $$\mathbf{\text{Aliran Bit Output (Bitstream)}} = \mathbf{100 \ 110 \ 111 \ 110 
 
 ---
 
-## 5.2 Sinyal Sinusoidal Waktu-Kontinu (1/2): Sifat Keunikan Frekuensi Fisik & Laju Tak Terbatas
+### 1.5.2 Sinyal Sinusoidal Waktu-Kontinu (1/2): Sifat Keunikan Frekuensi Fisik & Laju Tak Terbatas
 
 Persamaan gelombang sinusoidal kontinu:
 $$x_a(t) = A \cos(\Omega t + \theta) = A \cos(2\pi F t + \theta)$$
 
 ![Sinus Kontinu Karakteristik 1](assets/sinus_kontinu_karakteristik_1.png)
 
-### 🔍 Bedah Karakteristik 1 Berdasarkan Gambar di Atas:
+#### 🔍 Bedah Karakteristik 1 Berdasarkan Gambar di Atas:
 
 * **Sifat 1 — Setiap Frekuensi $F$ Berbeda Adalah Gelombang yang Berbeda Unik:**  
   * *Grafik A ($F = 2\text{ Hz}$):* Berayun santai dengan 2 puncak per detik.  
@@ -340,11 +342,11 @@ $$x_a(t) = A \cos(\Omega t + \theta) = A \cos(2\pi F t + \theta)$$
 
 ---
 
-## 5.3 Sinyal Sinusoidal Waktu-Kontinu (2/2): Periodisitas Universal untuk Setiap Frekuensi F
+### 1.5.3 Sinyal Sinusoidal Waktu-Kontinu (2/2): Periodisitas Universal untuk Setiap Frekuensi F
 
 ![Sinus Kontinu Periodisitas 2](assets/sinus_kontinu_periodisitas_2.png)
 
-### 🔍 Bedah Karakteristik 2 Berdasarkan Gambar di Atas:
+#### 🔍 Bedah Karakteristik 2 Berdasarkan Gambar di Atas:
 
 * **Sifat Mutlak:** Sinyal sinusoidal waktu-kontinu **SELALU PERIODIK** untuk setiap nilai frekuensi $F > 0$!
 * **Periode Fundamental ($T_p$):**
@@ -362,7 +364,7 @@ $$x_a(t) = A \cos(\Omega t + \theta) = A \cos(2\pi F t + \theta)$$
 
 ---
 
-## 5.4 Sinyal Sinusoidal Waktu-Diskrit (1/3): Syarat Wajib Periodisitas Bilangan Rasional f = k/N
+### 1.5.4 Sinyal Sinusoidal Waktu-Diskrit (1/3): Syarat Wajib Periodisitas Bilangan Rasional f = k/N
 
 Persamaan gelombang sinusoidal diskrit:
 $$x[n] = A \cos(\omega n + \theta) = A \cos(2\pi f n + \theta)$$
@@ -371,7 +373,7 @@ $$x[n] = A \cos(\omega n + \theta) = A \cos(2\pi f n + \theta)$$
 
 ![Sinus Diskrit Periodisitas 1](assets/sinus_diskrit_periodisitas_1.png)
 
-### 🔍 Bedah Syarat Periodisitas Berdasarkan Visualisasi di Atas:
+#### 🔍 Bedah Syarat Periodisitas Berdasarkan Visualisasi di Atas:
 
 Agar sinyal diskrit periodik dengan periode bulat $N$ ($x[n + N] = x[n]$), maka harus berlaku:
 $$\cos(2\pi f (n + N)) = \cos(2\pi f n + 2\pi k) \implies 2\pi f N = 2\pi k \implies \mathbf{f = \frac{k}{N} \in \mathbb{Q} \quad (\text{Bilangan Rasional})}$$
@@ -386,11 +388,11 @@ $$\cos(2\pi f (n + N)) = \cos(2\pi f n + 2\pi k) \implies 2\pi f N = 2\pi k \imp
 
 ---
 
-## 5.5 Sinyal Sinusoidal Waktu-Diskrit (2/3): Fenomena Frekuensi Identik Kelipatan 2π
+### 1.5.5 Sinyal Sinusoidal Waktu-Diskrit (2/3): Fenomena Frekuensi Identik Kelipatan 2π
 
 ![Sinus Diskrit Identik 2pi](assets/sinus_diskrit_identik_2pi_2.png)
 
-### 🔍 Bedah Fenomena Frekuensi Identik Berdasarkan Grafik di Atas:
+#### 🔍 Bedah Fenomena Frekuensi Identik Berdasarkan Grafik di Atas:
 
 * **Teorema Kesamaan Frekuensi:** Sinyal sinusoidal diskrit dengan frekuensi sudut yang terpisah sejauh kelipatan bilangan bulat $2\pi$ adalah **IDENTIK SATU SAMA LAIN**:
   $$\cos((\omega + 2\pi k)n) = \cos(\omega n + 2\pi k n) = \cos(\omega n)$$
@@ -406,11 +408,11 @@ $$\cos(2\pi f (n + N)) = \cos(2\pi f n + 2\pi k) \implies 2\pi f N = 2\pi k \imp
 
 ---
 
-## 5.6 Sinyal Sinusoidal Waktu-Diskrit (3/3): Laju Osilasi Tertinggi pada ω = π (f = 1/2)
+### 1.5.6 Sinyal Sinusoidal Waktu-Diskrit (3/3): Laju Osilasi Tertinggi pada ω = π (f = 1/2)
 
 ![Sinus Diskrit Osilasi Maksimum](assets/sinus_diskrit_osilasi_maksimum_3.png)
 
-### 🔍 Bedah Pola Laju Osilasi Berdasarkan 4 Grafik di Atas:
+#### 🔍 Bedah Pola Laju Osilasi Berdasarkan 4 Grafik di Atas:
 
 1. **Grafik 1 (Frekuensi Rendah / DC — $\omega = 0, f = 0$):**  
    $$x[n] = \cos(0 \cdot n) = +1.0$$  
